@@ -12,6 +12,9 @@
  * Target Accuracy: 95-100%
  */
 
+import type { IRNode, StreamMessage, ImageChunkMessage } from '../../ir';
+import { ImageAssembler } from './image-assembler';
+
 console.log('Final plugin loaded - All Phases (1-6)');
 
 // Show the plugin UI so users can interact with the converter
@@ -26,6 +29,25 @@ let nodeBuffer: any[] = [];
 let isProcessing = false;
 let loadedFonts = new Set<string>();
 let fontMapping: Record<string, { family: string; style: string }> = {};
+const imageAssembler = new ImageAssembler();
+const pendingImageNodes = new Map<string, IRNode>();
+const streamScreenshots: Record<string, string> = {};
+const streamStates: Record<string, any> = {};
+const streamCreatedNodes = new Map<string, SceneNode>();
+let totalStreamNodesProcessed = 0;
+const STREAM_ASSEMBLY_TIMEOUT_MS = 10000;
+
+function resetStreamState(): void {
+  pendingImageNodes.clear();
+  streamCreatedNodes.clear();
+  totalStreamNodesProcessed = 0;
+  for (const key of Object.keys(streamScreenshots)) {
+    delete streamScreenshots[key];
+  }
+  for (const key of Object.keys(streamStates)) {
+    delete streamStates[key];
+  }
+}
 
 function applyVariableFill(node: GeometryMixin, variable: Variable) {
   if (!figma.variables) return;
@@ -48,31 +70,48 @@ function applyVariableFill(node: GeometryMixin, variable: Variable) {
   node.fills = [boundPaint];
 }
 
-figma.ui.onmessage = async (msg) => {
+figma.ui.onmessage = async (msg: unknown) => {
   try {
-    switch(msg.type) {
+    const streamTypes = new Set(['NODES', 'FONTS', 'TOKENS', 'COMPLETE', 'PROGRESS', 'ERROR']);
+
+    if (typeof msg === 'object' && msg !== null) {
+      const typedMsg = msg as any;
+
+      if (typedMsg.type === 'IMAGE_CHUNK') {
+        handleImageChunk(typedMsg as ImageChunkMessage);
+        return;
+      }
+
+      if (streamTypes.has(typedMsg.type)) {
+        await handleStreamEnvelope(typedMsg as StreamMessage);
+        return;
+      }
+    }
+
+    const legacy = msg as any;
+    switch (legacy.type) {
       case 'full_page':
-        await processFullPage(msg.data);
+        await processFullPage(legacy.data);
         break;
-        
+
       case 'tokens':
-        tokenVariables = await createFigmaVariables(msg.data);
+        tokenVariables = await createFigmaVariables(legacy.data);
         break;
-        
+
       case 'node_chunk':
-        nodeBuffer.push(...msg.data);
+        nodeBuffer.push(...legacy.data);
         if (!isProcessing) {
           isProcessing = true;
           await processBufferedNodes();
         }
         break;
-        
+
       case 'complete':
         figma.ui.postMessage({ type: 'import_complete' });
         break;
-        
+
       case 'error':
-        figma.notify(msg.error, { error: true });
+        figma.notify(legacy.error, { error: true });
         break;
     }
   } catch (error) {
@@ -80,6 +119,161 @@ figma.ui.onmessage = async (msg) => {
     figma.notify('Error processing data', { error: true });
   }
 };
+
+async function handleStreamEnvelope(msg: StreamMessage): Promise<void> {
+  switch (msg.type) {
+    case 'TOKENS':
+      resetStreamState();
+      tokenVariables = await createFigmaVariables(msg.payload || {});
+      break;
+
+    case 'FONTS':
+      if (Array.isArray(msg.payload)) {
+        await processFonts(msg.payload);
+      }
+      break;
+
+    case 'NODES':
+      if (msg.payload?.nodes) {
+        await handleStreamNodeBatch(msg.payload.nodes as IRNode[]);
+      }
+      break;
+
+    case 'PROGRESS':
+      figma.ui.postMessage({
+        type: 'PROGRESS_UPDATE',
+        ...msg.payload
+      });
+      break;
+
+    case 'ERROR':
+      figma.notify(`Error: ${msg.payload?.message || 'Unknown error'}`, { error: true });
+      break;
+
+    case 'COMPLETE':
+      await handleStreamComplete(msg.payload);
+      break;
+  }
+}
+
+async function handleStreamNodeBatch(nodes: IRNode[]): Promise<void> {
+  const streamFullData = {
+    screenshots: streamScreenshots,
+    states: streamStates
+  };
+
+  for (const node of nodes) {
+    if ((node as any).screenshot) {
+      streamScreenshots[node.id] = (node as any).screenshot;
+    }
+
+    if ((node as any).states) {
+      streamStates[node.id] = (node as any).states;
+    }
+
+    if (node.imageChunkRef?.isStreamed) {
+      pendingImageNodes.set(node.id, node);
+      console.log(`Deferring image node ${node.id} (waiting for ${node.imageChunkRef.totalChunks} chunks)`);
+      continue;
+    }
+
+    const figmaNode = await createEnhancedNode(node, figma.currentPage, streamFullData, streamCreatedNodes);
+    if (figmaNode) {
+      streamCreatedNodes.set(node.id, figmaNode);
+      totalStreamNodesProcessed += 1;
+    }
+  }
+
+  figma.ui.postMessage({
+    type: 'PROGRESS_UPDATE',
+    nodesProcessed: totalStreamNodesProcessed
+  });
+}
+
+function handleImageChunk(chunk: ImageChunkMessage): void {
+  imageAssembler.addChunk(chunk.nodeId, chunk.chunkIndex, chunk.data, chunk.totalChunks);
+
+  if (imageAssembler.isComplete(chunk.nodeId)) {
+    void createPendingImageNode(chunk.nodeId);
+  }
+}
+
+async function createPendingImageNode(nodeId: string): Promise<void> {
+  const node = pendingImageNodes.get(nodeId);
+  if (!node) {
+    console.error(`No pending node found for ${nodeId}`);
+    return;
+  }
+
+  const assembled = imageAssembler.assemble(nodeId);
+  if (!assembled) {
+    console.error(`Failed to assemble image for node ${nodeId}`);
+    return;
+  }
+
+  node.imageData = Array.from(assembled);
+  delete node.imageChunkRef;
+
+  const streamFullData = {
+    screenshots: streamScreenshots,
+    states: streamStates
+  };
+
+  const figmaNode = await createEnhancedNode(node, figma.currentPage, streamFullData, streamCreatedNodes);
+  if (figmaNode) {
+    streamCreatedNodes.set(node.id, figmaNode);
+    totalStreamNodesProcessed += 1;
+  }
+
+  pendingImageNodes.delete(nodeId);
+
+  figma.ui.postMessage({
+    type: 'IMAGE_ASSEMBLED',
+    nodeId,
+    nodesProcessed: totalStreamNodesProcessed
+  });
+}
+
+async function handleStreamComplete(payload: any): Promise<void> {
+  const maxWait = STREAM_ASSEMBLY_TIMEOUT_MS;
+  const startTime = Date.now();
+
+  while (pendingImageNodes.size > 0 && Date.now() - startTime < maxWait) {
+    await new Promise((resolve) => setTimeout(resolve, 100));
+
+    const timedOut = imageAssembler.cleanupTimedOut();
+    if (timedOut.length > 0) {
+      for (const nodeId of timedOut) {
+        const node = pendingImageNodes.get(nodeId);
+        if (!node) continue;
+
+        const placeholder = createPlaceholderForFailedImage(node as any);
+        figma.currentPage.appendChild(placeholder);
+        streamCreatedNodes.set(nodeId, placeholder);
+        pendingImageNodes.delete(nodeId);
+        totalStreamNodesProcessed += 1;
+      }
+    }
+  }
+
+  if (pendingImageNodes.size > 0) {
+    const stuck = Array.from(pendingImageNodes.keys());
+    console.error(`${pendingImageNodes.size} images never completed:`, stuck);
+    for (const nodeId of stuck) {
+      const node = pendingImageNodes.get(nodeId);
+      if (!node) continue;
+
+      const placeholder = createPlaceholderForFailedImage(node as any);
+      figma.currentPage.appendChild(placeholder);
+      streamCreatedNodes.set(nodeId, placeholder);
+      pendingImageNodes.delete(nodeId);
+      totalStreamNodesProcessed += 1;
+    }
+  }
+
+  figma.notify(`✓ Import complete: ${totalStreamNodesProcessed} nodes created`, { timeout: 3000 });
+  console.log('Import stats:', payload);
+}
 
 async function processFullPage(data: any) {
   const startTime = Date.now();
@@ -361,10 +555,23 @@ async function createTextNode(nodeData: any, hasScreenshot: boolean): Promise<Te
  */
 async function createImageNode(nodeData: any): Promise<RectangleNode> {
   const rect = figma.createRectangle();
-  
-  if (nodeData.image) {
+
+  if (nodeData.imageData && nodeData.imageData.length > 0) {
+    try {
+      const bytes = new Uint8Array(nodeData.imageData);
+      const image = figma.createImage(bytes);
+      rect.fills = [{
+        type: 'IMAGE',
+        imageHash: image.hash,
+        scaleMode: 'FILL'
+      }];
+    } catch (error) {
+      console.error('Failed to apply inline image data:', error);
+      rect.fills = [{ type: 'SOLID', color: { r: 0.9, g: 0.9, b: 0.9 } }];
+    }
+  } else if (nodeData.image) {
     let imageData = nodeData.image.data;
-    
+
     if (!imageData && nodeData.image.needsProxy) {
       const proxiedUrl = `http://localhost:3000/proxy-image?url=${encodeURIComponent(nodeData.image.url)}`;
       try {

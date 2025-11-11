@@ -14,6 +14,8 @@ import cors from 'cors';
 import { WebSocketServer } from 'ws';
 import { createServer } from 'http';
 import { extractBasic, extractHybrid, extractMaximum } from './scraper.js';
+import { StreamController } from './stream-controller.js';
+import type { IRNode } from '../../ir';
 import fetch from 'node-fetch';
 
 const app = express();
@@ -207,58 +209,20 @@ wss.on('connection', (ws) => {
         }
         
         console.log(`✓ Extraction complete: ${data.nodes.length} nodes`);
-        
-        // Send data (chunked if large)
-        if (data.nodes.length < 500) {
-          // Small page - send all at once
-          ws.send(JSON.stringify({
-            type: 'full_page',
-            data
-          }));
-        } else {
-          // Large page - stream in chunks
-          console.log('Streaming large page in chunks...');
-          
-          // Send tokens first
-          ws.send(JSON.stringify({
-            type: 'tokens',
-            data: data.tokens
-          }));
-          
-          // Send fonts
-          if (data.fonts && data.fonts.length > 0) {
-            ws.send(JSON.stringify({
-              type: 'fonts',
-              data: data.fonts
-            }));
-          }
-          
-          // Send nodes in batches
-          const batchSize = 100;
-          for (let i = 0; i < data.nodes.length; i += batchSize) {
-            const chunk = data.nodes.slice(i, i + batchSize);
-            
-            // Attach screenshots for this chunk
-            const chunkWithScreenshots = chunk.map((node: any) => ({
-              ...node,
-              screenshot: data.screenshots[node.id] || undefined
-            }));
-            
-            ws.send(JSON.stringify({
-              type: 'node_chunk',
-              data: chunkWithScreenshots,
-              progress: {
-                current: i + chunk.length,
-                total: data.nodes.length
-              }
-            }));
-            
-            // Small delay to prevent overwhelming client
-            await new Promise(r => setTimeout(r, 10));
-          }
-        }
-        
-        ws.send(JSON.stringify({ type: 'complete' }));
+
+        const nodesForStreaming: IRNode[] = data.nodes.map((node: IRNode) => ({
+          ...node,
+          screenshot: data.screenshots?.[node.id],
+          states: data.states?.[node.id]
+        }));
+
+        const controller = new StreamController(ws);
+        await controller.streamExtractedPage({
+          nodes: nodesForStreaming,
+          fonts: data.fonts,
+          tokens: data.tokens
+        });
+
         console.log('✓ WebSocket extraction complete');
         
       } catch (extractError: any) {

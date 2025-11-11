@@ -17,6 +17,20 @@ export interface IRNode {
   styles: IRStyles;
   text?: string;
   image?: IRImage;
+  imageSource?: ImageSource;
+  /**
+   * Inline binary image payload for hybrid delivery. When present, this takes
+   * precedence over base64 strings in {@link IRImage.data}.
+   */
+  imageData?: number[];
+  /**
+   * Reference metadata for streamed image delivery.
+   */
+  imageChunkRef?: ImageChunkReference;
+  /**
+   * Processing metadata describing conversion, resize and error details.
+   */
+  imageProcessing?: ImageProcessingMetadata;
   svg?: IRSVG;
   screenshot?: string; // base64 PNG
   pseudoElements?: IRPseudoElement[];
@@ -153,10 +167,66 @@ export interface IRStyles {
 export interface IRImage {
   url: string;
   alt?: string;
-  data?: string; // base64 data
+  data?: string; // base64 data (legacy inline support)
   naturalWidth?: number;
   naturalHeight?: number;
   needsProxy?: boolean; // Flag for CORS images
+  sourceType?: 'img' | 'background' | 'svg';
+  format?: 'png' | 'jpeg' | 'webp' | 'gif' | 'svg';
+}
+
+export interface ImageSource {
+  originalUrl: string;
+  resolvedUrl: string;
+  sourceType: 'img' | 'background' | 'svg';
+  naturalWidth?: number;
+  naturalHeight?: number;
+  format?: 'png' | 'jpeg' | 'webp' | 'gif' | 'svg';
+}
+
+export interface ImageChunkReference {
+  totalSize: number;
+  totalChunks: number;
+  chunkSize: number;
+  isStreamed: true;
+}
+
+export interface ImageProcessingMetadata {
+  originalFormat: string;
+  convertedFormat?: string;
+  wasConverted: boolean;
+  processingError?: string;
+}
+
+export interface ImageChunkMessage {
+  type: 'IMAGE_CHUNK';
+  nodeId: string;
+  chunkIndex: number;
+  totalChunks: number;
+  data: number[];
+  sequenceNumber: number;
+  timestamp: number;
+}
+
+export interface StreamMessage {
+  type: 'NODES' | 'IMAGE_CHUNK' | 'FONTS' | 'TOKENS' | 'COMPLETE' | 'ERROR' | 'PROGRESS';
+  payload?: any;
+  sequenceNumber: number;
+}
+
+export interface NodeBatchMessage {
+  type: 'NODES';
+  nodes: IRNode[];
+  sequenceNumber: number;
+}
+
+export interface CompleteMessage {
+  type: 'COMPLETE';
+  totalNodes: number;
+  totalImages: number;
+  inlineImages: number;
+  streamedImages: number;
+  sequenceNumber: number;
 }
 
 export interface IRSVG {

@@ -328,39 +328,54 @@
         
         ws.onmessage = (event) => {
           const message = JSON.parse(event.data);
-          
+
+          const forward = () => {
+            parent.postMessage({ pluginMessage: message }, '*');
+          };
+
           switch (message.type) {
-            case 'full_page':
-              progressFill.style.width = '90%';
-              parent.postMessage({ 
-                pluginMessage: { type: 'full_page', data: message.data } 
-              }, '*');
-              break;
-              
-            case 'tokens':
+            case 'TOKENS':
               progressFill.style.width = '20%';
-              parent.postMessage({ 
-                pluginMessage: { type: 'tokens', data: message.data } 
-              }, '*');
+              showStatus('Creating tokens...', 'info');
+              forward();
               break;
-              
-            case 'node_chunk':
-              if (message.progress) {
-                const percent = (message.progress.current / message.progress.total * 70) + 20;
+
+            case 'FONTS':
+              progressFill.style.width = '30%';
+              showStatus(`Loading fonts (${message.payload?.length || 0})`, 'info');
+              forward();
+              break;
+
+            case 'NODES':
+              showStatus('Streaming nodes...', 'info');
+              forward();
+              break;
+
+            case 'IMAGE_CHUNK':
+              showStatus('Receiving large image data...', 'info');
+              forward();
+              break;
+
+            case 'PROGRESS':
+              if (message.payload?.stage === 'processing_images') {
+                const percent = 30 + Math.min(40, Math.round((message.payload.current / message.payload.total) * 40));
                 progressFill.style.width = percent + '%';
-                showStatus(
-                  `Importing nodes: ${message.progress.current}/${message.progress.total}`, 
-                  'info'
-                );
+                showStatus(`Processing images ${message.payload.current}/${message.payload.total}`, 'info');
+              } else if (message.payload?.stage === 'streaming_images') {
+                const percent = 70 + Math.min(20, Math.round((message.payload.current / message.payload.total) * 20));
+                progressFill.style.width = percent + '%';
+                showStatus(`Streaming images ${message.payload.current}/${message.payload.total}`, 'info');
+              } else if (typeof message.payload?.nodesProcessed === 'number') {
+                const percent = Math.min(95, 50 + Math.round(message.payload.nodesProcessed));
+                progressFill.style.width = percent + '%';
               }
-              parent.postMessage({ 
-                pluginMessage: { type: 'node_chunk', data: message.data } 
-              }, '*');
+              forward();
               break;
-              
-            case 'complete':
+
+            case 'COMPLETE':
               progressFill.style.width = '100%';
               showStatus('✓ Import complete!', 'success');
+              forward();
               setTimeout(() => {
                 importBtn.disabled = false;
                 importBtn.textContent = 'Import Website';
@@ -368,13 +383,48 @@
               }, 2000);
               ws.close();
               break;
-              
-            case 'error':
-              showStatus('Error: ' + message.error, 'error');
+
+            case 'ERROR':
+              showStatus('Error: ' + (message.payload?.message || message.error || 'Unknown error'), 'error');
+              forward();
               importBtn.disabled = false;
               importBtn.textContent = 'Import Website';
               progressBar.style.display = 'none';
               ws.close();
+              break;
+
+            case 'full_page':
+            case 'tokens':
+            case 'node_chunk':
+            case 'complete':
+            case 'error':
+              forward();
+              if (message.type === 'node_chunk' && message.progress) {
+                const percent = (message.progress.current / message.progress.total * 70) + 20;
+                progressFill.style.width = percent + '%';
+                showStatus(`Importing nodes: ${message.progress.current}/${message.progress.total}`, 'info');
+              }
+              if (message.type === 'complete') {
+                progressFill.style.width = '100%';
+                showStatus('✓ Import complete!', 'success');
+                setTimeout(() => {
+                  importBtn.disabled = false;
+                  importBtn.textContent = 'Import Website';
+                  progressBar.style.display = 'none';
+                }, 2000);
+                ws.close();
+              }
+              if (message.type === 'error') {
+                showStatus('Error: ' + message.error, 'error');
+                importBtn.disabled = false;
+                importBtn.textContent = 'Import Website';
+                progressBar.style.display = 'none';
+                ws.close();
+              }
+              break;
+
+            default:
+              forward();
               break;
           }
         };
