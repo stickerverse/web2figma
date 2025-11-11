@@ -1,0 +1,16 @@
+{
+  "name": "web-to-figma-plugin",
+  "version": "2.0.0",
+  "description": "Final Figma plugin for web-to-Figma conversion",
+  "main": "dist/code.js",
+  "scripts": {
+    "build": "tsc --project plugin-tsconfig.json && npm run build:ui",
+    "build:ui": "cp src/ui.html dist/ui.html",
+    "watch": "tsc --project plugin-tsconfig.json --watch"
+  },
+  "devDependencies": {
+    "@figma/plugin-typings": "^1.90.0",
+    "@types/node": "^20.10.0",
+    "typescript": "^5.3.3"
+  }
+}

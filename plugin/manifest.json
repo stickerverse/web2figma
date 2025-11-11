@@ -1,0 +1,16 @@
+{
+  "name": "Web to Figma Converter",
+  "id": "web-to-figma-converter",
+  "api": "1.0.0",
+  "main": "dist/code.js",
+  "ui": "dist/ui.html",
+  "capabilities": [],
+  "enableProposedApi": false,
+  "editorType": ["figma"],
+  "networkAccess": {
+    "allowedDomains": [
+      "*"
+    ],
+    "reasoning": "This plugin fetches web pages and images from user-specified URLs to convert them into Figma designs. It also communicates with a local server for web scraping."
+  }
+}

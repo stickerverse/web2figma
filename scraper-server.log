@@ -1,0 +1,187 @@
+npm warn Unknown user config "timeout". This will stop working in the next major version of npm.
+
+> web-to-figma-scraper@2.0.0 start
+> node dist/server.js
+
+node:events:485
+      throw er; // Unhandled 'error' event
+      ^
+
+Error: listen EPERM: operation not permitted 0.0.0.0:3000
+    at Server.setupListenHandle [as _listen2] (node:net:1918:21)
+    at listenInCluster (node:net:1997:12)
+    at Server.listen (node:net:2102:7)
+    at file:///Users/skirk92/projects/web/scraper/dist/server.js:255:8
+    at ModuleJob.run (node:internal/modules/esm/module_job:370:25)
+    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:665:26)
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:99:5)
+Emitted 'error' event on WebSocketServer instance at:
+    at Server.emit (node:events:519:35)
+    at emitErrorNT (node:net:1976:8)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21) {
+  code: 'EPERM',
+  errno: -1,
+  syscall: 'listen',
+  address: '0.0.0.0',
+  port: 3000
+}
+
+Node.js v24.4.1
+npm warn Unknown user config "timeout". This will stop working in the next major version of npm.
+
+> web-to-figma-scraper@2.0.0 start
+> node dist/server.js
+
+node:events:485
+      throw er; // Unhandled 'error' event
+      ^
+
+Error: listen EADDRINUSE: address already in use :::3000
+    at Server.setupListenHandle [as _listen2] (node:net:1940:16)
+    at listenInCluster (node:net:1997:12)
+    at Server.listen (node:net:2102:7)
+    at file:///Users/skirk92/projects/web/scraper/dist/server.js:255:8
+    at ModuleJob.run (node:internal/modules/esm/module_job:370:25)
+    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:665:26)
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:99:5)
+Emitted 'error' event on WebSocketServer instance at:
+    at Server.emit (node:events:519:35)
+    at emitErrorNT (node:net:1976:8)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21) {
+  code: 'EADDRINUSE',
+  errno: -48,
+  syscall: 'listen',
+  address: '::',
+  port: 3000
+}
+
+Node.js v24.4.1
+npm warn Unknown user config "timeout". This will stop working in the next major version of npm.
+
+> web-to-figma-scraper@2.0.0 start
+> node dist/server.js
+
+
+╔═══════════════════════════════════════════════════════════╗
+║                                                           ║
+║      WEB-TO-FIGMA CONVERTER - FINAL VERSION              ║
+║      All Phases (1-6) - 95-100% Accuracy                 ║
+║                                                           ║
+╟───────────────────────────────────────────────────────────╢
+║                                                           ║
+║  🌐 Server:     http://localhost:3000                     ║
+║  🔌 WebSocket:  ws://localhost:3000/ws                    ║
+║  💚 Health:     http://localhost:3000/health              ║
+║  🖼️  Proxy:      /proxy-image?url=IMAGE_URL                ║
+║                                                           ║
+╟───────────────────────────────────────────────────────────╢
+║                                                           ║
+║  📋 EXTRACTION MODES:                                     ║
+║                                                           ║
+║  • basic    - Fast, no fonts/screenshots (65-75%)        ║
+║  • hybrid   - Balanced, recommended (85-95%)  ⭐         ║
+║  • maximum  - Full quality (95-100%)                     ║
+║                                                           ║
+╟───────────────────────────────────────────────────────────╢
+║                                                           ║
+║  ✓ Phase 1: Extended CSS extraction                      ║
+║  ✓ Phase 2: Font extraction & mapping                    ║
+║  ✓ Phase 3: Element screenshots                          ║
+║  ✓ Phase 4: SVG extraction                               ║
+║  ✓ Phase 5: Advanced effects                             ║
+║  ✓ Phase 6: Pseudo-elements & states                     ║
+║                                                           ║
+╟───────────────────────────────────────────────────────────╢
+║                                                           ║
+║  📡 ENDPOINTS:                                            ║
+║                                                           ║
+║  POST /scrape                                             ║
+║    Body: { "url": "...", "mode": "hybrid" }              ║
+║                                                           ║
+║  GET  /proxy-image?url=IMAGE_URL                         ║
+║  GET  /screenshot?url=PAGE_URL                           ║
+║  GET  /health                                             ║
+║                                                           ║
+║  WS   /ws                                                 ║
+║    Send: { "url": "...", "mode": "hybrid" }              ║
+║                                                           ║
+╟───────────────────────────────────────────────────────────╢
+║                                                           ║
+║  🚀 READY TO CONVERT WEB TO FIGMA                        ║
+║                                                           ║
+╚═══════════════════════════════════════════════════════════╝
+  
+✓ WebSocket connection established
+WebSocket: Extracting https://stripe.com in hybrid mode...
+Starting extraction with options: {
+  captureFonts: true,
+  captureScreenshots: true,
+  screenshotComplexOnly: true,
+  captureStates: false,
+  capturePseudoElements: true
+}
+Extracting fonts...
+Extracted 0 fonts
+Extracting DOM data...
+Capturing element screenshots...
+Captured 209 screenshots
+✓ Extraction complete: 4398 nodes
+Streaming large page in chunks...
+✓ WebSocket extraction complete
+[2025-11-11T03:12:32.405Z] GET /proxy-image
+(node:35986) [node-fetch#buffer] DeprecationWarning: Please use 'response.arrayBuffer()' instead of 'response.buffer()'
+(Use `node --trace-deprecation ...` to show where the warning was created)
+WebSocket connection closed
+[2025-11-11T03:12:46.720Z] GET /proxy-image
+[2025-11-11T03:12:50.548Z] GET /proxy-image
+[2025-11-11T03:12:53.961Z] GET /proxy-image
+[2025-11-11T03:12:57.207Z] GET /proxy-image
+[2025-11-11T03:13:01.390Z] GET /proxy-image
+[2025-11-11T03:13:06.777Z] GET /proxy-image
+[2025-11-11T03:13:07.623Z] GET /proxy-image
+[2025-11-11T03:13:07.992Z] GET /proxy-image
+[2025-11-11T03:13:08.312Z] GET /proxy-image
+[2025-11-11T03:13:09.592Z] GET /proxy-image
+[2025-11-11T03:13:09.789Z] GET /proxy-image
+[2025-11-11T03:13:10.203Z] GET /proxy-image
+[2025-11-11T03:13:10.496Z] GET /proxy-image
+[2025-11-11T03:13:10.875Z] GET /proxy-image
+[2025-11-11T03:13:11.143Z] GET /proxy-image
+[2025-11-11T03:13:11.546Z] GET /proxy-image
+[2025-11-11T03:13:11.861Z] GET /proxy-image
+[2025-11-11T03:13:12.236Z] GET /proxy-image
+[2025-11-11T03:13:12.494Z] GET /proxy-image
+[2025-11-11T03:13:12.987Z] GET /proxy-image
+[2025-11-11T03:13:13.310Z] GET /proxy-image
+[2025-11-11T03:13:13.743Z] GET /proxy-image
+[2025-11-11T03:13:14.115Z] GET /proxy-image
+[2025-11-11T03:13:14.513Z] GET /proxy-image
+[2025-11-11T03:13:14.775Z] GET /proxy-image
+[2025-11-11T03:13:15.298Z] GET /proxy-image
+[2025-11-11T03:13:15.562Z] GET /proxy-image
+[2025-11-11T03:13:16.287Z] GET /proxy-image
+[2025-11-11T03:13:17.010Z] GET /proxy-image
+[2025-11-11T03:13:17.281Z] GET /proxy-image
+[2025-11-11T03:13:17.850Z] GET /proxy-image
+[2025-11-11T03:13:18.700Z] GET /proxy-image
+[2025-11-11T03:13:19.136Z] GET /proxy-image
+[2025-11-11T03:13:19.605Z] GET /proxy-image
+[2025-11-11T03:13:19.862Z] GET /proxy-image
+[2025-11-11T03:13:20.090Z] GET /proxy-image
+[2025-11-11T03:13:20.778Z] GET /proxy-image
+[2025-11-11T03:13:21.569Z] GET /proxy-image
+[2025-11-11T03:13:21.821Z] GET /proxy-image
+[2025-11-11T03:13:22.448Z] GET /proxy-image
+[2025-11-11T03:13:23.538Z] GET /proxy-image
+[2025-11-11T03:13:23.815Z] GET /proxy-image
+[2025-11-11T03:13:24.197Z] GET /proxy-image
+[2025-11-11T03:13:24.469Z] GET /proxy-image
+[2025-11-11T03:13:25.245Z] GET /proxy-image
+[2025-11-11T03:13:25.788Z] GET /proxy-image
+[2025-11-11T03:13:26.333Z] GET /proxy-image
+[2025-11-11T03:13:26.708Z] GET /proxy-image
+[2025-11-11T03:13:27.473Z] GET /proxy-image
+[2025-11-11T03:13:28.628Z] GET /proxy-image
+[2025-11-11T03:13:29.030Z] GET /proxy-image
+[2025-11-11T03:13:29.747Z] GET /proxy-image
+[2025-11-11T03:13:30.956Z] GET /proxy-image
