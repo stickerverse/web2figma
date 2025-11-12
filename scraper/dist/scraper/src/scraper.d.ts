@@ -36,6 +36,32 @@ export interface ExtractionOptions {
         height: number;
     };
 }
+export interface LoadInfo {
+    timestamps: {
+        documentReady?: number;
+        fontsReady?: number;
+        imagesReady?: number;
+        lazyContentReady?: number;
+        domStabilized?: number;
+        extractionStart?: number;
+    };
+    stats: {
+        totalWaitMs: number;
+        fontsLoaded: number;
+        fontsFailed: number;
+        failedFonts: string[];
+        imagesLoaded: number;
+        imagesBlocked: number;
+        imagesFailed: number;
+        lazyElementsActivated: number;
+        domStable: boolean;
+        timedOut: boolean;
+    };
+    errors: {
+        phase: string;
+        message: string;
+    }[];
+}
 /**
  * Main extraction function with all features
  */
@@ -45,6 +71,7 @@ export declare function extractComplete(url: string, options?: ExtractionOptions
     screenshots: Record<string, string>;
     states: Record<string, any>;
     assets: never[];
+    loadInfo: LoadInfo;
     tokens: {
         explicit: Record<string, any>;
         implicit: Record<string, string>;
@@ -67,6 +94,7 @@ export declare function extractBasic(url: string): Promise<{
     screenshots: Record<string, string>;
     states: Record<string, any>;
     assets: never[];
+    loadInfo: LoadInfo;
     tokens: {
         explicit: Record<string, any>;
         implicit: Record<string, string>;
@@ -89,6 +117,7 @@ export declare function extractHybrid(url: string): Promise<{
     screenshots: Record<string, string>;
     states: Record<string, any>;
     assets: never[];
+    loadInfo: LoadInfo;
     tokens: {
         explicit: Record<string, any>;
         implicit: Record<string, string>;
@@ -111,6 +140,7 @@ export declare function extractMaximum(url: string): Promise<{
     screenshots: Record<string, string>;
     states: Record<string, any>;
     assets: never[];
+    loadInfo: LoadInfo;
     tokens: {
         explicit: Record<string, any>;
         implicit: Record<string, string>;
@@ -133,6 +163,7 @@ export declare function extractWithTokens(url: string): Promise<{
     screenshots: Record<string, string>;
     states: Record<string, any>;
     assets: never[];
+    loadInfo: LoadInfo;
     tokens: {
         explicit: Record<string, any>;
         implicit: Record<string, string>;
@@ -155,6 +186,7 @@ export declare function extractWithFontsAndScreenshots(url: string, options?: an
     screenshots: Record<string, string>;
     states: Record<string, any>;
     assets: never[];
+    loadInfo: LoadInfo;
     tokens: {
         explicit: Record<string, any>;
         implicit: Record<string, string>;
