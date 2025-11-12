@@ -42,6 +42,30 @@ export interface ExtractionOptions {
   viewport?: { width: number; height: number };
 }
 
+export interface LoadInfo {
+  timestamps: {
+    documentReady?: number;
+    fontsReady?: number;
+    imagesReady?: number;
+    lazyContentReady?: number;
+    domStabilized?: number;
+    extractionStart?: number;
+  };
+  stats: {
+    totalWaitMs: number;
+    fontsLoaded: number;
+    fontsFailed: number;
+    failedFonts: string[];
+    imagesLoaded: number;
+    imagesBlocked: number;
+    imagesFailed: number;
+    lazyElementsActivated: number;
+    domStable: boolean;
+    timedOut: boolean;
+  };
+  errors: { phase: string; message: string }[];
+}
+
 /**
  * Main extraction function with all features
  */
@@ -83,6 +107,9 @@ export async function extractComplete(
     waitUntil: "networkidle",
     timeout: 30000,
   });
+
+  console.log("Waiting for page to be fully loaded...");
+  const loadInfo = await waitForFullyLoaded(page);
 
   // Scroll to load lazy content
   await autoScroll(page);
@@ -736,7 +763,305 @@ export async function extractComplete(
     screenshots,
     states,
     assets: [],
+    loadInfo,
   };
+}
+
+async function waitForFullyLoaded(page: Page): Promise<LoadInfo> {
+  return page.evaluate(async () => {
+    const loadStart = Date.now();
+    const overallTimeout = 60000;
+
+    const loadInfo: LoadInfo = {
+      timestamps: {},
+      stats: {
+        totalWaitMs: 0,
+        fontsLoaded: 0,
+        fontsFailed: 0,
+        failedFonts: [],
+        imagesLoaded: 0,
+        imagesBlocked: 0,
+        imagesFailed: 0,
+        lazyElementsActivated: 0,
+        domStable: false,
+        timedOut: false,
+      },
+      errors: [],
+    };
+
+    const delay = (ms: number) =>
+      new Promise<void>((resolve) => setTimeout(resolve, ms));
+
+    const recordError = (phase: string, error: unknown) => {
+      const message =
+        error instanceof Error ? error.message : String(error ?? "Unknown error");
+      loadInfo.errors.push({ phase, message });
+    };
+
+    const processedImages = new WeakSet<HTMLImageElement>();
+
+    const remainingTime = () => Math.max(0, overallTimeout - (Date.now() - loadStart));
+
+    const runWithTimeout = async (
+      phase: string,
+      timeoutMs: number,
+      fn: () => Promise<void>
+    ) => {
+      const remaining = remainingTime();
+      if (remaining <= 0) {
+        loadInfo.stats.timedOut = true;
+        recordError("overall", "Load wait exceeded 60000ms");
+        return;
+      }
+
+      const effectiveTimeout = Math.min(timeoutMs, remaining);
+      let timeoutId: number | null = null;
+      let timedOut = false;
+
+      const timeoutPromise = new Promise<void>((resolve) => {
+        timeoutId = window.setTimeout(() => {
+          timedOut = true;
+          resolve();
+        }, effectiveTimeout);
+      });
+
+      const wrappedFn = (async () => {
+        try {
+          await fn();
+        } catch (error) {
+          recordError(phase, error);
+        }
+      })();
+
+      await Promise.race([wrappedFn, timeoutPromise]);
+
+      if (timeoutId !== null) {
+        clearTimeout(timeoutId);
+      }
+
+      if (timedOut) {
+        loadInfo.stats.timedOut = true;
+        recordError(phase, `${phase} phase timed out after ${effectiveTimeout}ms`);
+      }
+    };
+
+    const classifyImageError = (img: HTMLImageElement) => {
+      const src = img.currentSrc || img.src || "unknown";
+      let blocked = false;
+      try {
+        const url = new URL(src, window.location.href);
+        blocked = url.origin !== window.location.origin && !src.startsWith("data:");
+      } catch {
+        blocked = false;
+      }
+      if (blocked) {
+        loadInfo.stats.imagesBlocked += 1;
+        recordError("images", `CORS blocked: ${src}`);
+      } else {
+        loadInfo.stats.imagesFailed += 1;
+        recordError("images", `Image failed to load: ${src}`);
+      }
+    };
+
+    const waitOnImages = async (images: HTMLImageElement[]) => {
+      const freshImages = images.filter((img) => !processedImages.has(img));
+      freshImages.forEach((img) => processedImages.add(img));
+
+      const alreadyLoaded = freshImages.filter(
+        (img) => img.complete && img.naturalWidth > 0
+      );
+      loadInfo.stats.imagesLoaded += alreadyLoaded.length;
+
+      const alreadyErrored = freshImages.filter(
+        (img) => img.complete && img.naturalWidth === 0
+      );
+      alreadyErrored.forEach((img) => classifyImageError(img));
+
+      const pending = freshImages.filter(
+        (img) => !img.complete || img.naturalWidth === 0
+      );
+
+      await Promise.all(
+        pending.map(
+          (img) =>
+            new Promise<void>((resolve) => {
+              const cleanup = () => {
+                img.removeEventListener("load", onLoad);
+                img.removeEventListener("error", onError);
+              };
+
+              const onLoad = () => {
+                cleanup();
+                loadInfo.stats.imagesLoaded += 1;
+                resolve();
+              };
+
+              const onError = () => {
+                cleanup();
+                classifyImageError(img);
+                resolve();
+              };
+
+              img.addEventListener("load", onLoad, { once: true });
+              img.addEventListener("error", onError, { once: true });
+            })
+        )
+      );
+    };
+
+    await runWithTimeout("documentReady", 30000, async () => {
+      if (document.readyState !== "complete") {
+        await new Promise<void>((resolve) => {
+          const onReady = () => {
+            if (document.readyState === "complete") {
+              document.removeEventListener("readystatechange", onReady);
+              resolve();
+            }
+          };
+
+          document.addEventListener("readystatechange", onReady);
+          onReady();
+        });
+      }
+
+      await delay(500);
+      loadInfo.timestamps.documentReady = Date.now();
+    });
+
+    await runWithTimeout("fonts", 10000, async () => {
+      if (!document.fonts) {
+        loadInfo.timestamps.fontsReady = Date.now();
+        return;
+      }
+
+      try {
+        await document.fonts.ready;
+      } catch (error) {
+        recordError("fonts", error);
+      }
+
+      const fontFamilies = new Set<string>();
+
+      for (const sheet of Array.from(document.styleSheets)) {
+        try {
+          const rules = sheet.cssRules || (sheet as any).rules;
+          for (const rule of Array.from(rules)) {
+            if (rule instanceof CSSFontFaceRule) {
+              let family = rule.style.getPropertyValue("font-family");
+              family = family.replace(/['"]/g, "").trim();
+              if (family) {
+                fontFamilies.add(family);
+              }
+            }
+          }
+        } catch (error) {
+          recordError("fonts", error);
+        }
+      }
+
+      await Promise.all(
+        Array.from(fontFamilies).map(async (family) => {
+          try {
+            await document.fonts.load(`16px ${family}`);
+            loadInfo.stats.fontsLoaded += 1;
+          } catch (error) {
+            loadInfo.stats.failedFonts.push(family);
+            recordError("fonts", `Font '${family}' failed to load: ${String(error)}`);
+          }
+        })
+      );
+
+      loadInfo.timestamps.fontsReady = Date.now();
+    });
+
+    await runWithTimeout("images", 15000, async () => {
+      const images = Array.from(document.querySelectorAll<HTMLImageElement>("img"));
+      await waitOnImages(images);
+      loadInfo.timestamps.imagesReady = Date.now();
+    });
+
+    await runWithTimeout("lazyContent", 10000, async () => {
+      const lazyElements = Array.from(
+        document.querySelectorAll<HTMLElement>(
+          '[loading="lazy"], [data-src], [data-lazy], .lazyload'
+        )
+      );
+
+      for (const element of lazyElements) {
+        try {
+          element.scrollIntoView({ behavior: "instant", block: "center" });
+        } catch (error) {
+          recordError("lazyContent", error);
+        }
+
+        loadInfo.stats.lazyElementsActivated += 1;
+        await delay(200);
+
+        const images = Array.from(element.querySelectorAll<HTMLImageElement>("img"));
+        if (images.length) {
+          await waitOnImages(images);
+        }
+      }
+
+      const newImages = Array.from(document.querySelectorAll<HTMLImageElement>("img"));
+      await waitOnImages(newImages);
+
+      loadInfo.timestamps.lazyContentReady = Date.now();
+    });
+
+    await runWithTimeout("domStabilization", 3000, async () => {
+      const body = document.body;
+      if (!body) {
+        loadInfo.stats.domStable = true;
+        loadInfo.timestamps.domStabilized = Date.now();
+        return;
+      }
+
+      let previousLength = body.innerHTML.length;
+      let stable = false;
+
+      for (let i = 0; i < 3; i += 1) {
+        await delay(1000);
+        const currentLength = body.innerHTML.length;
+
+        if (previousLength === 0) {
+          if (currentLength === 0) {
+            stable = true;
+            break;
+          }
+          previousLength = currentLength;
+          continue;
+        }
+
+        const change = Math.abs(currentLength - previousLength) / previousLength;
+        if (change <= 0.05) {
+          stable = true;
+          break;
+        }
+
+        previousLength = currentLength;
+      }
+
+      loadInfo.stats.domStable = stable;
+      loadInfo.timestamps.domStabilized = Date.now();
+    });
+
+    await runWithTimeout("layout", 1000, async () => {
+      await new Promise<void>((resolve) => {
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            requestAnimationFrame(() => resolve());
+          });
+        });
+      });
+    });
+
+    loadInfo.timestamps.extractionStart = Date.now();
+    loadInfo.stats.fontsFailed = loadInfo.stats.failedFonts.length;
+    loadInfo.stats.totalWaitMs = loadInfo.timestamps.extractionStart - loadStart;
+
+    return loadInfo;
+  });
 }
 
 /**
