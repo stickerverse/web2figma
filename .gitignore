@@ -12,6 +12,7 @@
 
 # Node
 node_modules/
+coverage/
 npm-debug.log*
 pnpm-debug.log*
 yarn-error.log*
@@ -26,3 +27,62 @@ figma-plugin/dist/
 .vscode/
 .idea/
 
+# Local/Temp
+jobs-debug/
+.chrome-user-data/
+*.tmp
+*.backup
+analysis.txt
+fidelity-audit-output.txt
+
+handoff-jobs.json
+eng.traineddata
+
+# Test artifacts and captures
+
+*-report.json
+*.backup
+*.backup[0-9]
+*.old
+*.swp
+*~
+
+# Browser test profiles
+.puppeteer-profile*/
+.chrome-profile*/
+
+# Archived files
+scripts/archive/
+docs/archive/
+
+# Temporary test outputs
+test-output/
+capture-output/
+debug-*.json
+
+# Test runs and recordings
+runs/
+.playwright-mcp/
+.test-chrome-profile/
+.puppeteer-profile*/
+.chrome-profile*/
+chrome-user-data*/
+.chrome-user-data/
+.cursor/
+
+# Logs and debug files
+*.log
+www.figma.com-*.log
+www.youtube.com-*.log
+
+# Build and local dev
+node_modules/
+dist/
+chrome-extension/dist/
+figma-plugin/dist/
+*.backup
+*.backup*
+*.old
+*.swp
+*.tmp
+transform_fix.tmp
