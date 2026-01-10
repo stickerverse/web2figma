@@ -1,102 +1,74 @@
 import { CaptureErrorCode } from "./types/capture-result";
 import pako from "pako";
-import { normalizeAndPreflight } from "./utils/schema-preflight";
 
-const PREFLIGHT_BLOCKING_MODE = true;
+// ===== Blob-based Download Helper (fixes "Invalid string length" for large payloads) =====
+// Track blob URLs for cleanup after downloads complete
+const blobUrlByDownloadId = new Map<number, string>();
+
+// Clean up blob URLs when downloads finish/fail
+chrome.downloads.onChanged.addListener((delta) => {
+  if (!delta?.id) return;
+
+  // Revoke when done/interrupted
+  if (
+    delta.state?.current === "complete" ||
+    delta.state?.current === "interrupted"
+  ) {
+    const blobUrl = blobUrlByDownloadId.get(delta.id);
+    if (blobUrl) {
+      blobUrlByDownloadId.delete(delta.id);
+      try {
+        URL.revokeObjectURL(blobUrl);
+      } catch {}
+    }
+  }
+});
 
 /**
- * Download text content reliably from MV3 service worker.
- *
- * - Small payloads: download as plain text (data URL, UTF-8).
- * - Large payloads: download as gzip-compressed data URL (`.json.gz`).
- *
- * Why: MV3 service workers do NOT support URL.createObjectURL(), and large
- * data URLs can exceed practical limits. Gzip keeps downloads small and stable.
+ * Download text content using Blob URLs instead of base64 data URLs.
+ * Avoids "Invalid string length" errors for large payloads (>100MB).
  */
 async function downloadTextFile(opts: {
   text: string;
   filename: string;
   mimeType?: string;
   saveAs?: boolean;
-}): Promise<{ downloadId: number; filename: string; compressed: boolean }> {
+}): Promise<number> {
   const { text, filename, mimeType = "application/json", saveAs = true } = opts;
 
-  const uint8ToBase64 = (bytes: Uint8Array): string => {
-    // Safe Uint8Array -> base64 conversion for large payloads.
-    const CHUNK_SIZE = 0x8000; // 32k chunks
-    const chunks: string[] = [];
-    for (let i = 0; i < bytes.length; i += CHUNK_SIZE) {
-      chunks.push(
-        String.fromCharCode.apply(
-          null,
-          Array.from(bytes.subarray(i, i + CHUNK_SIZE))
-        )
-      );
-    }
-    return btoa(chunks.join(""));
-  };
+  // Blob avoids base64 encoding and massive string allocations
+  const blob = new Blob([text], { type: `${mimeType};charset=utf-8` });
+  const blobUrl = URL.createObjectURL(blob);
 
-  // Heuristic threshold: beyond this, prefer gzip to keep URL sizes manageable.
-  // (encodeURIComponent expands; gzip shrinks dramatically for JSON.)
-  const MAX_PLAIN_TEXT_CHARS = 8 * 1024 * 1024; // ~8MB
-
-  // Attempt plain text download for smaller payloads
-  if (text.length <= MAX_PLAIN_TEXT_CHARS) {
-    const dataUrl = `data:${mimeType};charset=utf-8,${encodeURIComponent(
-      text
-    )}`;
+  try {
     const downloadId = await chrome.downloads.download({
-      url: dataUrl,
+      url: blobUrl,
       filename,
       saveAs,
       conflictAction: "uniquify",
     });
-    return { downloadId, filename, compressed: false };
-  }
 
-  // Large payload: gzip + base64 data URL
-  const gzipBytes = pako.gzip(text);
-  const base64 = uint8ToBase64(gzipBytes);
-  const gzMime = "application/gzip";
-  const gzFilename = filename.endsWith(".json")
-    ? `${filename}.gz`
-    : filename.endsWith(".gz")
-    ? filename
-    : `${filename}.gz`;
+    // Track for cleanup
+    blobUrlByDownloadId.set(downloadId, blobUrl);
 
-  const gzDataUrl = `data:${gzMime};base64,${base64}`;
-  const downloadId = await chrome.downloads.download({
-    url: gzDataUrl,
-    filename: gzFilename,
-    saveAs,
-    conflictAction: "uniquify",
-  });
+    // Fallback cleanup in case onChanged doesn't fire (rare, but safe)
+    setTimeout(() => {
+      const u = blobUrlByDownloadId.get(downloadId);
+      if (u) {
+        blobUrlByDownloadId.delete(downloadId);
+        try {
+          URL.revokeObjectURL(u);
+        } catch {}
+      }
+    }, 5 * 60 * 1000); // 5 minutes
 
-  return { downloadId, filename: gzFilename, compressed: true };
-}
-
-/**
- * Copy text to clipboard (for large files)
- */
-async function copyToClipboard(text: string): Promise<void> {
-  try {
-    // For Service Workers, we need to use the offscreen document API
-    // or send to content script. For now, we'll use a simpler approach.
-
-    // Store in chrome.storage for the popup to retrieve
-    await chrome.storage.local.set({
-      clipboardData: text,
-      clipboardTimestamp: Date.now(),
-    });
-
-    console.log(
-      `[CLIPBOARD] Stored ${(text.length / 1024 / 1024).toFixed(
-        1
-      )}MB in storage for clipboard`
-    );
-  } catch (error) {
-    console.error("[CLIPBOARD] Failed to store data:", error);
-    throw new Error("Failed to prepare clipboard data");
+    return downloadId;
+  } catch (err) {
+    // If download fails, revoke immediately
+    try {
+      URL.revokeObjectURL(blobUrl);
+    } catch {}
+    throw err;
   }
 }
 
@@ -177,19 +149,6 @@ function currentHandoffBase() {
 
 function rotateHandoffBase() {
   handoffBaseIndex = (handoffBaseIndex + 1) % HANDOFF_BASES.length;
-  console.log(
-    `[HANDOFF] Rotated to base index ${handoffBaseIndex}: ${currentHandoffBase()}`
-  );
-}
-
-// Reset to primary port (4411) when we know it's working
-function resetHandoffToPrimary() {
-  if (handoffBaseIndex !== 0) {
-    console.log(
-      `[HANDOFF] Resetting from fallback port (index ${handoffBaseIndex}) back to primary (4411)`
-    );
-    handoffBaseIndex = 0;
-  }
 }
 
 /**
@@ -227,15 +186,11 @@ async function ensureContentScript(tabId: number): Promise<boolean> {
   const checkReady = async (retries = 3, delayMs = 100): Promise<boolean> => {
     for (let i = 0; i < retries; i++) {
       try {
-        const response = await chrome.tabs.sendMessage(
-          tabId,
-          { type: "PING" },
-          { frameId: 0 } // Target main frame only
-        );
+        const response = await chrome.tabs.sendMessage(tabId, {
+          type: "PING",
+        });
         if (response && response.pong) {
-          console.log(
-            `[background] Content script ready on tab ${tabId} main frame`
-          );
+          console.log(`[background] Content script ready on tab ${tabId}`);
           return true;
         }
       } catch (e) {
@@ -522,25 +477,17 @@ let expectedChunks = 0;
 let receivedChunks = 0;
 
 // ===== PERSISTENT CAPTURE STATE =====
-// Canonical capture state is owned by the background/service worker.
-// The popup UI is a detachable client that can close/reopen without disrupting capture.
-
+// Store capture state so it persists across popup window close/reopen
 interface CaptureState {
   isCapturing: boolean;
   stage: string;
   jobId: string | null;
-  progress: number; // 0..100
+  progress: number;
   statusMessage: string;
   startTime: number | null;
   tabId: number | null;
-  updatedAt: number; // ms epoch
   logs: Array<{ timestamp: number; message: string; level: string }>;
 }
-
-const CAPTURE_STATE_KEY = "captureState:v2";
-const MAX_CAPTURE_LOGS = 200;
-const CAPTURE_STATE_PERSIST_THROTTLE_MS = 150;
-const storageSession: any = (chrome.storage as any).session;
 
 let currentCaptureState: CaptureState = {
   isCapturing: false,
@@ -550,137 +497,51 @@ let currentCaptureState: CaptureState = {
   statusMessage: "",
   startTime: null,
   tabId: null,
-  updatedAt: Date.now(),
   logs: [],
 };
 
-function clampProgress(value: unknown): number {
-  const n = typeof value === "number" ? value : parseFloat(String(value));
-  if (!Number.isFinite(n)) return 0;
-  return Math.max(0, Math.min(100, n));
-}
-
-function normalizeLogs(
-  logs: Array<{ timestamp: number; message: string; level: string }>
-): Array<{ timestamp: number; message: string; level: string }> {
-  const safe = Array.isArray(logs) ? logs : [];
-  const normalized = safe
-    .map((l) => ({
-      timestamp:
-        typeof l?.timestamp === "number" && Number.isFinite(l.timestamp)
-          ? l.timestamp
-          : Date.now(),
-      message: l?.message != null ? String(l.message) : "",
-      level: l?.level != null ? String(l.level) : "info",
-    }))
-    .filter((l) => l.message.length > 0);
-
-  return normalized.slice(-MAX_CAPTURE_LOGS);
-}
-
-async function writeCaptureStateToStorage(state: CaptureState): Promise<void> {
-  // Prefer session storage for high-frequency writes, fallback to local.
+// Save capture state to chrome.storage
+async function saveCaptureState() {
   try {
-    if (storageSession) {
-      await storageSession.set({ [CAPTURE_STATE_KEY]: state });
-      return;
-    }
-  } catch {
-    // fall through
-  }
-
-  try {
-    await chrome.storage.local.set({ [CAPTURE_STATE_KEY]: state });
+    await chrome.storage.local.set({ captureState: currentCaptureState });
   } catch (error) {
-    console.error("[STATE] Failed to persist capture state:", error);
+    console.error("[STATE] Failed to save capture state:", error);
   }
 }
 
-async function readCaptureStateFromStorage(): Promise<CaptureState | null> {
+// Load capture state from chrome.storage
+async function loadCaptureState(): Promise<CaptureState | null> {
   try {
-    if (storageSession) {
-      const result = await storageSession.get(CAPTURE_STATE_KEY);
-      const s = result?.[CAPTURE_STATE_KEY] ?? null;
-      if (s) return s as CaptureState;
-    }
-  } catch {
-    // fall through
-  }
-
-  try {
-    const result = await chrome.storage.local.get(CAPTURE_STATE_KEY);
-    return (result?.[CAPTURE_STATE_KEY] as CaptureState) ?? null;
+    const result = await chrome.storage.local.get("captureState");
+    return result.captureState || null;
   } catch (error) {
     console.error("[STATE] Failed to load capture state:", error);
     return null;
   }
 }
 
-async function clearCaptureStateStorage(): Promise<void> {
-  try {
-    if (storageSession) {
-      await storageSession.remove(CAPTURE_STATE_KEY);
-    }
-  } catch {}
-  try {
-    await chrome.storage.local.remove(CAPTURE_STATE_KEY);
-  } catch {}
-}
-
-let persistTimer: number | null = null;
-
-function schedulePersistCaptureState(): void {
-  if (persistTimer != null) return;
-
-  persistTimer = setTimeout(async () => {
-    persistTimer = null;
-    await writeCaptureStateToStorage(currentCaptureState);
-  }, CAPTURE_STATE_PERSIST_THROTTLE_MS) as unknown as number;
-}
-
+// Broadcast capture state update to popup window
 function broadcastCaptureState(updates: Partial<CaptureState> = {}) {
-  currentCaptureState = {
-    ...currentCaptureState,
-    ...updates,
-    progress:
-      updates.progress !== undefined
-        ? clampProgress(updates.progress)
-        : clampProgress(currentCaptureState.progress),
-    updatedAt: Date.now(),
-  };
+  // Update current state
+  currentCaptureState = { ...currentCaptureState, ...updates };
 
-  // Always keep logs bounded and well-formed
-  currentCaptureState.logs = normalizeLogs(currentCaptureState.logs);
+  // Save to storage
+  saveCaptureState();
 
-  // Persist (throttled)
-  schedulePersistCaptureState();
-
-  // Broadcast to any listening UI contexts (popup may or may not be open)
-  chrome.runtime.sendMessage(
-    {
-      type: "CAPTURE_STATE_UPDATE",
-      state: currentCaptureState,
-    },
-    () => void chrome.runtime.lastError
-  );
-}
-
-// Rehydrate persisted state when the service worker starts
-(async () => {
-  const saved = await readCaptureStateFromStorage();
-  if (saved) {
-    currentCaptureState = {
-      ...currentCaptureState,
-      ...saved,
-      progress: clampProgress(saved.progress),
-      logs: normalizeLogs(saved.logs || []),
-      updatedAt: Date.now(),
-    };
-    console.log(
-      `[STATE] Rehydrated capture state: stage=${currentCaptureState.stage}, progress=${currentCaptureState.progress}`
+  // Broadcast to popup window
+  if (popupWindowId !== null) {
+    chrome.runtime.sendMessage(
+      {
+        type: "CAPTURE_STATE_UPDATE",
+        state: currentCaptureState,
+      },
+      () => {
+        // Ignore "no listeners" errors (popup may not be ready yet)
+        void chrome.runtime.lastError;
+      }
     );
   }
-})();
+}
 
 chrome.action.onClicked.addListener(async (tab) => {
   // Proactively inject content script if possible
@@ -791,7 +652,6 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   }
 
   // Handle popup requesting to clear capture state
-  // Handle popup requesting to clear capture state
   if (message.type === "CLEAR_CAPTURE_STATE") {
     console.log("[STATE] Clearing capture state");
     currentCaptureState = {
@@ -802,12 +662,9 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
       statusMessage: "",
       startTime: null,
       tabId: null,
-      updatedAt: Date.now(),
       logs: [],
     };
-    clearCaptureStateStorage().catch(() => {});
-    // Persist immediately (do not wait for throttle)
-    writeCaptureStateToStorage(currentCaptureState).catch(() => {});
+    saveCaptureState();
     sendResponse({ ok: true });
     return false; // Synchronous response
   }
@@ -1081,10 +938,6 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         );
 
         // Relay capture request to the content script (triggers scroll, states, multi-viewport, chunking)
-        // Target the main frame explicitly (frameId: 0) to avoid confusion with iframes
-        console.log(
-          `[capture] Sending start-capture to tab ${tabId} main frame`
-        );
         chrome.tabs.sendMessage(
           tabId,
           {
@@ -1092,17 +945,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
             allowNavigation,
             viewports: message.viewports,
           },
-          { frameId: 0 }, // Target main frame only
           (response) => {
-            console.log(
-              "[capture] sendMessage callback invoked, response:",
-              response
-            );
-            console.log(
-              "[capture] chrome.runtime.lastError:",
-              chrome.runtime.lastError
-            );
-
             if (chrome.runtime.lastError) {
               const msg = chrome.runtime.lastError.message || "Capture failed";
               console.error("[capture] start-capture failed:", msg);
@@ -1216,82 +1059,6 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
       }
     })();
     return true; // Async response
-  }
-
-  if (message.type === "CAPTURE_CDP_CLIP") {
-    // Pixel-perfect clip screenshot using Chrome DevTools Protocol (no scrolling required).
-    // Requires "debugger" permission in manifest.
-    (async () => {
-      const tabId = sender.tab?.id;
-      if (!tabId) {
-        sendResponse({ ok: false, error: "No tab ID" });
-        return;
-      }
-
-      try {
-        const target = { tabId };
-
-        // Attach CDP
-        await chrome.debugger.attach(target, "1.3");
-
-        // Capture clip
-        const clip = message.clip;
-        if (
-          !clip ||
-          typeof clip.x !== "number" ||
-          typeof clip.y !== "number" ||
-          typeof clip.width !== "number" ||
-          typeof clip.height !== "number"
-        ) {
-          sendResponse({ ok: false, error: "Invalid clip" });
-          return;
-        }
-
-        const result = (await chrome.debugger.sendCommand(
-          target,
-          "Page.captureScreenshot",
-          {
-            format: "png",
-            // CDP clip is in CSS pixels in page coordinates; scale=1 keeps 1 CSS px.
-            // Chrome will encode at the current device scale factor for the tab.
-            clip: {
-              x: clip.x,
-              y: clip.y,
-              width: clip.width,
-              height: clip.height,
-              scale: typeof clip.scale === "number" ? clip.scale : 1,
-            },
-            captureBeyondViewport: true,
-          }
-        )) as { data: string };
-
-        if (!result?.data) {
-          sendResponse({
-            ok: false,
-            error: "CDP screenshot returned empty data",
-          });
-          return;
-        }
-
-        sendResponse({
-          ok: true,
-          dataUrl: `data:image/png;base64,${result.data}`,
-        });
-      } catch (err) {
-        const errorMsg = err instanceof Error ? err.message : String(err);
-        console.error("[CDP] captureScreenshot failed:", errorMsg);
-        sendResponse({ ok: false, error: errorMsg });
-      } finally {
-        try {
-          if (sender.tab?.id) {
-            await chrome.debugger.detach({ tabId: sender.tab.id });
-          }
-        } catch {
-          // ignore detach errors
-        }
-      }
-    })();
-    return true;
   }
 
   if (message.type === "LOG_TO_SERVER") {
@@ -1586,76 +1353,35 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
   // Trigger download of cached payload (for chunked transfers where content script doesn't have data)
   if (message.type === "TRIGGER_DOWNLOAD") {
-    // Use data from message if provided (non-chunked), otherwise use cached payload (chunked)
-    const dataToDownload = (message as any).captureData || lastCapturedPayload;
-
-    if (!dataToDownload) {
+    if (!lastCapturedPayload) {
       sendResponse({ ok: false, error: "No captured data to download" });
       return false;
     }
 
     (async () => {
       try {
-        console.log("💾 Triggering background download...");
+        console.log("💾 Triggering background download of cached payload...");
 
         // Prepare data for download
         let jsonString: string;
-        let wasStripped = false;
 
         // Check if it's a raw wrapper from chunked reassembly
         if (
-          typeof dataToDownload.rawSchemaJson === "string" &&
-          dataToDownload.rawSchemaJson.length > 0
+          typeof lastCapturedPayload.rawSchemaJson === "string" &&
+          lastCapturedPayload.rawSchemaJson.length > 0
         ) {
           console.log("⚡ Using raw JSON string for download (zero-copy)");
-          jsonString = dataToDownload.rawSchemaJson;
+          jsonString = lastCapturedPayload.rawSchemaJson;
         } else {
           console.log("📦 Stringifying payload for download");
-
-          try {
-            // Pretty-print for non-chunked data, avoid for chunked (large payloads)
-            const isChunked = dataToDownload.chunked;
-            jsonString = isChunked
-              ? JSON.stringify(dataToDownload)
-              : JSON.stringify(dataToDownload, null, 2);
-          } catch (stringifyError) {
-            // Handle "Invalid string length" error by stripping large binary data
-            const errMsg =
-              stringifyError instanceof Error
-                ? stringifyError.message
-                : String(stringifyError);
-            if (
-              errMsg.includes("Invalid string length") ||
-              errMsg.includes("string length")
-            ) {
-              console.warn(
-                "⚠️ Payload too large to stringify directly, stripping binary data..."
-              );
-
-              // Create a lightweight copy without huge binary data
-              const lightPayload =
-                stripLargeBinaryDataForDownload(dataToDownload);
-              wasStripped = true;
-
-              try {
-                jsonString = JSON.stringify(lightPayload, null, 2);
-                console.log(`✅ Successfully stringified stripped payload`);
-              } catch (secondError) {
-                // If still failing, try without pretty-print
-                console.warn("⚠️ Retrying without pretty-print...");
-                jsonString = JSON.stringify(lightPayload);
-              }
-            } else {
-              throw stringifyError;
-            }
-          }
+          // Avoid pretty-printing (null, 2) for large payloads - it inflates size
+          jsonString = JSON.stringify(lastCapturedPayload);
         }
 
-        const filename = wasStripped
-          ? `page-capture-${Date.now()}-stripped.json`
-          : `page-capture-${Date.now()}.json`;
+        const filename = `page-capture-${Date.now()}.json`;
 
-        const dl = await downloadTextFile({
+        // Use Blob-based download to avoid "Invalid string length" errors
+        await downloadTextFile({
           text: jsonString,
           filename,
           mimeType: "application/json",
@@ -1663,23 +1389,13 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         });
 
         console.log(
-          `✅ Download initiated: ${dl.filename} (${(
+          `✅ Download initiated: ${filename} (${(
             jsonString.length /
             1024 /
             1024
-          ).toFixed(2)}MB${dl.compressed ? ", gzipped" : ""}${
-            wasStripped ? ", stripped" : ""
-          })`
+          ).toFixed(2)}MB)`
         );
-        sendResponse({
-          ok: true,
-          filename: dl.filename,
-          compressed: dl.compressed,
-          stripped: wasStripped,
-          strippedNote: wasStripped
-            ? "Large binary data (screenshot, images) was stripped to reduce file size"
-            : undefined,
-        });
+        sendResponse({ ok: true });
       } catch (error) {
         const errorMessage =
           error instanceof Error ? error.message : "Download failed";
@@ -1930,15 +1646,6 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
       let parsedData: any = null;
       try {
         parsedData = JSON.parse(completeJsonString);
-        // Safety: strip embedded font payloads early to avoid huge in-memory objects/messages.
-        try {
-          const stripped = stripInlineFontData(parsedData);
-          if (stripped.stripped > 0 || stripped.strippedDataUrls > 0) {
-            console.log("[CHUNKED] Stripped inline font payloads:", stripped);
-          }
-        } catch {
-          // ignore
-        }
         updateLastCapturedPayload(parsedData);
       } catch (parseErr) {
         console.error("❌ Failed to parse reassembled payload", parseErr);
@@ -2130,160 +1837,6 @@ scheduleHeartbeat();
 void pingHandoffHealth();
 
 // Lightweight size estimator - avoids blocking JSON.stringify
-/**
- * Strip large binary data from payload to enable download of oversized captures.
- * This removes screenshot and image asset bytes while preserving tree structure and metadata.
- * Used when JSON.stringify() fails with "Invalid string length" error.
- */
-function stripLargeBinaryDataForDownload(payload: any): any {
-  // Create a shallow copy to avoid mutating original
-  const stripped: any = { ...payload };
-  let bytesStripped = 0;
-
-  // Strip top-level screenshot (can be 10MB+ on high-res pages)
-  if (
-    typeof stripped.screenshot === "string" &&
-    stripped.screenshot.length > 1000
-  ) {
-    bytesStripped += stripped.screenshot.length;
-    stripped.screenshot =
-      "[STRIPPED - original size: " +
-      Math.round(stripped.screenshot.length / 1024) +
-      "KB]";
-  }
-
-  // Strip nested schema screenshot
-  if (
-    stripped.schema &&
-    typeof stripped.schema.screenshot === "string" &&
-    stripped.schema.screenshot.length > 1000
-  ) {
-    bytesStripped += stripped.schema.screenshot.length;
-    stripped.schema = { ...stripped.schema };
-    stripped.schema.screenshot =
-      "[STRIPPED - original size: " +
-      Math.round(stripped.schema.screenshot.length / 1024) +
-      "KB]";
-  }
-
-  // Strip assets.images embedded bytes
-  const images = stripped.assets?.images || stripped.schema?.assets?.images;
-  if (images && typeof images === "object") {
-    const processImages = (container: any, path: string) => {
-      container[path] = container[path] || {};
-      for (const [hash, img] of Object.entries(images as Record<string, any>)) {
-        if (img && typeof img === "object") {
-          // Create shallow copy of image asset
-          const imgCopy = { ...img };
-
-          // Strip embedded bytes (can be megabytes per image)
-          if (
-            typeof imgCopy.bytes === "string" &&
-            imgCopy.bytes.length > 1000
-          ) {
-            bytesStripped += imgCopy.bytes.length;
-            imgCopy.bytes = "[STRIPPED]";
-            imgCopy.originalBytesSize =
-              Math.round(imgCopy.bytes.length / 1024) + "KB";
-          }
-
-          // Strip inline-base64 bytes object
-          if (
-            imgCopy.bytes &&
-            typeof imgCopy.bytes === "object" &&
-            imgCopy.bytes.data
-          ) {
-            if (
-              typeof imgCopy.bytes.data === "string" &&
-              imgCopy.bytes.data.length > 1000
-            ) {
-              bytesStripped += imgCopy.bytes.data.length;
-              imgCopy.bytes = {
-                kind: "stripped",
-                originalSize:
-                  Math.round(imgCopy.bytes.data.length / 1024) + "KB",
-              };
-            }
-          }
-
-          // Replace in copy
-          if (container[path]) {
-            container[path][hash] = imgCopy;
-          }
-        }
-      }
-    };
-
-    if (stripped.assets?.images) {
-      stripped.assets = { ...stripped.assets };
-      processImages(stripped.assets, "images");
-    }
-    if (stripped.schema?.assets?.images) {
-      stripped.schema = { ...stripped.schema };
-      stripped.schema.assets = { ...stripped.schema.assets };
-      processImages(stripped.schema.assets, "images");
-    }
-  }
-
-  // Strip font data URLs
-  const fonts = stripped.assets?.fonts || stripped.schema?.assets?.fonts;
-  if (fonts && typeof fonts === "object") {
-    const processFonts = (container: any, path: string) => {
-      container[path] = { ...container[path] };
-      for (const [key, font] of Object.entries(fonts as Record<string, any>)) {
-        if (font && typeof font === "object") {
-          const fontCopy = { ...font };
-
-          if (
-            typeof fontCopy.data === "string" &&
-            fontCopy.data.length > 1000
-          ) {
-            bytesStripped += fontCopy.data.length;
-            fontCopy.data = "[STRIPPED]";
-          }
-
-          if (
-            typeof fontCopy.url === "string" &&
-            fontCopy.url.startsWith("data:") &&
-            fontCopy.url.length > 1000
-          ) {
-            bytesStripped += fontCopy.url.length;
-            fontCopy.url = "[DATA_URL_STRIPPED]";
-          }
-
-          container[path][key] = fontCopy;
-        }
-      }
-    };
-
-    if (stripped.assets?.fonts) {
-      stripped.assets = { ...stripped.assets };
-      processFonts(stripped.assets, "fonts");
-    }
-    if (stripped.schema?.assets?.fonts) {
-      stripped.schema = { ...stripped.schema };
-      stripped.schema.assets = { ...stripped.schema.assets };
-      processFonts(stripped.schema.assets, "fonts");
-    }
-  }
-
-  console.log(
-    `📉 Stripped ~${Math.round(
-      bytesStripped / 1024 / 1024
-    )}MB of binary data for download`
-  );
-
-  // Add metadata about stripping
-  stripped._downloadInfo = {
-    strippedForDownload: true,
-    bytesStripped: bytesStripped,
-    strippedMB: Math.round(bytesStripped / 1024 / 1024),
-    note: "Large binary data (screenshot, images, fonts) was stripped to enable download. Use 'Send to Figma' for full import.",
-  };
-
-  return stripped;
-}
-
 function estimatePayloadSize(payload: any): number {
   if (!payload) return 0;
 
@@ -2320,52 +1873,6 @@ function estimatePayloadSize(payload: any): number {
   bytes += 500 * 1024; // ~500KB baseline
 
   return bytes;
-}
-
-function stripInlineFontData(schema: any): {
-  stripped: number;
-  strippedDataUrls: number;
-} {
-  let stripped = 0;
-  let strippedDataUrls = 0;
-  try {
-    const fonts = schema?.assets?.fonts;
-    if (!fonts || typeof fonts !== "object")
-      return { stripped, strippedDataUrls };
-
-    for (const font of Object.values(fonts as Record<string, any>)) {
-      if (!font || typeof font !== "object") continue;
-
-      // Remove legacy inline font bytes (base64). Extremely large and not usable by Figma plugins.
-      if (typeof (font as any).data === "string") {
-        delete (font as any).data;
-        stripped++;
-      }
-      const bytes = (font as any).bytes;
-      if (
-        bytes &&
-        typeof bytes === "object" &&
-        bytes.kind === "inline-base64"
-      ) {
-        delete (font as any).bytes;
-        stripped++;
-      }
-
-      // Prevent massive data: URLs from being carried through the pipeline.
-      if (typeof (font as any).url === "string") {
-        const url = (font as any).url.trim();
-        if (url.toLowerCase().startsWith("data:") && url.length > 2048) {
-          (font as any).url = "";
-          (font as any).urlWasData = true;
-          (font as any).urlLength = url.length;
-          strippedDataUrls++;
-        }
-      }
-    }
-  } catch {
-    // Best-effort only
-  }
-  return { stripped, strippedDataUrls };
 }
 
 function optimizePayloadForTransfer(payload: any): any {
@@ -2480,11 +1987,6 @@ function normalizeSchemaAndScreenshot(payload: any): {
       delete schema.tree;
     }
 
-    const stripped = stripInlineFontData(schema);
-    if (stripped.stripped > 0 || stripped.strippedDataUrls > 0) {
-      console.log("[NORMALIZE] Stripped inline font payloads:", stripped);
-    }
-
     return { schema, screenshot };
   }
 
@@ -2513,11 +2015,6 @@ function normalizeSchemaAndScreenshot(payload: any): {
       delete schema.tree;
     }
 
-    const stripped = stripInlineFontData(schema);
-    if (stripped.stripped > 0 || stripped.strippedDataUrls > 0) {
-      console.log("[NORMALIZE] Stripped inline font payloads:", stripped);
-    }
-
     return { schema, screenshot };
   }
 
@@ -2533,11 +2030,6 @@ function normalizeSchemaAndScreenshot(payload: any): {
       delete schema.tree;
     }
 
-    const stripped = stripInlineFontData(schema);
-    if (stripped.stripped > 0 || stripped.strippedDataUrls > 0) {
-      console.log("[NORMALIZE] Stripped inline font payloads:", stripped);
-    }
-
     return { schema, screenshot };
   }
 
@@ -2550,10 +2042,6 @@ function normalizeSchemaAndScreenshot(payload: any): {
       fallbackSchema.root = fallbackSchema.tree;
       delete fallbackSchema.tree;
     }
-  }
-  const stripped = stripInlineFontData(fallbackSchema);
-  if (stripped.stripped > 0 || stripped.strippedDataUrls > 0) {
-    console.log("[NORMALIZE] Stripped inline font payloads:", stripped);
   }
   return { schema: fallbackSchema, screenshot: fallbackSchema?.screenshot };
 }
@@ -2764,7 +2252,8 @@ async function postToHandoffServer(payload: any): Promise<void> {
       const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
       const filename = `capture-${timestamp}.json`;
 
-      const dl = await downloadTextFile({
+      // Use Blob-based download to avoid "Invalid string length" errors
+      await downloadTextFile({
         text: jsonString,
         filename,
         mimeType: "application/json",
@@ -2772,11 +2261,11 @@ async function postToHandoffServer(payload: any): Promise<void> {
       });
 
       console.log(
-        `[capture] Download triggered: ${dl.filename} (${(
+        `[capture] Download triggered: ${filename} (${(
           jsonString.length /
           1024 /
           1024
-        ).toFixed(2)}MB${dl.compressed ? ", gzipped" : ""})`
+        ).toFixed(2)}MB)`
       );
 
       // Notify popup of success (metadata only)
@@ -2868,17 +2357,12 @@ async function postToHandoffServer(payload: any): Promise<void> {
   }
 
   let lastError: Error | null = null;
-  const attemptErrors: Array<{ target: string; error: string }> = [];
-
   for (let attempt = 0; attempt < HANDOFF_BASES.length; attempt++) {
     // Try each configured base in order; advance index so helpers like handoffEndpoint() stay in sync
     handoffBaseIndex = attempt;
     const target = handoffEndpoint("/api/jobs");
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 120000); // 120s per attempt (increased for large payloads)
-
-    console.log(`[HANDOFF] 🔄 Attempt ${attempt + 1}/${HANDOFF_BASES.length}: ${target}`);
-
     try {
       const response = await fetch(target, {
         method: "POST",
@@ -2902,53 +2386,24 @@ async function postToHandoffServer(payload: any): Promise<void> {
         );
       }
 
-      // Success - reset to primary port for future requests
-      console.log(`[HANDOFF] ✅ Successfully sent to ${target}`);
-      remoteLog(`[handoff] ✅ Successfully sent to ${target}`);
-      resetHandoffToPrimary();
+      // Success
       return;
     } catch (error) {
       clearTimeout(timeoutId);
       lastError = error instanceof Error ? error : new Error(String(error));
-      const errorMsg = lastError.message;
-
-      // Track this attempt's failure
-      attemptErrors.push({ target, error: errorMsg });
-
       console.warn(
-        `[HANDOFF] ❌ Attempt ${attempt + 1}/${HANDOFF_BASES.length} failed for ${target}:`,
-        errorMsg
+        `[HANDOFF] Attempt ${attempt + 1} failed for ${target}:`,
+        lastError.message
       );
       remoteLog(
-        `[handoff] ❌ Attempt ${attempt + 1}/${HANDOFF_BASES.length} failed: ${errorMsg}`
+        `[handoff] Attempt ${attempt + 1} failed: ${lastError.message}`
       );
-
-      // Don't rotate if this was the last attempt
-      if (attempt < HANDOFF_BASES.length - 1) {
-        rotateHandoffBase();
-      }
+      rotateHandoffBase();
     }
   }
 
-  // ENHANCED: All attempts failed - provide detailed diagnostics
   if (lastError) {
-    console.error(`[HANDOFF] ❌ All ${HANDOFF_BASES.length} server(s) failed!`);
-    console.error("[HANDOFF] Detailed failure log:");
-    attemptErrors.forEach(({ target, error }, i) => {
-      console.error(`  ${i + 1}. ${target}: ${error}`);
-    });
-
-    remoteLog(`[handoff] ❌ All servers failed`, { attemptErrors });
-
-    // Provide user-friendly error message with troubleshooting steps
-    const diagnosticMsg = `Connection failed to all ${HANDOFF_BASES.length} server(s).\n\n` +
-      `Attempted servers:\n${attemptErrors.map(({ target, error }) => `• ${target}\n  Error: ${error}`).join('\n\n')}\n\n` +
-      `Troubleshooting:\n` +
-      `1. Check that the handoff server is running (run start.sh)\n` +
-      `2. Verify no firewall is blocking port ${HANDOFF_PORT}\n` +
-      `3. Check server logs for errors`;
-
-    throw new Error(diagnosticMsg);
+    throw lastError;
   }
 }
 
@@ -3098,39 +2553,6 @@ function enqueueHandoffJob(
   trigger: HandoffTrigger,
   options?: { force?: boolean }
 ): { enqueued: boolean; reason?: "duplicate" | "invalid" } {
-  // --- PREFLIGHT CHECK ---
-  try {
-    const preflight = normalizeAndPreflight(payload);
-    if (!preflight.ok) {
-      console.error("[PREFLIGHT FAILED]", {
-        fatal: preflight.fatalCount,
-        issues: preflight.issues.filter((i) => i.severity === "FATAL"),
-      });
-      // Broadcast failure to UI
-      chrome.runtime.sendMessage(
-        {
-          type: "PREFLIGHT_FAILURE",
-          result: preflight,
-        },
-        () => void chrome.runtime.lastError
-      );
-
-      if (PREFLIGHT_BLOCKING_MODE) {
-        console.warn("[PREFLIGHT] Blocking invalid job enqueue.");
-        return { enqueued: false, reason: "invalid" };
-      }
-    } else if (preflight.warnCount > 0) {
-      console.warn(
-        "[PREFLIGHT WARNINGS]",
-        preflight.issues.filter((i) => i.severity === "WARN")
-      );
-    }
-  } catch (err) {
-    console.error("[PREFLIGHT ERROR] validation crashed:", err);
-    // Don't block on preflight crash, just log
-  }
-  // -----------------------
-
   const now = Date.now();
   pruneRecentCaptureIds(now);
 

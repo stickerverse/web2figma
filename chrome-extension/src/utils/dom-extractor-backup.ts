@@ -23,7 +23,6 @@ import {
   emitInfo,
 } from "./diagnostics-bus";
 import { captureElementScreenshot } from "./element-screenshot";
-import { AssetCompletenessValidator } from "./asset-completeness-validator";
 import {
   ValidationIssue,
   ValidationIssueSeverity,
@@ -112,40 +111,6 @@ class ErrorTracker {
   private currentCaptureId: string | null = null;
   private readonly MAX_ERRORS = 100;
 
-  // Map location strings to diagnostic codes
-  private locationToCode(
-    location: string,
-    message: string
-  ): import("./diagnostics-bus").DiagnosticCode {
-    const loc = location.toLowerCase();
-    const msg = message.toLowerCase();
-
-    if (msg.includes("nan") || msg.includes("not a number"))
-      return "NAN_GUARD_TRIPPED";
-    if (msg.includes("infinity")) return "INFINITY_DETECTED";
-    if (
-      msg.includes("negative") &&
-      (msg.includes("width") || msg.includes("height"))
-    )
-      return "NEGATIVE_DIMENSION";
-    if (
-      msg.includes("zero") &&
-      (msg.includes("size") || msg.includes("dimension"))
-    )
-      return "ZERO_SIZE_ELEMENT";
-    if (msg.includes("image") && msg.includes("fetch"))
-      return "IMAGE_FETCH_FAILED";
-    if (msg.includes("cors")) return "IMAGE_FETCH_CORS";
-    if (msg.includes("font")) return "FONT_LOAD_FAILED";
-    if (msg.includes("circular")) return "CIRCULAR_REFERENCE";
-    if (msg.includes("depth") && msg.includes("exceeded"))
-      return "TREE_DEPTH_EXCEEDED";
-    if (msg.includes("transform")) return "TRANSFORM_PARSE_FAILED";
-    if (msg.includes("layout") || msg.includes("rect")) return "LAYOUT_INVALID";
-
-    return "UNKNOWN_ERROR";
-  }
-
   recordError(
     location: string,
     message: string,
@@ -177,26 +142,6 @@ class ErrorTracker {
         severity,
       });
 
-      // Also emit to diagnostics bus for unified reporting
-      const diagSeverity =
-        severity === "critical"
-          ? "fatal"
-          : severity === "error"
-          ? "error"
-          : "warn";
-      const diagCode = this.locationToCode(location, safeMessage);
-
-      diagnostics.emit({
-        stage: "extractor",
-        code: diagCode,
-        severity: diagSeverity,
-        message: `[${location}] ${safeMessage}`,
-        context: {
-          location,
-          element: elementTagName,
-        },
-      });
-
       if (severity === "critical") {
         console.error(`[CRITICAL] ${location}: ${safeMessage}`);
       } else if (severity === "error") {
@@ -224,10 +169,6 @@ class ErrorTracker {
       errors: this.errors.filter((e) => e.severity === "error").length,
       critical: this.errors.filter((e) => e.severity === "critical").length,
     };
-  }
-
-  clear(): void {
-    this.errors = [];
   }
 }
 
@@ -328,8 +269,7 @@ async function probeImageUrlIntrinsicSize(
   if (cached) return cached;
 
   // data URLs can be huge; still ok but guard with a shorter timeout
-  // PERFORMANCE FIX: Reduced from 4000ms to 1000ms to prevent extraction timeouts
-  const timeoutMs = url.startsWith("data:") ? 500 : 1000;
+  const timeoutMs = url.startsWith("data:") ? 1500 : 4000;
 
   const size = await withTimeout(
     new Promise<IntrinsicSize | null>((resolve) => {
@@ -448,12 +388,10 @@ export class DOMExtractor {
   private currentCaptureId: string | null = null;
   private nodeId = 0;
   private extractionStartTime = 0;
-  private readonly MAX_EXTRACTION_TIME = 360000; // 360 seconds (6 minutes) for extremely complex pages
+  private readonly MAX_EXTRACTION_TIME = 180000; // 180 seconds (CRITICAL: Increased back for complex pages)
   private lastYieldTime = 0;
   private computedStyleCache = new Map<Element, CSSStyleDeclaration>();
   private schemaInProgress: WebToFigmaSchema | null = null;
-  private imageProbingStartTime = 0; // Track total time spent probing images
-  private imageProbingTotalTime = 0; // Cumulative time spent on image probing
 
   // Auto Layout tracking for metrics
   private autoLayoutMetrics = {
@@ -467,16 +405,13 @@ export class DOMExtractor {
   // PERFORMANCE CONFIGURATION - Emergency circuit breakers for timeouts
   private performanceConfig = {
     maxNodesPerCapture: 75000, // Increased cap for YouTube/infinite feeds
-    maxChildrenForValidation: 20, // Increased from 10 to allow better structure on complex sites
-    maxValidationSamples: 5, // Only validate first 5 children for large containers to save time
+    maxChildrenForValidation: 10, // Skip Auto Layout validation for containers with >10 children
     validationTimeoutMs: 100, // Max 100ms per validation
     yieldIntervalMs: 50, // Yield to event loop every 50ms
-    yieldNodeCount: 50, // Yield every 50 nodes (increased from 20 for speed)
-    heartbeatIntervalMs: 500, // Heartbeat every 500ms
+    yieldNodeCount: 20, // Yield every N nodes for cooperative processing
+    heartbeatIntervalMs: 400, // Heartbeat every 400ms (250-500ms range)
     performanceMode: false, // Fallback to skip all validation
-    circuitBreakerThreshold: 5, // Increased threshold for performance mode
-    skipImageIntrinsicSize: false, // Skip image intrinsic size probing if taking too long
-    maxImageProbingTimeMs: 15000, // Max 15 seconds total for all image probing
+    circuitBreakerThreshold: 3, // Activate performance mode after 3 timeouts
   };
 
   // Performance tracking
@@ -538,30 +473,6 @@ export class DOMExtractor {
     left: 0,
   };
 
-  // Strict clone support: track @font-face families so we can attach pixel-fallback screenshots
-  // for text that uses custom webfonts (when available).
-  private fontFaceFamilies = new Set<string>();
-  private textScreenshotCaptured = 0;
-
-  // ASSET COMPLETENESS FIX: Map imageHash -> DOM element for Tier B raster fallback
-  // This enables pixel-capture fallback when network fetch fails (Facebook, auth-protected CDNs)
-  private imageElementByHash = new Map<string, Element>();
-
-  /**
-   * Register a DOM element for a given imageHash.
-   * Used by AssetCompletenessValidator for Tier B raster fallback.
-   */
-  private registerImageElement(
-    imageHash: string,
-    element: Element | null | undefined
-  ): void {
-    if (!imageHash || !element) return;
-    // Only store the first element for each hash (usually the most visible one)
-    if (!this.imageElementByHash.has(imageHash)) {
-      this.imageElementByHash.set(imageHash, element);
-    }
-  }
-
   /**
    * Safely gets the className string from an element, handling SVGAnimatedString
    */
@@ -583,8 +494,6 @@ export class DOMExtractor {
         url: string;
         base64: string | null;
         mimeType: string;
-        /** Content hash of decoded bytes (sha256 hex), when available */
-        hash?: string;
         width?: number;
         height?: number;
         error?: string;
@@ -607,10 +516,11 @@ export class DOMExtractor {
       string,
       {
         family: string;
-        weight: number;
+        weight: string | number;
         style: string;
         url: string;
         format?: string;
+        data?: string;
         error?: string;
       }
     >(),
@@ -636,129 +546,106 @@ export class DOMExtractor {
    * Prepare page for capture by triggering all lazy/dynamic content
    * This runs BEFORE extraction to ensure all content is loaded
    */
-  private getScrollOffsetNow(): { top: number; left: number } {
-    const root = (document.scrollingElement ||
-      document.documentElement) as HTMLElement;
-    const left =
-      (Number.isFinite(window.scrollX) ? window.scrollX : undefined) ??
-      root.scrollLeft ??
-      document.documentElement.scrollLeft ??
-      0;
-    const top =
-      (Number.isFinite(window.scrollY) ? window.scrollY : undefined) ??
-      root.scrollTop ??
-      document.documentElement.scrollTop ??
-      0;
-
-    return {
-      top: ExtractionValidation.safeParseFloat(top, 0),
-      left: ExtractionValidation.safeParseFloat(left, 0),
-    };
-  }
-
-  /**
-   * Best-effort, stabilized scroll normalization to (0,0).
-   *
-   * Some pages restore scroll position or "fight back" (SPA navigation, scroll restoration,
-   * scroll snapping, smooth scroll). We do NOT treat failure here as fatal: the extractor
-   * stores coordinates in a scroll-invariant page coordinate space using capturedScrollOffset.
-   */
-  private async normalizeScrollToOrigin(opts?: {
-    maxMs?: number;
-    stableFrames?: number;
-  }): Promise<{
-    top: number;
-    left: number;
-    normalized: boolean;
-    elapsedMs: number;
-  }> {
-    const maxMs = opts?.maxMs ?? 1500;
-    const stableFrames = opts?.stableFrames ?? 10;
-
-    const root = (document.scrollingElement ||
-      document.documentElement) as HTMLElement;
-
-    // Reduce "fight-back" sources (best-effort)
-    try {
-      if ("scrollRestoration" in history) history.scrollRestoration = "manual";
-    } catch {}
-
-    // Temporarily disable smooth scrolling (common cause of delayed settling)
-    const prevScrollBehavior = document.documentElement.style.scrollBehavior;
-    document.documentElement.style.scrollBehavior = "auto";
-
-    const started = performance.now();
-    let stableCount = 0;
-
-    const forceTopLeft = () => {
-      try {
-        root.scrollTop = 0;
-        root.scrollLeft = 0;
-      } catch {}
-      try {
-        document.documentElement.scrollTop = 0;
-        document.documentElement.scrollLeft = 0;
-      } catch {}
-      try {
-        if (document.body) {
-          (document.body as any).scrollTop = 0;
-          (document.body as any).scrollLeft = 0;
-        }
-      } catch {}
-      try {
-        window.scrollTo(0, 0);
-      } catch {}
-    };
-
-    while (performance.now() - started < maxMs) {
-      forceTopLeft();
-      await new Promise<void>((r) => requestAnimationFrame(() => r()));
-
-      const now = this.getScrollOffsetNow();
-      if (now.left === 0 && now.top === 0) stableCount++;
-      else stableCount = 0;
-
-      if (stableCount >= stableFrames) break;
-    }
-
-    // Restore
-    document.documentElement.style.scrollBehavior = prevScrollBehavior;
-
-    const final = this.getScrollOffsetNow();
-    const elapsedMs = Math.round(performance.now() - started);
-    return {
-      top: final.top,
-      left: final.left,
-      normalized: final.left === 0 && final.top === 0,
-      elapsedMs,
-    };
-  }
-
   private async preparePageForCapture(): Promise<void> {
     console.log("🔄 [PRE-CAPTURE] Starting content triggering...");
     const startTime = Date.now();
 
     try {
-      // Best-effort scroll normalization for stable capture (do not treat failure as fatal)
-      const before = this.getScrollOffsetNow();
+      // CRITICAL FIX: Skip auto-scroll - content-script already scrolled the page
+      // Duplicate scrolling wastes time and can cause coordinate drift
+      // await this.autoScrollPage(); // REMOVED - done by content-script
 
-      if (before.left !== 0 || before.top !== 0) {
-        console.warn(
-          `⚠️ [PRE-CAPTURE] Page not at (0,0) - at (${before.left}, ${before.top}). Attempting stabilized scroll reset...`
+      // CRITICAL: Ensure we're at scroll position (0,0) for stable coordinate capture
+      // Use an aggressive, iterative approach as some sites (like Google) fight scroll restoration
+      const currentScrollX =
+        window.pageXOffset || document.documentElement.scrollLeft || 0;
+      const currentScrollY =
+        window.pageYOffset || document.documentElement.scrollTop || 0;
+
+      if (currentScrollX > 1 || currentScrollY > 1) {
+        console.log(
+          `🔄 [POSITION FIX] Page is scrolled (top: ${currentScrollY}, left: ${currentScrollX}). Scrolling to top to ensure accurate positioning...`
         );
 
-        const result = await this.normalizeScrollToOrigin({
-          maxMs: 1500,
-          stableFrames: 10,
-        });
+        let attempt = 0;
+        const maxAttempts = 5;
+        let lastTop = currentScrollY;
+        let lastLeft = currentScrollX;
 
-        if (result.normalized) {
-          console.log(
-            `✅ [PRE-CAPTURE] Scroll reset successful (0,0) in ${result.elapsedMs}ms`
-          );
-        } else {
+        while (attempt < maxAttempts) {
+          // Method 1: standard window scroll
+          window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+
+          // Method 2: direct DOM property manipulation
+          document.documentElement.scrollTop = 0;
+          document.documentElement.scrollLeft = 0;
+          document.body.scrollTop = 0;
+          document.body.scrollLeft = 0;
+
+          // Wait for render/scroll to take effect
+          await new Promise((resolve) => {
+            requestAnimationFrame(() => {
+              requestAnimationFrame(() => {
+                requestAnimationFrame(() => {
+                  setTimeout(
+                    () => {
+                      resolve(undefined);
+                    },
+                    attempt > 0 ? 100 : 50
+                  ); // Increase wait on retries
+                });
+              });
+            });
+          });
+
+          // Verify
+          const newTop =
+            window.pageYOffset || document.documentElement.scrollTop || 0;
+          const newLeft =
+            window.pageXOffset || document.documentElement.scrollLeft || 0;
+
+          if (newTop <= 1 && newLeft <= 1) {
+            console.log(
+              `✅ [POSITION FIX] Scroll reset complete after ${
+                attempt + 1
+              } attempt(s)`
+            );
+            break;
+          }
+
+          // Check if stuck (site is forcing scroll position)
+          if (
+            Math.abs(newTop - lastTop) < 0.5 &&
+            Math.abs(newLeft - lastLeft) < 0.5
+          ) {
+            console.warn(
+              `⚠️ [POSITION FIX] Scroll appears stuck (top: ${newTop}, left: ${newLeft}). This may be due to Site's scroll restoration. Continuing with current position...`
+            );
+            break;
+          }
+
+          lastTop = newTop;
+          lastLeft = newLeft;
+          attempt++;
+
+          if (attempt < maxAttempts) {
+            console.log(
+              `🔄 [POSITION FIX] Retry ${
+                attempt + 1
+              }/${maxAttempts} - current scroll: top=${newTop}, left=${newLeft}`
+            );
+          }
+        }
+
+        // Final check
+        const finalTop =
+          window.pageYOffset || document.documentElement.scrollTop || 0;
+        const finalLeft =
+          window.pageXOffset || document.documentElement.scrollLeft || 0;
+
+        if (finalTop > 1 || finalLeft > 1) {
           console.warn(
-            `⚠️ [PRE-CAPTURE] Scroll reset could not stabilize at (0,0) (ended at (${result.left}, ${result.top}) after ${result.elapsedMs}ms). Proceeding with scroll-invariant coordinates.`
+            `⚠️ [POSITION FIX] Could not fully reset scroll (top: ${finalTop}, left: ${finalLeft}). Position calculations will account for this offset.`
           );
         }
       } else {
@@ -767,10 +654,10 @@ export class DOMExtractor {
         );
       }
 
-      // Trigger viewport resize to fire resize handlers
+      // Step 2: Trigger viewport resize to fire resize handlers
       this.triggerResizeEvent();
 
-      // Wait for animations and dynamic content to settle
+      // Step 3: Wait for animations and dynamic content to settle
       await this.waitForAnimationSettle();
 
       console.log(
@@ -794,15 +681,11 @@ export class DOMExtractor {
 
     const viewportHeight = window.innerHeight;
     const scrollStep = Math.floor(viewportHeight * 0.7); // 70% of viewport per step
-    
-    // Initial max height
-    let maxScrollHeight = Math.max(
+    const maxScrollHeight = Math.max(
       document.body.scrollHeight,
       document.documentElement.scrollHeight
     );
-    
-    // Dynamic iteration limit based on current height, will be updated if height grows
-    let maxIterations = Math.ceil(maxScrollHeight / scrollStep) + 20; // +20 buffer for infinite scroll
+    const maxIterations = Math.ceil(maxScrollHeight / scrollStep) + 2; // Safety limit
 
     let currentScroll = 0;
     let iteration = 0;
@@ -811,30 +694,20 @@ export class DOMExtractor {
     const originalScrollX = window.pageXOffset;
     const originalScrollY = window.pageYOffset;
 
-    // Use a safety cutoff to prevent infinite loops (e.g. 500 steps)
-    const ABSOLUTE_MAX_ITERATIONS = 500;
-
-    while (currentScroll < maxScrollHeight && iteration < maxIterations && iteration < ABSOLUTE_MAX_ITERATIONS) {
+    while (currentScroll < maxScrollHeight && iteration < maxIterations) {
       window.scrollTo({
         top: currentScroll,
         behavior: "instant", // Use instant for speed
       });
 
-      // Wait for lazy content to load - Increased to 500ms for better reliability
-      await this.wait(500);
+      // Wait for lazy content to load
+      await this.wait(200);
 
       // Check if new content was added (infinite scroll detection)
       const newMaxHeight = Math.max(
         document.body.scrollHeight,
         document.documentElement.scrollHeight
       );
-      
-      if (newMaxHeight > maxScrollHeight) {
-          maxScrollHeight = newMaxHeight;
-          // Extend iterations if page grew
-          maxIterations = Math.ceil(maxScrollHeight / scrollStep) + 20; 
-          console.log(`📜 [AUTO-SCROLL] Page grew to ${maxScrollHeight}px, extending scroll...`);
-      }
 
       currentScroll += scrollStep;
       iteration++;
@@ -900,32 +773,6 @@ export class DOMExtractor {
     return new Promise((resolve) => setTimeout(resolve, ms));
   }
 
-  /**
-   * Wait for document fonts to finish loading to stabilize text metrics.
-   * Times out to avoid stalling extraction on pages with hanging font promises.
-   */
-  private async waitForDocumentFontsReady(
-    timeoutMs: number = 4000
-  ): Promise<void> {
-    try {
-      if (!(document as any).fonts?.ready) return;
-
-      const readyPromise = (document as any).fonts.ready;
-      await Promise.race([
-        readyPromise,
-        new Promise((_, reject) =>
-          setTimeout(() => reject(new Error("fonts.ready timeout")), timeoutMs)
-        ),
-      ]);
-      console.log("✅ [FONTS] document.fonts.ready resolved");
-    } catch (err) {
-      console.warn(
-        "⚠️ [FONTS] Failed or timed out waiting for document.fonts.ready:",
-        err
-      );
-    }
-  }
-
   // ============================================================================
   // MAIN EXTRACTION METHOD
   // ============================================================================
@@ -974,35 +821,27 @@ export class DOMExtractor {
     console.log("📍 Location:", window.location.href);
     console.log("🛠️ VERSION: PRODUCTION_V2 (Enhanced Robustness)");
 
-    // CONTENT TRIGGERING: let the page run its entry animations/hydration first
-    // (Many modern sites start key content at opacity:0 and animate it in; freezing too early yields empty captures.)
+    // CONTENT TRIGGERING: Auto-scroll and trigger lazy content BEFORE extraction
     await this.preparePageForCapture();
 
-    // FONT STABILITY: wait for document fonts to finish loading (with timeout)
-    await this.waitForDocumentFontsReady();
-
-    // Determinism: freeze animations/transitions and pause media right before geometry/style capture.
-    this.applyDeterministicCaptureOverrides();
-
-    // Capture scroll offset once at extraction start.
-    // All nodes are stored in PAGE_ABSOLUTE_CSS_PX coordinates:
-    //   pageX = rect.left + capturedScrollOffset.left
-    //   pageY = rect.top  + capturedScrollOffset.top
-    //
-    // This makes extraction scroll-invariant: if a page cannot be forced to (0,0),
-    // capturedScrollOffset will be non-zero and all nodes will still be consistent.
-    this.capturedScrollOffset = this.getScrollOffsetNow();
-
+    // PIXEL-PERFECT FIX: Capture scroll offset once at extraction start
+    // All nodes will use this consistent offset to prevent coordinate drift during extraction
+    // CRITICAL: This should be (0,0) after preparePageForCapture ensures top scroll position
+    this.capturedScrollOffset = {
+      top: window.pageYOffset || document.documentElement.scrollTop || 0,
+      left: window.pageXOffset || document.documentElement.scrollLeft || 0,
+    };
     console.log(
-      `📐 [SCROLL CAPTURE] Captured extraction scroll offset: (${this.capturedScrollOffset.left}, ${this.capturedScrollOffset.top})`
+      `📐 [SCROLL CAPTURE] Captured initial scroll offset: (${this.capturedScrollOffset.left}, ${this.capturedScrollOffset.top})`
     );
 
+    // CRITICAL VALIDATION: Verify we're capturing from scroll (0,0) for stable coordinates
     if (
       this.capturedScrollOffset.left !== 0 ||
       this.capturedScrollOffset.top !== 0
     ) {
-      console.warn(
-        `⚠️ [SCROLL NOTICE] Capture is starting from a non-zero scroll offset (${this.capturedScrollOffset.left}, ${this.capturedScrollOffset.top}). This is supported (coordinates are scroll-invariant), but the imported design will reflect this scroll position unless the page can be stabilized at (0,0).`
+      console.error(
+        `❌ [COORDINATE ERROR] Expected scroll (0,0) but got (${this.capturedScrollOffset.left}, ${this.capturedScrollOffset.top})! Coordinates may be unstable.`
       );
     }
 
@@ -1028,7 +867,7 @@ export class DOMExtractor {
         percent
       );
       this.lastYieldTime = Date.now();
-    }, this.performanceConfig.heartbeatIntervalMs); // Post progress every 500ms (configured in performanceConfig)
+    }, this.performanceConfig.heartbeatIntervalMs); // Post progress every 400ms
 
     // CRITICAL: Aggressive navigation prevention for Site SPA
     // Site uses pushState/replaceState for navigation, so we need to intercept those
@@ -1894,8 +1733,7 @@ export class DOMExtractor {
 
     // Initialize schema
     const schema: WebToFigmaSchema = {
-      // Patch: stop embedding font binaries into schema JSON (see assets.fonts)
-      version: "2.0.1-production",
+      version: "2.0.0-production",
       metadata: {
         url: window.location.href,
         title: document.title,
@@ -1929,17 +1767,6 @@ export class DOMExtractor {
     this.schemaInProgress = schema;
 
     try {
-      // Phase tracking: Collect fonts EARLY so typography extraction can make decisions
-      // (e.g., strict-clone text fallbacks) with knowledge of @font-face families.
-      this.performanceTracker.currentPhase = "collecting_fonts";
-      this.performanceTracker.phaseStartTime = Date.now();
-      await this.collectFontFacesSafe();
-      const fontCollectionTime =
-        Date.now() - this.performanceTracker.phaseStartTime;
-      console.log(
-        `⏱️ [PHASE] Font collection completed in ${fontCollectionTime}ms`
-      );
-
       // Extract root node
       this.postProgress("Traversing DOM tree...", 40);
 
@@ -2086,6 +1913,16 @@ export class DOMExtractor {
         );
       }
 
+      // Phase tracking: Collect fonts
+      this.performanceTracker.currentPhase = "collecting_fonts";
+      this.performanceTracker.phaseStartTime = Date.now();
+      await this.collectFontFacesSafe();
+      const fontCollectionTime =
+        Date.now() - this.performanceTracker.phaseStartTime;
+      console.log(
+        `⏱️ [PHASE] Font collection completed in ${fontCollectionTime}ms`
+      );
+
       // Phase tracking: Process images
       this.performanceTracker.currentPhase = "processing_images";
       this.performanceTracker.phaseStartTime = Date.now();
@@ -2105,11 +1942,9 @@ export class DOMExtractor {
       }
 
       // ENHANCED: Automatically capture hover states for all detected buttons
-      // PERFORMANCE FIX: Disabled by default to prevent timeouts (adds 10+ seconds)
-      // TODO: Make this opt-in via capture options
-      const ENABLE_HOVER_CAPTURE = false; // Disabled for performance
+      // CRITICAL FIX: Skip on Site pages to avoid timeout/errors (Site has too many buttons)
       const isSite = false || false;
-      if (ENABLE_HOVER_CAPTURE && !isSite) {
+      if (!isSite) {
         this.postProgress("Capturing hover states for buttons...", 70);
         try {
           await this.captureButtonHoverStates(schema);
@@ -2121,93 +1956,9 @@ export class DOMExtractor {
           // Don't fail the entire extraction if hover capture fails
         }
       } else {
-        console.log("ℹ️ [HOVER] Hover state capture disabled for performance");
-      }
-
-      // CRITICAL: Asset Completeness Validation
-      // Ensure every imageHash in the schema has embedded bytes
-      this.performanceTracker.currentPhase = "asset_validation";
-      this.performanceTracker.phaseStartTime = Date.now();
-
-      try {
-        const assetValidator = new AssetCompletenessValidator({
-          enableRasterFallback: true,
-          logVerbose: true,
-        });
-
-        // Build nodeHashMap for potential rasterization fallback
-        // ASSET COMPLETENESS FIX: Use registered elements for Tier B raster fallback
-        const nodeHashMap = new Map<
-          string,
-          { nodeId: string; url?: string; element?: Element }
-        >();
-
-        // 1. Map known images from assets
-        this.assets.images.forEach((data, url) => {
-          const hash = this.hashString(url);
-          nodeHashMap.set(hash, {
-            nodeId: hash,
-            url: data.absoluteUrl || data.url || url,
-            element: this.imageElementByHash.get(hash),
-          });
-        });
-
-        // 2. Add any other registered elements (placeholders, etc.) that aren't in assets.images
-        this.imageElementByHash.forEach((element, hash) => {
-          if (!nodeHashMap.has(hash)) {
-            nodeHashMap.set(hash, {
-              nodeId: hash,
-              element: element,
-            });
-          }
-        });
-
-        // Create fetch via background helper
-        const fetchViaBackground = async (
-          url: string
-        ): Promise<{ base64: string; mimeType?: string } | null> => {
-          try {
-            const result = await this.fetchImageViaBackgroundSafe(url);
-            if (result.base64 && result.base64.length > 100) {
-              return { base64: result.base64, mimeType: result.mimeType };
-            }
-            return null;
-          } catch {
-            return null;
-          }
-        };
-
-        // Run asset validation
-        const validationResult = await assetValidator.validate(
-          schema,
-          nodeHashMap,
-          fetchViaBackground
-        );
-
-        // Store validation metrics in schema metadata
-        (schema.metadata as any).assetValidation = {
-          isComplete: validationResult.isComplete,
-          totalReferencedHashes: validationResult.metrics.totalReferencedHashes,
-          successfullyEmbedded: validationResult.metrics.successfullyEmbedded,
-          failedFetches: validationResult.metrics.failedFetches,
-          rasterFallbackCount: validationResult.metrics.rasterFallbackCount,
-          totalEmbeddedMB: (
-            validationResult.metrics.totalEmbeddedBytes /
-            1024 /
-            1024
-          ).toFixed(2),
-          fixedInValidation: validationResult.fixedHashes.length,
-          stillMissing: validationResult.missingHashes.length,
-        };
-
         console.log(
-          `⏱️ [PHASE] Asset validation completed in ${
-            Date.now() - this.performanceTracker.phaseStartTime
-          }ms`
+          "ℹ️ [HOVER] Skipping hover state capture on Site (too many buttons)"
         );
-      } catch (error) {
-        console.error("❌ [ASSET_VALIDATION] Validator failed:", error);
-        // Non-blocking: continue with extraction even if validation fails
       }
 
       // Finalize assets
@@ -2218,9 +1969,6 @@ export class DOMExtractor {
       if (schema.root) {
         this.cleanupNodeRefs(schema.root);
       }
-      // EXTRA SAFETY: Ensure the entire schema is structured-clone safe.
-      // If ANY live DOM nodes leak into the payload, window.postMessage will throw.
-      this.sanitizeSchemaForMessaging(schema);
 
       // Clear in-progress schema
       this.schemaInProgress = null;
@@ -2233,13 +1981,6 @@ export class DOMExtractor {
         processingTime: `${processingTime}ms`,
         errors: this.errorTracker.getSummary(),
       });
-
-      // Validate tree structure before returning
-      this.validateTreeStructure(schema.root);
-
-      // Log tree diagram for debugging (first 50 nodes)
-      console.log("📊 [DOM TREE DIAGRAM]");
-      console.log(this.generateTreeDiagram(schema.root));
 
       // Add error report to metadata
       (schema.metadata as any).extractionErrors =
@@ -2354,54 +2095,6 @@ export class DOMExtractor {
 
       // Return partial schema - logic removed
       throw error;
-    }
-  }
-
-  /**
-   * Apply deterministic visual overrides to minimize pixel drift:
-   * - Disable CSS animations/transitions
-   * - Force scroll-behavior to auto
-   * - Pause video/audio playback
-   *
-   * Note: we intentionally do NOT revert these during capture.
-   */
-  private applyDeterministicCaptureOverrides() {
-    try {
-      if ((window as any).__WEB_TO_FIGMA_DETERMINISM_APPLIED__) return;
-      (window as any).__WEB_TO_FIGMA_DETERMINISM_APPLIED__ = true;
-
-      const styleId = "__web_to_figma_determinism__";
-      if (!document.getElementById(styleId)) {
-        const style = document.createElement("style");
-        style.id = styleId;
-        style.textContent = `
-          /* Deterministic capture: kill motion */
-          *, *::before, *::after {
-            animation: none !important;
-            transition: none !important;
-            scroll-behavior: auto !important;
-            caret-color: transparent !important;
-          }
-          html { scroll-behavior: auto !important; }
-        `;
-        document.documentElement.appendChild(style);
-      }
-
-      const medias = Array.from(
-        document.querySelectorAll("video, audio")
-      ) as Array<HTMLMediaElement>;
-      for (const m of medias) {
-        try {
-          m.pause?.();
-        } catch {
-          // ignore
-        }
-      }
-    } catch (err) {
-      console.warn(
-        "⚠️ [DETERMINISM] Failed to apply deterministic overrides:",
-        err
-      );
     }
   }
 
@@ -2718,19 +2411,51 @@ export class DOMExtractor {
     // Validate scroll offset values for coordinate space integrity
     const validScrollLeft = Number.isFinite(scrollLeft) ? scrollLeft : 0;
     const validScrollTop = Number.isFinite(scrollTop) ? scrollTop : 0;
-    // Coordinate System: PAGE_ABSOLUTE_CSS_PX (scroll-invariant)
-    // Store all node positions as page-absolute CSS pixels relative to document origin (scroll 0,0).
-    // This remains correct even if the page cannot be stabilized at (0,0), because we add the
-    // captured scroll offset uniformly for ALL nodes (including fixed/sticky) to keep one
-    // consistent coordinate space for the entire capture.
-    const absoluteX = rectLeft + validScrollLeft;
-    const absoluteY = rectTop + validScrollTop;
+
+    // CRITICAL FIX: Position-aware coordinate handling for fixed/sticky elements
+    // Fixed and sticky elements are viewport-relative, not document-relative
+    const positionComputed = this.getCachedComputedStyle(element);
+    const isFixedOrSticky =
+      positionComputed &&
+      (positionComputed.position === "fixed" ||
+        positionComputed.position === "sticky");
+
+    // PIXEL-PERFECT COORDINATE FIX: Use PAGE_ABSOLUTE_CSS_PX coordinate system
+    // PAGE_ABSOLUTE_CSS_PX = CSS pixels relative to document origin at scroll (0,0)
+    // Formula: pageX = rect.left + window.scrollX, pageY = rect.top + window.scrollY
+    // Since we ensure scroll is at (0,0) during capture, validScrollLeft/Top should be 0
+    let absoluteX: number;
+    let absoluteY: number;
+
+    if (isFixedOrSticky) {
+      // Fixed/sticky elements use viewport coordinates (don't add scroll offset)
+      // These remain in the same visual position regardless of scroll
+      absoluteX = rectLeft;
+      absoluteY = rectTop;
+    } else {
+      // Regular elements use PAGE_ABSOLUTE_CSS_PX coordinates
+      // rect.left/top are viewport-relative, add scroll offset for document coordinates
+      // Since scroll should be (0,0), this effectively equals rect.left/top
+      absoluteX = rectLeft + validScrollLeft;
+      absoluteY = rectTop + validScrollTop;
+    }
 
     // CRITICAL FIX: Validate absolute positions with pixel-aligned coordinates
     const validatedAbsoluteX =
       Number.isFinite(absoluteX) && Number.isFinite(rectLeft) ? absoluteX : 0;
     const validatedAbsoluteY =
       Number.isFinite(absoluteY) && Number.isFinite(rectTop) ? absoluteY : 0;
+
+    // Log positioning system improvements for debugging
+    if (isFixedOrSticky) {
+      console.log(
+        `🔧 [POSITION FIX] ${positionComputed.position} element ${
+          element.tagName
+        }.${
+          element.className || "no-class"
+        } positioned using viewport coordinates: (${absoluteX}, ${absoluteY})`
+      );
+    }
 
     // Log coordinate system issues for debugging
     if (!Number.isFinite(absoluteX) || !Number.isFinite(absoluteY)) {
@@ -2924,10 +2649,7 @@ export class DOMExtractor {
         computed.zIndex && computed.zIndex !== "auto"
           ? parseInt(computed.zIndex, 10)
           : undefined,
-      // CRITICAL FIX: Initialize fills as empty - extractStylesSafe will populate
-      // fills properly with inheritance check. Previously extractFillsFromBackground
-      // was called here AND extractStylesSafe pushed fills, causing duplicates.
-      fills: [],
+      fills: this.extractFillsFromBackground(computed),
       strokes: [],
       effects: [],
       attributes: this.extractAttributesSafe(element),
@@ -2978,8 +2700,6 @@ export class DOMExtractor {
       computed.backdropFilter || (computed as any).webkitBackdropFilter;
     if (backdropFilter && backdropFilter !== "none") {
       node.backdropFilters = this.parseFiltersToArray(backdropFilter);
-      // Strict clone: backdrop-filter is not representable via Figma API
-      node.rasterize = node.rasterize || { reason: "BACKDROP_FILTER" };
     }
 
     if (computed.mixBlendMode && computed.mixBlendMode !== "normal") {
@@ -3032,7 +2752,7 @@ export class DOMExtractor {
 
     // ENHANCED AUTO LAYOUT DETECTION v2.0
     // Convert CSS flexbox/grid properties to Figma Auto Layout configuration
-    // (Moved to after children processing for accuracy)
+    this.applyAutoLayoutDetection(node, computed, element);
 
     // CRITICAL: Mark interactive elements for prototype frame creation
     if (isInteractive) {
@@ -3147,12 +2867,6 @@ export class DOMExtractor {
 
     // CRITICAL: Restore Auto Layout detection for flex/grid layouts
     await this.applyAutoLayoutDetection(node, computed, element);
-
-    // LATE-BIND RASTER CAPTURE: ensure any rasterize flags set after earlier capture
-    // (e.g., clip-path/mask/backdrop-filter) have concrete pixel data
-    if (node.rasterize && !node.rasterize.dataUrl) {
-      await this.captureElementForRasterization(element, node);
-    }
 
     return node as ElementNode;
   }
@@ -3689,24 +3403,8 @@ export class DOMExtractor {
         computed
       );
 
-      // PERFORMANCE: Limit validation to a sample of children for large containers
-      const maxSamples = this.performanceConfig.maxValidationSamples;
-      const sampleIndices = new Set<number>();
-
-      if (children.length <= maxSamples) {
-        // Validate all children
-        for (let i = 0; i < children.length; i++) sampleIndices.add(i);
-      } else {
-        // Smart sampling: first few, last few, and some in the middle
-        for (let i = 0; i < 2; i++) sampleIndices.add(i); // First 2
-        for (let i = children.length - 2; i < children.length; i++)
-          sampleIndices.add(i); // Last 2
-        // Middle one
-        sampleIndices.add(Math.floor(children.length / 2));
-      }
-
-      // Compare simulated vs actual positions for sampled indices
-      sampleIndices.forEach((i) => {
+      // Compare simulated vs actual positions
+      for (let i = 0; i < children.length; i++) {
         const child = children[i];
         const simulated = simulatedPositions[i];
         const actual = child.layout;
@@ -3725,9 +3423,9 @@ export class DOMExtractor {
             `Child ${i} delta ${childDelta.toFixed(2)}px > tolerance`
           );
         }
-      });
+      }
 
-      const avgChildDeltaPx = totalDelta / Math.max(1, sampleIndices.size);
+      const avgChildDeltaPx = totalDelta / children.length;
 
       // Additional validation checks
       if (layoutConfig.wrap && !this.supportsWrapLayout(node)) {
@@ -4514,17 +4212,6 @@ export class DOMExtractor {
 
     // 6. Skip <noscript>
     if (tagName === "noscript") return true;
-
-    // 7. Skip hidden SVGs that are likely sprite sheets
-    if (tagName === "svg" && element.getAttribute("aria-hidden") === "true") {
-      if (
-        computed.height === "0px" ||
-        computed.width === "0px" ||
-        computed.position === "absolute"
-      ) {
-        return true;
-      }
-    }
 
     return false;
   }
@@ -5630,18 +5317,9 @@ export class DOMExtractor {
           }
         }
 
-        // CRITICAL FIX: Only add fills if the element ACTUALLY paints a background
-        // If background is inherited (element's computed background is transparent),
-        // do NOT add fills - this prevents wrapper frames from becoming opaque rectangles
-        const isBackgroundInherited =
-          node.inheritanceFlags?.backgroundColorInherited === true;
-        const elementActuallyPaintsBackground =
-          !isBackgroundInherited &&
-          effectiveColorParsed &&
-          effectiveColorParsed.a > 0.001;
-
-        if (elementActuallyPaintsBackground && effectiveColorParsed) {
-          // Element has its own non-transparent background - add fills
+        // CRITICAL FIX: Accept any non-transparent color (align with plugin threshold)
+        // Use same threshold as plugin to prevent capture/import mismatches
+        if (effectiveColorParsed && effectiveColorParsed.a > 0.001) {
           if (!node.fills) node.fills = [];
           node.fills.push({
             type: "SOLID",
@@ -5663,23 +5341,19 @@ export class DOMExtractor {
             visible: true,
           });
 
+          // Store inheritance metadata for plugin processing
+          if (!node.colorInheritance) node.colorInheritance = {};
+          node.colorInheritance.backgroundColorSource = node.inheritanceFlags
+            ?.backgroundColorInherited
+            ? "inherited"
+            : "explicit";
+
+          if (node.inheritanceFlags?.backgroundColorInherited) {
+            node.colorInheritance.inheritedFrom = "parent";
+            node.colorInheritance.originalBackground = bgColor; // Store original transparent value
+          }
+
           this.assets.colors.add(effectiveBgColor);
-        }
-
-        // Store inheritance metadata for plugin processing (always, regardless of fill creation)
-        if (!node.colorInheritance) node.colorInheritance = {};
-        node.colorInheritance.backgroundColorSource = isBackgroundInherited
-          ? "inherited"
-          : "explicit";
-
-        if (isBackgroundInherited) {
-          node.colorInheritance.inheritedFrom = "parent";
-          node.colorInheritance.originalBackground = bgColor; // Store original transparent value
-          // Store effective color for reference but don't paint it
-          node.colorInheritance.effectiveBackground = effectiveBgColor;
-          console.log(
-            `⚪ [INHERITANCE] Skipping fill for inherited background on ${element.tagName}: computed=${bgColor}, inherited=${effectiveBgColor}`
-          );
         } else {
           // For body/html, still store the color for fallback use even if we don't add it as a fill
           // This helps the node-builder fallback logic
@@ -5782,8 +5456,6 @@ export class DOMExtractor {
             : "none",
           value: clipPath,
         };
-        // Strict clone: clip-path cannot be reconstructed natively in Figma
-        node.rasterize = node.rasterize || { reason: "CLIP_PATH" };
       }
 
       // CRITICAL ADDITION: Extract CSS Masking properties
@@ -5808,8 +5480,6 @@ export class DOMExtractor {
         console.log(
           `🎭 [MASK] Captured mask on ${element.tagName}: ${maskImage}`
         );
-        // Strict clone: CSS masks are not representable in Figma -> rasterize
-        node.rasterize = node.rasterize || { reason: "MASK" };
       }
 
       // FIX 3: Extract CSS filters for Phase 4 rasterization (applies to ALL elements)
@@ -6238,42 +5908,6 @@ export class DOMExtractor {
       const elementRect = element.getBoundingClientRect();
       const domRectWidth = node.absoluteLayout?.width ?? elementRect.width;
       const domRectHeight = node.absoluteLayout?.height ?? elementRect.height;
-
-      // CRITICAL: Capture text baseline offset for pixel-perfect vertical alignment
-      let baselineOffset = 0;
-      try {
-        // Find first text node to measure its actual rendered position
-        let firstTextNode: Node | null = null;
-        for (let i = 0; i < element.childNodes.length; i++) {
-          const child = element.childNodes[i];
-          if (child.nodeType === Node.TEXT_NODE && child.textContent?.trim()) {
-            firstTextNode = child;
-            break;
-          }
-        }
-
-        if (firstTextNode) {
-          const range = document.createRange();
-          range.selectNode(firstTextNode);
-          const rects = range.getClientRects();
-          if (rects.length > 0) {
-            // Calculate offset from the top of the element to the top of the first text line
-            // This accounts for line-height leading and vertical-align
-            baselineOffset = rects[0].top - elementRect.top;
-          }
-        } else if (element.textContent?.trim()) {
-          // Fallback for elements containing text but perhaps wrapped or simple
-          const range = document.createRange();
-          range.selectNodeContents(element);
-          const rects = range.getClientRects();
-          if (rects.length > 0) {
-            baselineOffset = rects[0].top - elementRect.top;
-          }
-        }
-      } catch (e) {
-        // Ignore baseline errors
-      }
-
       node.renderedMetrics = {
         width:
           domRectWidth > 0
@@ -6281,7 +5915,6 @@ export class DOMExtractor {
             : canvasMetrics?.width ?? domRectWidth,
         height: domRectHeight,
         lineHeightPx: measuredLineHeightPx || lineHeightValue,
-        baselineOffset: baselineOffset, // ✅ Stored for Figma importer
         actualBoundingBoxAscent: canvasMetrics?.actualBoundingBoxAscent,
         actualBoundingBoxDescent: canvasMetrics?.actualBoundingBoxDescent,
         fontBoundingBoxAscent: canvasMetrics?.fontBoundingBoxAscent,
@@ -6363,57 +5996,6 @@ export class DOMExtractor {
         this.assets.fonts.set(fontFamily, new Set());
       }
       this.assets.fonts.get(fontFamily)?.add(fontWeight);
-
-      // STRICT CLONE (fonts): Figma cannot load arbitrary webfont bytes.
-      // To preserve pixel-perfect fidelity when a custom @font-face font isn't available in Figma,
-      // capture a pixel screenshot of the rendered TEXT node and reference it via screenshotAssetId.
-      if (
-        node.type === "TEXT" &&
-        this.fontFaceFamilies.has(fontFamily) &&
-        !node.screenshotAssetId
-      ) {
-        const MAX_TEXT_SCREENSHOTS = 80;
-        if (this.textScreenshotCaptured < MAX_TEXT_SCREENSHOTS) {
-          try {
-            const dataUrl = await captureElementScreenshot(element);
-            if (
-              typeof dataUrl === "string" &&
-              dataUrl.startsWith("data:image/")
-            ) {
-              const comma = dataUrl.indexOf(",");
-              const header = comma !== -1 ? dataUrl.slice(0, comma) : "";
-              const base64 = comma !== -1 ? dataUrl.slice(comma + 1) : "";
-              const mimeType =
-                header.split(":")[1]?.split(";")[0] || "image/png";
-              if (base64 && base64.length > 0) {
-                const pseudoUrl = `text-screenshot:${node.id}`;
-                const key = this.hashString(pseudoUrl);
-
-                // Store as an image asset (already base64) so it's fully self-contained.
-                this.assets.images.set(pseudoUrl, {
-                  originalUrl: pseudoUrl,
-                  absoluteUrl: pseudoUrl,
-                  url: pseudoUrl,
-                  base64,
-                  mimeType,
-                  hash: (await this.sha256Base64Safe(base64)) || undefined,
-                  width: node.layout?.width,
-                  height: node.layout?.height,
-                });
-
-                node.screenshotAssetId = key;
-                this.textScreenshotCaptured++;
-              }
-            }
-          } catch (e) {
-            // Best-effort: strict clone can still proceed; importer may rasterize higher-level containers.
-            console.warn(
-              "⚠️ [STRICT CLONE] Failed to capture text screenshot fallback",
-              e
-            );
-          }
-        }
-      }
 
       // Text auto resize detection
       const isFixedWidth =
@@ -6517,7 +6099,7 @@ export class DOMExtractor {
           if (isSVG) {
             // Handle as vector/SVG asset
             await this.captureSVGSafe(rawUrl);
-            const key = this.hashSvgKey(rawUrl);
+            const key = this.hashString(rawUrl);
             const svgAsset = this.assets.svgs.get(rawUrl);
 
             if (svgAsset) {
@@ -6537,9 +6119,6 @@ export class DOMExtractor {
             // Handle as raster image (existing logic)
             await this.captureImageSafe(rawUrl);
             const key = this.hashString(rawUrl);
-
-            // ASSET COMPLETENESS FIX: Register element for Tier B raster fallback
-            this.registerImageElement(key, element);
 
             // ENHANCED: Detect if this might be a logo/icon based on URL patterns
             const isLogo = this.detectLogoPattern(rawUrl, element);
@@ -8745,11 +8324,9 @@ export class DOMExtractor {
           );
           await new Promise<void>((resolve, reject) => {
             const timeout = setTimeout(() => {
-              console.warn(
-                `⏱️ [IMAGE LOAD] Timeout waiting for image size, continuing with URL only`
-              );
-              resolve(); // Don't reject, just continue so we don't break extraction
-            }, 800); // Reduce to 800ms for responsiveness on large pages
+              console.warn(`⏱️ [IMAGE LOAD] Timeout waiting for image`);
+              reject(new Error("Image load timeout"));
+            }, 5000);
 
             const cleanup = () => {
               clearTimeout(timeout);
@@ -8794,36 +8371,10 @@ export class DOMExtractor {
       }
 
       // PIXEL-PERFECT: Extract intrinsic size for proper aspect ratio and object-fit handling
-      // PERFORMANCE FIX: Skip if we've exceeded the image probing time budget
-      if (
-        !this.performanceConfig.skipImageIntrinsicSize &&
-        this.imageProbingTotalTime <
-          this.performanceConfig.maxImageProbingTimeMs
-      ) {
-        const probeStart = Date.now();
-        try {
-          const intrinsicSize = await extractIntrinsicSize(img, computed);
-          this.imageProbingTotalTime += Date.now() - probeStart;
-
-          if (intrinsicSize) {
-            node.intrinsicSize = intrinsicSize;
-            node.aspectRatio = intrinsicSize.width / intrinsicSize.height;
-          }
-
-          // Enable skip mode if we're approaching the budget
-          if (
-            this.imageProbingTotalTime >=
-            this.performanceConfig.maxImageProbingTimeMs
-          ) {
-            console.warn(
-              `⚠️ [PERF] Image probing budget exhausted (${this.imageProbingTotalTime}ms), skipping remaining images`
-            );
-            this.performanceConfig.skipImageIntrinsicSize = true;
-          }
-        } catch (err) {
-          this.imageProbingTotalTime += Date.now() - probeStart;
-          // Continue on error
-        }
+      const intrinsicSize = await extractIntrinsicSize(img, computed);
+      if (intrinsicSize) {
+        node.intrinsicSize = intrinsicSize;
+        node.aspectRatio = intrinsicSize.width / intrinsicSize.height;
       }
 
       // Store imageFit for importer to map to Figma scaleMode correctly
@@ -8884,30 +8435,6 @@ export class DOMExtractor {
           originalAspectRatio: aspectRatio,
         };
       }
-    } else {
-      // IMAGE COMPLETENESS FIX: If no valid imageUrl found, mark for rasterization fallback
-      console.warn(
-        `⚠️ [IMAGE] No valid URL found for <img>, tagging for rasterization`
-      );
-      node.rasterize = { reason: "MISSING_IMAGE_URL" };
-
-      // Create a unique placeholder hash so AssetCompletenessValidator can pick it up
-      const placeholderHash = `missing_img_${node.id}`;
-      node.imageHash = placeholderHash;
-
-      // Also add a placeholder fill so the validator sees a referenced hash
-      node.fills = [
-        {
-          type: "IMAGE",
-          imageHash: placeholderHash,
-          opacity: 1,
-          visible: true,
-          scaleMode: "FILL",
-        } as any,
-      ];
-
-      // Register element for Phase 5 capture (or Tier B cleanup)
-      this.registerImageElement(placeholderHash, img);
     }
   }
 
@@ -8953,8 +8480,6 @@ export class DOMExtractor {
       if (dataUrl && dataUrl.startsWith("data:image")) {
         await this.captureImageSafe(dataUrl);
         const key = this.hashString(dataUrl);
-        // ASSET COMPLETENESS FIX: Register canvas for Tier B raster fallback
-        this.registerImageElement(key, canvas);
         node.fills = [
           {
             type: "IMAGE",
@@ -9004,11 +8529,9 @@ export class DOMExtractor {
         // Log as info, not warning - this is expected for cross-origin canvas content
         // Use console.log instead of console.warn to avoid showing as warning
         console.log(
-          `ℹ️ [CANVAS] Canvas is tainted (CORS) - cannot export. Marking for rasterization fallback.`
+          `ℹ️ [CANVAS] Canvas is tainted (CORS) - cannot export. This is expected for cross-origin content.`
         );
-        // ASSET COMPLETENESS FIX: Use Tier B rasterization fallback for tainted canvases
-        node.rasterize = { reason: "TAINTED_CANVAS" };
-        this.registerImageElement(node.id, canvas);
+        // Don't record as error - just skip canvas export gracefully
         return;
       }
 
@@ -9038,8 +8561,6 @@ export class DOMExtractor {
     if (video.poster && ExtractionValidation.isValidUrl(video.poster)) {
       await this.captureImageSafe(video.poster);
       const key = this.hashString(video.poster);
-      // ASSET COMPLETENESS FIX: Register video for Tier B raster fallback
-      this.registerImageElement(key, video);
       node.fills = [
         {
           type: "IMAGE",
@@ -9048,13 +8569,6 @@ export class DOMExtractor {
           visible: true,
         },
       ];
-    } else {
-      // ASSET COMPLETENESS FIX: If no poster, mark for rasterization fallback
-      console.log(
-        `ℹ️ [VIDEO] No poster for video, marking for rasterization fallback.`
-      );
-      node.rasterize = { reason: "VIDEO_POSTER_MISSING" };
-      this.registerImageElement(node.id, video);
     }
   }
 
@@ -9152,7 +8666,7 @@ export class DOMExtractor {
           }`
         );
       }
-      const hash = this.hashSvgKey(url);
+      const hash = this.hashString(url);
 
       // Parse SVG dimensions if possible
       let width = 24; // Default fallback
@@ -9275,10 +8789,6 @@ export class DOMExtractor {
           width: width,
           height: height,
         });
-
-        // ASSET COMPLETENESS FIX: Register element for Tier B raster fallback
-        const imageHash = this.hashString(url);
-        this.registerImageElement(imageHash, element);
       }
     } catch (error) {
       this.errorTracker.recordError(
@@ -9299,26 +8809,6 @@ export class DOMExtractor {
     const BATCH_SIZE = 5;
     const MAX_RETRIES = 3;
     const failedImages: Array<{ url: string; reason: string }> = [];
-
-    // PIXEL-PERFECT FIDELITY: Embed image bytes for deterministic imports.
-    // Without embedded bytes, imports are non-deterministic (CORS, expiring URLs, AB tests, etc.).
-    // If size is a concern, use a separate blob store with content-addressed references.
-    const EMBED_IMAGE_BASE64 = true; // Changed to true for pixel-perfect fidelity
-    const STRICT_MODE = true; // Fail capture if critical images can't be embedded
-
-    if (!EMBED_IMAGE_BASE64) {
-      // Ensure URL is set for all assets so plugin can fetch later.
-      for (const url of imageUrls) {
-        const asset = this.assets.images.get(url);
-        if (asset && !asset.url) {
-          asset.url = asset.absoluteUrl || url;
-        }
-      }
-      console.log(
-        `🖼️ [IMAGE PROCESSING] Skipping base64 embedding (URL-only mode). Images tracked: ${imageUrls.length}`
-      );
-      return { failed: [] };
-    }
 
     console.log(
       `🖼️ [IMAGE PROCESSING] Processing ${imageUrls.length} images in batches of ${BATCH_SIZE} with ${MAX_RETRIES} retries`
@@ -9357,8 +8847,7 @@ export class DOMExtractor {
                   );
                 }
 
-                const sourceUrl = asset.absoluteUrl || asset.url || url;
-                const result = await this.urlToBase64Safe(sourceUrl);
+                const result = await this.urlToBase64Safe(asset.absoluteUrl);
                 if (result.base64 && result.base64.length > 0) {
                   asset.base64 = result.base64;
                   asset.width = result.width || asset.width;
@@ -9366,9 +8855,6 @@ export class DOMExtractor {
                   if (result.mimeType) {
                     asset.mimeType = result.mimeType;
                   }
-                  // Content-addressed hash for determinism/debugging (best-effort).
-                  const sha = await this.sha256Base64Safe(result.base64);
-                  if (sha) asset.hash = sha;
                   console.log(
                     `✅ [IMAGE PROCESSING] Successfully converted: ${url.substring(
                       0,
@@ -9449,73 +8935,19 @@ export class DOMExtractor {
       );
     }
 
-    // Log detailed summary with metrics
-    const allImages = Array.from(this.assets.images.values());
-    const successful = allImages.filter((a) => a.base64).length;
-    const failed = allImages.filter((a) => a.error).length;
-    const withUrl = allImages.filter((a) => a.url && !a.base64).length;
-    const totalBytes = allImages.reduce(
-      (sum, a) => sum + (a.base64?.length || 0),
-      0
-    );
-
-    // Count failure reasons
-    const failureReasons = new Map<string, number>();
-    for (const img of failedImages) {
-      const reason = img.reason.toLowerCase();
-      let key = "OTHER";
-      if (reason.includes("cors") || reason.includes("cross-origin"))
-        key = "CORS";
-      else if (reason.includes("tainted")) key = "TAINTED_CANVAS";
-      else if (reason.includes("network") || reason.includes("fetch"))
-        key = "NETWORK";
-      else if (reason.includes("timeout")) key = "TIMEOUT";
-      else if (reason.includes("404") || reason.includes("not found"))
-        key = "NOT_FOUND";
-      failureReasons.set(key, (failureReasons.get(key) || 0) + 1);
-    }
-
-    console.log("\n" + "=".repeat(60));
-    console.log("📊 [IMAGE PROCESSING] DETAILED SUMMARY");
-    console.log("=".repeat(60));
-    console.log(`   Total Images Tracked:     ${imageUrls.length}`);
-    console.log(`   Successfully Embedded:    ${successful}`);
-    console.log(`   Failed to Embed:          ${failed}`);
-    console.log(`   URL-Only (Fallback):      ${withUrl}`);
+    // Log summary
+    const successful = Array.from(this.assets.images.values()).filter(
+      (a) => a.base64
+    ).length;
+    const failed = Array.from(this.assets.images.values()).filter(
+      (a) => a.error
+    ).length;
+    const withUrl = Array.from(this.assets.images.values()).filter(
+      (a) => a.url && !a.base64
+    ).length;
     console.log(
-      `   Total Embedded Size:      ${(totalBytes / 1024 / 1024).toFixed(2)} MB`
+      `📊 [IMAGE PROCESSING] Summary: ${successful} with base64, ${failed} failed, ${withUrl} with URL only (for plugin fallback)`
     );
-    console.log(
-      `   Avg Size per Image:       ${
-        successful > 0 ? (totalBytes / successful / 1024).toFixed(1) : 0
-      } KB`
-    );
-
-    if (failureReasons.size > 0) {
-      console.log("   Failure Breakdown:");
-      for (const [reason, count] of failureReasons) {
-        console.log(`      ${reason}: ${count}`);
-      }
-    }
-    console.log("=".repeat(60) + "\n");
-
-    // PIXEL-PERFECT FIDELITY: In strict mode, the capture MUST be self-contained for images.
-    // If any required image lacks embedded bytes, imports become non-deterministic (CORS/auth/AB tests/etc).
-    if (STRICT_MODE) {
-      const missing = imageUrls.filter((url) => {
-        const a = this.assets.images.get(url);
-        return !a || !a.base64 || a.base64.length === 0;
-      });
-      if (missing.length > 0) {
-        const sample = missing.slice(0, 5).map((u) => u.substring(0, 120));
-        const errorMsg =
-          `❌ [PIXEL-PERFECT] Capture failed: missing embedded bytes for ${missing.length}/${imageUrls.length} images.\n` +
-          `Examples:\n- ${sample.join("\n- ")}\n` +
-          `Fix: ensure capture can fetch/encode all images (host permissions, auth, CORS proxy), or use a content-addressed asset pack.`;
-        console.error(errorMsg);
-        throw new Error(errorMsg);
-      }
-    }
 
     return { failed: failedImages };
   }
@@ -9992,19 +9424,68 @@ export class DOMExtractor {
         }
       }
 
+      const fetchWithTimeout = async (url: string): Promise<string | null> => {
+        const controller = new AbortController();
+        const id = setTimeout(() => controller.abort(), timeout);
+        try {
+          const resp = await fetch(url, { signal: controller.signal });
+          if (!resp.ok) return null;
+          const blob = await resp.blob();
+          const buf = await blob.arrayBuffer();
+          const bytes = new Uint8Array(buf);
+          let binary = "";
+          for (let i = 0; i < bytes.length; i++) {
+            binary += String.fromCharCode(bytes[i]);
+          }
+          return btoa(binary);
+        } catch {
+          return null;
+        } finally {
+          clearTimeout(id);
+        }
+      };
+
       for (const rule of rules) {
         try {
           const family = (rule.style.getPropertyValue("font-family") || "")
             .replace(/["']/g, "")
             .trim();
-          if (!family) continue;
-          this.fontFaceFamilies.add(family);
           const weight = rule.style.getPropertyValue("font-weight") || "400";
           const style = rule.style.getPropertyValue("font-style") || "normal";
           const src = rule.style.getPropertyValue("src") || "";
-          const normalizedStyle =
-            (style || "normal").replace(/["']/g, "").trim() || "normal";
+          const match = src.match(/url\(([^)]+)\)/);
+          if (!match) continue;
 
+          const rawUrl = match[1].replace(/["']/g, "").trim();
+          if (!ExtractionValidation.isValidUrl(rawUrl)) continue;
+
+          const absUrl = new URL(rawUrl, window.location.href).href;
+
+          if (this.assets.fontFiles.has(absUrl)) continue;
+
+          const fontEntry: any = {
+            family,
+            weight,
+            style,
+            url: absUrl,
+          };
+
+          const formatMatch = src.match(/format\(["']?([^"')]+)["']?\)/);
+          if (formatMatch) {
+            fontEntry.format = formatMatch[1];
+          }
+
+          const data = await fetchWithTimeout(absUrl);
+          if (data) {
+            fontEntry.data = data;
+          } else {
+            fontEntry.error = "fetch_failed";
+          }
+
+          this.assets.fontFiles.set(absUrl, fontEntry);
+          if (!this.assets.fonts.has(family)) {
+            this.assets.fonts.set(family, new Set());
+          }
           const parsedWeight =
             weight === "bold"
               ? 700
@@ -10015,48 +9496,7 @@ export class DOMExtractor {
                   100,
                   900
                 );
-
-          // Track font usage even if we can't safely record a URL.
-          if (!this.assets.fonts.has(family)) {
-            this.assets.fonts.set(family, new Set());
-          }
           this.assets.fonts.get(family)?.add(parsedWeight);
-
-          // Extract all url(...) sources from src; prefer non-data: URLs to avoid
-          // embedding massive base64 blobs into schema JSON.
-          const urls = this.extractCssUrls(src);
-          const rawUrl = urls.find(
-            (u) =>
-              ExtractionValidation.isValidUrl(u) &&
-              !u.trim().toLowerCase().startsWith("data:")
-          );
-          if (!rawUrl) {
-            // If the only source is a data: URL, skip recording it (it can be huge).
-            continue;
-          }
-
-          const absUrl = new URL(rawUrl, window.location.href).href;
-
-          // De-dupe by font-face identity, not just URL.
-          const fontFaceKey = `${family}|${parsedWeight}|${normalizedStyle}|${absUrl}`;
-          if (this.assets.fontFiles.has(fontFaceKey)) continue;
-
-          const fontEntry = {
-            family,
-            weight: parsedWeight,
-            style: normalizedStyle,
-            url: absUrl,
-          } as any;
-
-          const formatMatch = src.match(/format\(["']?([^"')]+)["']?\)/);
-          if (formatMatch) {
-            fontEntry.format = formatMatch[1];
-          }
-
-          // IMPORTANT: Do not fetch and inline font bytes into schema JSON.
-          // - It explodes payload size and triggers messaging/memory failures.
-          // - Figma plugins cannot install arbitrary webfont bytes anyway.
-          this.assets.fontFiles.set(fontFaceKey, fontEntry);
         } catch (error) {
           this.errorTracker.recordError(
             "collectFontFacesSafe",
@@ -10096,144 +9536,6 @@ export class DOMExtractor {
     }
   }
 
-  /**
-   * Defensive sanitizer: remove any non-cloneable live DOM references from the schema
-   * before sending across window.postMessage.
-   *
-   * This prevents: "Failed to execute 'postMessage' on 'Window': <Element> could not be cloned."
-   */
-  private sanitizeSchemaForMessaging(schema: any): void {
-    const seen = new WeakSet<object>();
-    const maxLogs = 10;
-    let logs = 0;
-
-    const isDomNode = (v: any): boolean => {
-      try {
-        if (!v) return false;
-        if (typeof window !== "undefined" && v === window) return true;
-        if (typeof document !== "undefined" && v === document) return true;
-        if (typeof Node !== "undefined" && v instanceof Node) return true;
-        if (typeof Element !== "undefined" && v instanceof Element) return true;
-        if (typeof HTMLElement !== "undefined" && v instanceof HTMLElement)
-          return true;
-        // Check for duck-typed DOM nodes (nodeType property is a DOM indicator)
-        if (
-          typeof v === "object" &&
-          v !== null &&
-          typeof v.nodeType === "number" &&
-          typeof v.nodeName === "string"
-        ) {
-          return true;
-        }
-        return false;
-      } catch {
-        return false;
-      }
-    };
-
-    const walk = (obj: any, path: string): void => {
-      if (!obj || typeof obj !== "object") return;
-
-      // DOM nodes are not cloneable; caller should delete/replace them.
-      if (isDomNode(obj)) return;
-
-      // Avoid infinite loops on cyclic graphs
-      try {
-        if (seen.has(obj)) return;
-        seen.add(obj);
-      } catch {
-        // If it's not WeakSet-compatible, skip
-      }
-
-      // Handle Maps/Sets (structured-clone supports them, but entries may contain DOM nodes)
-      if (obj instanceof Map) {
-        for (const [k, v] of Array.from(obj.entries())) {
-          if (isDomNode(k) || isDomNode(v)) {
-            obj.delete(k);
-            if (logs < maxLogs) {
-              console.warn("🧹 [SANITIZE] Removed DOM node from Map entry", {
-                path,
-              });
-              logs++;
-            }
-            continue;
-          }
-          walk(v, `${path}.<mapValue>`);
-        }
-        return;
-      }
-      if (obj instanceof Set) {
-        for (const v of Array.from(obj.values())) {
-          if (isDomNode(v)) {
-            obj.delete(v);
-            if (logs < maxLogs) {
-              console.warn("🧹 [SANITIZE] Removed DOM node from Set entry", {
-                path,
-              });
-              logs++;
-            }
-            continue;
-          }
-          walk(v, `${path}.<setValue>`);
-        }
-        return;
-      }
-
-      if (Array.isArray(obj)) {
-        for (let i = 0; i < obj.length; i++) {
-          const v = obj[i];
-          if (isDomNode(v)) {
-            obj[i] = null;
-            if (logs < maxLogs) {
-              console.warn("🧹 [SANITIZE] Replaced DOM node in array", {
-                path: `${path}[${i}]`,
-              });
-              logs++;
-            }
-            continue;
-          }
-          walk(v, `${path}[${i}]`);
-        }
-        return;
-      }
-
-      // Plain object traversal
-      for (const key of Object.keys(obj)) {
-        const v = (obj as any)[key];
-        if (isDomNode(v)) {
-          try {
-            delete (obj as any)[key];
-          } catch {
-            (obj as any)[key] = null;
-          }
-          if (logs < maxLogs) {
-            let tag = "DOM";
-            try {
-              tag =
-                typeof (v as any)?.tagName === "string"
-                  ? (v as any).tagName
-                  : "DOM";
-            } catch {}
-            console.warn("🧹 [SANITIZE] Removed non-cloneable DOM ref", {
-              path: path ? `${path}.${key}` : key,
-              tag,
-            });
-            logs++;
-          }
-          continue;
-        }
-        walk(v, path ? `${path}.${key}` : key);
-      }
-    };
-
-    try {
-      walk(schema, "schema");
-    } catch (e) {
-      // If sanitizer itself fails, do not block capture.
-      console.warn("🧹 [SANITIZE] Sanitizer failed (non-fatal):", e);
-    }
-  }
-
   private finalizeAssets(schema: WebToFigmaSchema): void {
     try {
       // Finalize images
@@ -10247,9 +9549,6 @@ export class DOMExtractor {
           url: imageUrl, // Always include URL for plugin fallback
           originalUrl: data.originalUrl || url,
           absoluteUrl: data.absoluteUrl || imageUrl,
-          // Debug-only: hash of bytes + detected mime/content type
-          hash: data.hash,
-          contentType: data.mimeType,
           mimeType: data.mimeType,
           width: data.width ?? 0,
           height: data.height ?? 0,
@@ -10273,7 +9572,7 @@ export class DOMExtractor {
       // Finalize SVGs
       const svgsObj: Record<string, any> = {};
       this.assets.svgs.forEach((data, url) => {
-        const key = this.hashSvgKey(url);
+        const key = this.hashString(url);
         svgsObj[key] = {
           id: key,
           hash: data.hash,
@@ -10299,22 +9598,18 @@ export class DOMExtractor {
 
       // Finalize fonts
       const fontObj: Record<string, any> = {};
-      this.assets.fontFiles.forEach((data, fontFaceKey) => {
-        const key = this.hashFontKey(fontFaceKey);
+      this.assets.fontFiles.forEach((data, url) => {
+        const key = this.hashString(`${data.family}-${data.weight}-${url}`);
         fontObj[key] = { ...data, id: key };
       });
       schema.assets.fonts = fontObj;
 
       // Finalize font metadata
-      const familiesWithFontFaces = new Set<string>();
-      this.assets.fontFiles.forEach((data) => {
-        if (data?.family) familiesWithFontFaces.add(String(data.family));
-      });
       schema.metadata.fonts = Array.from(this.assets.fonts.entries()).map(
         ([family, weights]) => ({
           family,
           weights: Array.from(weights),
-          source: familiesWithFontFaces.has(family) ? "custom" : "system",
+          source: "system",
         })
       );
 
@@ -10550,11 +9845,6 @@ export class DOMExtractor {
       `⚠️ [PARTIAL_SCHEMA] returning partial schema due to: ${reason}`
     );
 
-    // 1x1 transparent PNG placeholder to satisfy preflight checks if screenshot is missing
-    // This ensures that even if capture times out before screenshot, we can still return the partial schema error to Figma
-    const PLACEHOLDER_SCREENSHOT =
-      "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=";
-
     // If no schema in progress, create one from scratch
     if (!this.schemaInProgress) {
       // Create minimal valid schema
@@ -10576,7 +9866,6 @@ export class DOMExtractor {
         assets: { images: {}, svgs: {} },
         styles: { colors: {}, textStyles: {}, effects: {} },
         components: { definitions: {} },
-        screenshot: PLACEHOLDER_SCREENSHOT, // Ensure screenshot exists
       };
     } else {
       // Mark existing schema as partial
@@ -10585,20 +9874,6 @@ export class DOMExtractor {
       }
       this.schemaInProgress.metadata.fullCapture = false;
       this.schemaInProgress.metadata.partialReason = reason;
-
-      // Ensure screenshot exists if missing
-      if (!this.schemaInProgress.screenshot) {
-        this.schemaInProgress.screenshot = PLACEHOLDER_SCREENSHOT;
-      }
-
-      // CRITICAL FIX: If root is null, create a fallback root node
-      // This happens when timeout occurs before DOM extraction is complete
-      if (!this.schemaInProgress.root) {
-        console.warn(
-          `⚠️ [PARTIAL_SCHEMA] Root was null, creating fallback root node`
-        );
-        this.schemaInProgress.root = this.createFallbackRootNode(reason) as any;
-      }
     }
 
     // Ensure diagnostics block exists & record the reason
@@ -10619,12 +9894,6 @@ export class DOMExtractor {
         reason,
       ];
     }
-
-    // CRITICAL: Sanitize partial schema too to prevent postMessage errors
-    if (this.schemaInProgress.root) {
-      this.cleanupNodeRefs(this.schemaInProgress.root);
-    }
-    this.sanitizeSchemaForMessaging(this.schemaInProgress);
 
     return this.schemaInProgress;
   }
@@ -11417,65 +10686,19 @@ export class DOMExtractor {
   // ============================================================================
 
   private hashString(str: string): string {
-    return this.hashWithPrefix(str, "img_");
-  }
-
-  private hashSvgKey(str: string): string {
-    return this.hashWithPrefix(str, "svg_");
-  }
-
-  private hashFontKey(str: string): string {
-    return this.hashWithPrefix(str, "font_");
-  }
-
-  private hashWithPrefix(str: string, prefix: string): string {
     if (!str || typeof str !== "string") {
-      return `${prefix}0`;
+      return "img_0";
     }
 
-    // Use a 64-bit FNV-1a hash to minimize collisions across large pages.
+    // Use a 64-bit FNV-1a hash to minimize collisions across large pages with
+    // thousands of images (collisions can cause incorrect image assignment).
     let hash = 0xcbf29ce484222325n;
     const prime = 0x100000001b3n;
     for (let i = 0; i < str.length; i++) {
       hash ^= BigInt(str.charCodeAt(i));
       hash = (hash * prime) & 0xffffffffffffffffn;
     }
-    return prefix + hash.toString(16).padStart(16, "0");
-  }
-
-  /**
-   * Best-effort SHA-256 (hex) for embedded base64 payloads.
-   * Used to make assets content-addressable/deterministic for debugging + future external blob packs.
-   */
-  private async sha256Base64Safe(base64: string): Promise<string | null> {
-    try {
-      if (!base64 || typeof base64 !== "string") return null;
-      const subtle = (globalThis as any)?.crypto?.subtle;
-      if (!subtle || typeof subtle.digest !== "function") return null;
-
-      const bytes = this.base64ToUint8ArraySafe(base64);
-      if (!bytes) return null;
-
-      const digest = await subtle.digest("SHA-256", bytes);
-      return Array.from(new Uint8Array(digest))
-        .map((b) => b.toString(16).padStart(2, "0"))
-        .join("");
-    } catch {
-      return null;
-    }
-  }
-
-  private base64ToUint8ArraySafe(base64: string): Uint8Array | null {
-    try {
-      const bin = atob(base64);
-      const bytes = new Uint8Array(bin.length);
-      for (let i = 0; i < bin.length; i++) {
-        bytes[i] = bin.charCodeAt(i);
-      }
-      return bytes;
-    } catch {
-      return null;
-    }
+    return "img_" + hash.toString(16).padStart(16, "0");
   }
 
   /**
@@ -12390,96 +11613,5 @@ export class DOMExtractor {
         err
       );
     }
-  }
-
-  /**
-   * Validate tree structure for correctness
-   */
-  private validateTreeStructure(root: any): void {
-    if (!root) {
-      console.warn("⚠️ [TREE VALIDATION] No root node to validate");
-      return;
-    }
-
-    const issues: string[] = [];
-    const seenIds = new Set<string>();
-    let totalNodes = 0;
-    let maxDepth = 0;
-
-    const validate = (
-      node: any,
-      depth: number,
-      parentId: string | null
-    ): void => {
-      totalNodes++;
-      maxDepth = Math.max(maxDepth, depth);
-
-      // Check for duplicate IDs
-      if (seenIds.has(node.id)) {
-        issues.push(
-          `Duplicate ID found: ${node.id} (${node.name || node.tagName})`
-        );
-      }
-      seenIds.add(node.id);
-
-      // Check parent reference
-      if (parentId !== null && node.parentId !== parentId) {
-        issues.push(
-          `Parent ID mismatch for ${node.id}: expected ${parentId}, got ${node.parentId}`
-        );
-      }
-
-      // Validate children
-      if (node.children && Array.isArray(node.children)) {
-        node.children.forEach((child: any) => {
-          if (!child) {
-            issues.push(`Null child found in ${node.id}`);
-            return;
-          }
-          validate(child, depth + 1, node.id);
-        });
-      }
-    };
-
-    validate(root, 0, null);
-
-    if (issues.length > 0) {
-      console.error("❌ [TREE VALIDATION] Tree structure has errors:");
-      issues.forEach((issue) => console.error(`  - ${issue}`));
-    } else {
-      console.log(
-        `✅ [TREE VALIDATION] Tree structure valid: ${totalNodes} nodes, max depth ${maxDepth}`
-      );
-    }
-  }
-
-  /**
-   * Generate a visual tree diagram
-   */
-  private generateTreeDiagram(node: any, prefix = "", isLast = true): string {
-    const lines: string[] = [];
-    const connector = isLast ? "└── " : "├── ";
-    const name = node.name || node.tagName || node.type || "unnamed";
-    const type = node.type || "unknown";
-    const id = (node.id || "no-id").substring(0, 12);
-
-    lines.push(`${prefix}${connector}${name} (${type}) [${id}...]`);
-
-    const children = node.children || [];
-    const childPrefix = prefix + (isLast ? "    " : "│   ");
-
-    // Limit to first 5 children at each level to avoid huge logs
-    const displayChildren = children.slice(0, 5);
-    displayChildren.forEach((child: any, index: number) => {
-      const childIsLast =
-        index === displayChildren.length - 1 && children.length <= 5;
-      lines.push(this.generateTreeDiagram(child, childPrefix, childIsLast));
-    });
-
-    if (children.length > 5) {
-      lines.push(`${childPrefix}... (${children.length - 5} more children)`);
-    }
-
-    return lines.join("\n");
   }
 }
