@@ -12580,6 +12580,19 @@ export class DOMExtractor {
         console.log(
           `[PHASE 5] Captured rasterization screenshot for ${element.tagName} (${node.rasterize.reason})`
         );
+      } else if (
+        node.rasterize &&
+        (node.rasterize.reason === "MASK" ||
+          node.rasterize.reason === "CLIP_PATH")
+      ) {
+        // CRITICAL FIX: If masking fails to rasterize, clear the fills.
+        // Otherwise we render an unmasked opaque rectangle that obscures content ("shade" bug).
+        console.warn(
+          `[PHASE 5] Rasterization failed for ${node.rasterize.reason}. Clearing fills to prevent obstruction.`
+        );
+        node.fills = [];
+        node.backgrounds = [];
+        // Keep children and other properties so text/content might still be visible
       }
     } catch (err) {
       console.warn(
