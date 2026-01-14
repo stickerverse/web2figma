@@ -1,11 +1,13 @@
 // Figma Plugin Main Entry Point
+console.log("🚀 WebToFigma Plugin initializing...");
+
 import {
   handleImageTranscodeResult,
   handleWebpTranscodeResult,
 } from "./ui-bridge";
 
 // Import the static UI
-import uiHtml from "../ui/index-static.html";
+import uiHtml from "../ui/index.html";
 import {
   EnhancedFigmaImporter,
   EnhancedImportOptions,
@@ -16,6 +18,11 @@ import { diagnostics } from "./node-builder";
 import { normalizeSchemaTreeForFigma } from "./tree-normalizer";
 import pako from "pako";
 import { debugLogger } from "./debug-logger";
+import {
+  SceneGraphExporter,
+  exportSceneGraphToFile,
+  exportImportedNodesToFile,
+} from "./scene-graph-exporter";
 
 import { Diagnostics } from "./diagnostics";
 import { BuildPlan } from "./diagnostics-protocol";
@@ -115,7 +122,7 @@ console.log(
 );
 
 // BUILD ID - Verify correct plugin version is loaded
-const PLUGIN_BUILD_ID = "20260106_101500_PROD_LAYOUT_FIX";
+const PLUGIN_BUILD_ID = "20260111_PROGRESS_ENHANCED_V1";
 console.log(`🔧 [PLUGIN BUILD ID] ${PLUGIN_BUILD_ID}`);
 
 // Type definitions for incoming data formats (extension → plugin)
@@ -254,11 +261,12 @@ let chromeConnectionState: "connected" | "disconnected" = "disconnected";
 let serverConnectionState: "connected" | "disconnected" = "disconnected";
 // Capture service endpoints - configured for cloud deployment
 // Handoff server configuration
+const safeGlobal = typeof globalThis !== "undefined" ? globalThis : {};
 const HANDOFF_API_KEY =
-  ((globalThis as any).__HANDOFF_API_KEY as string | undefined) || "";
+  ((safeGlobal as any).__HANDOFF_API_KEY as string | undefined) || "";
 
 const HANDOFF_BASES = [
-  (globalThis as any).__HANDOFF_SERVER_URL ?? "http://127.0.0.1:4411",
+  (safeGlobal as any).__HANDOFF_SERVER_URL ?? "http://127.0.0.1:4411",
   "http://localhost:4411",
   // Legacy ports (kept for backward compatibility)
   "http://127.0.0.1:5511",
@@ -376,6 +384,24 @@ figma.ui.onmessage = async (msg) => {
     void pollHandoffJobs();
     return;
   }
+
+  // Scene graph export for gap analysis
+  if (msg.type === "export-scene-graph") {
+    const selection = figma.currentPage.selection;
+    if (selection.length === 0) {
+      figma.notify("Please select a frame to export", { error: true });
+      return;
+    }
+    const rootNode = selection[0];
+    const importedOnly = msg.importedOnly === true;
+
+    if (importedOnly) {
+      exportImportedNodesToFile(rootNode);
+    } else {
+      exportSceneGraphToFile(rootNode);
+    }
+    return;
+  }
 };
 
 function removeLegacyScreenshotBaseLayers(scope: "selection" | "page"): {
@@ -416,32 +442,145 @@ function removeLegacyScreenshotBaseLayers(scope: "selection" | "page"): {
 }
 
 /**
- * AUTOMATED DEBUG: Export imported frame and upload report to debug server
+ * Generate summary statistics from Figma JSON export
+ */
+function generateFigmaSummary(figmaJson: any, mainFrame: FrameNode): any {
+  const summary = {
+    nodeCount: 0,
+    nodeTypes: {} as Record<string, number>,
+    textNodes: 0,
+    imageNodes: 0,
+    zeroSizedNodes: 0,
+    outOfBoundsNodes: 0,
+    largestNodes: [] as Array<{ id: string; name: string; area: number }>,
+    warnings: [] as string[],
+  };
+
+  const viewportWidth = mainFrame.width;
+  const viewportHeight = mainFrame.height;
+  const largestNodesLimit = 10;
+  const nodeSizes: Array<{ id: string; name: string; area: number }> = [];
+
+  function traverse(node: any) {
+    if (!node) return;
+
+    summary.nodeCount++;
+    const nodeType = node.type || "UNKNOWN";
+    summary.nodeTypes[nodeType] = (summary.nodeTypes[nodeType] || 0) + 1;
+
+    // Count text nodes
+    if (nodeType === "TEXT") {
+      summary.textNodes++;
+    }
+
+    // Count image nodes
+    if (nodeType === "RECTANGLE" || nodeType === "FRAME") {
+      const fills = node.fills || [];
+      if (fills.some((f: any) => f?.type === "IMAGE")) {
+        summary.imageNodes++;
+      }
+    }
+
+    // Check for zero-sized nodes
+    const bounds = node.absoluteBoundingBox || node.size;
+    if (bounds) {
+      const width = bounds.width || bounds.x || 0;
+      const height = bounds.height || bounds.y || 0;
+
+      if (width === 0 || height === 0) {
+        summary.zeroSizedNodes++;
+      }
+
+      // Track largest nodes
+      const area = width * height;
+      if (area > 0) {
+        nodeSizes.push({
+          id: node.id || "unknown",
+          name: node.name || "unnamed",
+          area,
+        });
+      }
+
+      // Check if out of bounds
+      const x = bounds.x || 0;
+      const y = bounds.y || 0;
+      if (x < 0 || y < 0 || x > viewportWidth * 2 || y > viewportHeight * 2) {
+        summary.outOfBoundsNodes++;
+      }
+    }
+
+    // Recurse into children
+    if (node.children && Array.isArray(node.children)) {
+      node.children.forEach(traverse);
+    }
+  }
+
+  // Traverse from document root
+  if (figmaJson.document) {
+    traverse(figmaJson.document);
+  }
+
+  // Sort and get largest nodes
+  nodeSizes.sort((a, b) => b.area - a.area);
+  summary.largestNodes = nodeSizes.slice(0, largestNodesLimit);
+
+  // Add warnings
+  if (summary.zeroSizedNodes > 0) {
+    summary.warnings.push(`Found ${summary.zeroSizedNodes} zero-sized nodes`);
+  }
+  if (summary.outOfBoundsNodes > 0) {
+    summary.warnings.push(
+      `Found ${summary.outOfBoundsNodes} nodes outside expected viewport bounds`
+    );
+  }
+  if (summary.imageNodes === 0 && summary.nodeCount > 10) {
+    summary.warnings.push("No image nodes detected in import");
+  }
+
+  return summary;
+}
+
+/**
+ * AUTOMATED DEBUG: Export imported frame and upload comprehensive diagnostics to debug server
+ *
+ * Exports:
+ * 1. import_render.png - Visual screenshot for pixel diffing
+ * 2. import_report.json - Basic metadata and stats
+ * 3. figma_nodes.json.gz - Full JSON_REST_V1 export (compressed)
+ * 4. figma_summary.json - Compact diagnostic summary
  */
 async function exportAndUploadDebugArtifacts(
   mainFrame: FrameNode,
   jobId: string,
   schema: any,
-  stats: any
+  stats: any,
+  selectionMap?: Record<string, string>
 ) {
   try {
+    const baseUrl = "http://localhost:4411";
     const dpr = schema.metadata?.viewport?.devicePixelRatio || 1;
-    // CRITICAL: Export at same scale as original capture for accurate diffing
+
+    console.log(`📤 [DEBUG] Starting artifact export for job ${jobId}...`);
+
+    // 1. Export and upload PNG render
+    console.log(`📸 [DEBUG] Exporting PNG render...`);
     const renderBytes = await mainFrame.exportAsync({
       format: "PNG",
       constraint: { type: "SCALE", value: dpr },
     });
 
-    const baseUrl = "http://localhost:4411";
-    
-    // Upload Render
     await fetch(`${baseUrl}/api/debug/${jobId}/import_render.png`, {
       method: "POST",
       headers: { "Content-Type": "image/png" },
       body: renderBytes as any,
     });
+    console.log(
+      `✅ [DEBUG] Uploaded import_render.png (${(
+        renderBytes.byteLength / 1024
+      ).toFixed(1)} KB)`
+    );
 
-    // Upload Report
+    // 2. Upload basic import report
     const report = {
       jobId,
       fileKey: figma.fileKey,
@@ -460,10 +599,88 @@ async function exportAndUploadDebugArtifacts(
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(report),
     });
+    console.log(`✅ [DEBUG] Uploaded import_report.json`);
 
-    console.log(`✅ [DEBUG] Artifacts uploaded for job ${jobId}`);
+    // 3. Export JSON_REST_V1 format (full Figma node tree)
+    console.log(`🔍 [DEBUG] Exporting JSON_REST_V1...`);
+    const figmaJson = await mainFrame.exportAsync({ format: "JSON_REST_V1" });
+    const figmaJsonString = JSON.stringify(figmaJson);
+    const jsonSizeKB = (figmaJsonString.length / 1024).toFixed(1);
+    console.log(`📊 [DEBUG] JSON_REST_V1 size: ${jsonSizeKB} KB`);
+
+    // Compress using pako (gzip)
+    const compressed = pako.gzip(figmaJsonString);
+    const compressedSizeKB = (compressed.byteLength / 1024).toFixed(1);
+    console.log(
+      `🗜️ [DEBUG] Compressed to: ${compressedSizeKB} KB (${(
+        (1 - compressed.byteLength / figmaJsonString.length) *
+        100
+      ).toFixed(1)}% reduction)`
+    );
+
+    await fetch(`${baseUrl}/api/debug/${jobId}/figma_nodes.json.gz`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/gzip",
+        "Content-Encoding": "gzip",
+      },
+      body: compressed,
+    });
+    console.log(`✅ [DEBUG] Uploaded figma_nodes.json.gz`);
+
+    // 4. Generate and upload summary diagnostics
+    console.log(`📋 [DEBUG] Generating summary...`);
+    const summary = generateFigmaSummary(figmaJson, mainFrame);
+
+    await fetch(`${baseUrl}/api/debug/${jobId}/figma_summary.json`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(summary, null, 2),
+    });
+    console.log(`✅ [DEBUG] Uploaded figma_summary.json`);
+
+    // 5. Upload selection map if available
+    if (selectionMap) {
+      console.log(`🗺️ [DEBUG] Uploading selection map...`);
+      await fetch(`${baseUrl}/api/debug/${jobId}/figma_selection_map.json`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(selectionMap, null, 2),
+      });
+      console.log(`✅ [DEBUG] Uploaded figma_selection_map.json`);
+    }
+
+    // 6. Export and upload scene graph snapshot for gap analysis
+    console.log(
+      `🔬 [DEBUG] Exporting scene graph snapshot for gap analysis...`
+    );
+    const sceneGraphExporter = new SceneGraphExporter();
+    const sceneGraphSnapshot = sceneGraphExporter.exportFromNode(mainFrame);
+    const sceneGraphJson = JSON.stringify(sceneGraphSnapshot, null, 2);
+    const sceneGraphCompressed = pako.gzip(sceneGraphJson);
+
+    await fetch(`${baseUrl}/api/debug/${jobId}/figma_scene_graph.json.gz`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/gzip",
+        "Content-Encoding": "gzip",
+      },
+      body: sceneGraphCompressed,
+    });
+    console.log(
+      `✅ [DEBUG] Uploaded figma_scene_graph.json.gz (${
+        sceneGraphSnapshot.totalNodes
+      } nodes, ${(sceneGraphCompressed.byteLength / 1024).toFixed(
+        1
+      )} KB compressed)`
+    );
+
+    console.log(
+      `✅ [DEBUG] All artifacts uploaded successfully for job ${jobId}`
+    );
   } catch (e) {
     console.error("❌ [DEBUG] Failed to upload artifacts:", e);
+    // Log but don't throw - we don't want to break the import if debug upload fails
   }
 }
 
@@ -669,9 +886,18 @@ async function handleImportRequest(
 
     // AUTOMATED DEBUG EXPORT
     const mainFrame = importer.getMainFrame();
-    const jobId = options?.jobId || (schema.metadata?.url ? "job_" + Date.now() : "unknown_job");
+    const jobId =
+      options?.jobId ||
+      (schema.metadata?.url ? "job_" + Date.now() : "unknown_job");
     if (mainFrame) {
-      await exportAndUploadDebugArtifacts(mainFrame, jobId, schema, enhancedStats);
+      const selectionMap = importer.getSelectionMap();
+      await exportAndUploadDebugArtifacts(
+        mainFrame,
+        jobId,
+        schema,
+        enhancedStats,
+        selectionMap
+      );
     }
 
     postHandoffStatus("waiting");
@@ -1065,15 +1291,25 @@ async function pollHandoffJobs(): Promise<void> {
 
     // CRITICAL FIX: Increase timeout to 60s to handle large payloads
     // Large imports (10MB+) can take >30s to transfer and decompress
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 60000); // 60s timeout for large payloads
+    let signal: AbortSignal | undefined;
+    let timeoutId: any;
+
+    if (typeof AbortController !== "undefined") {
+      const controller = new AbortController();
+      timeoutId = setTimeout(() => controller.abort(), 60000); // 60s timeout
+      signal = controller.signal;
+    }
 
     try {
-      const response = await fetch(endpoint, {
+      const fetchOptions: any = {
         method: "GET",
         headers,
-        signal: controller.signal,
-      });
+      };
+      if (signal) {
+        fetchOptions.signal = signal;
+      }
+
+      const response = await fetch(endpoint, fetchOptions);
       clearTimeout(timeoutId);
 
       console.log(
@@ -1140,7 +1376,11 @@ async function pollHandoffJobs(): Promise<void> {
         console.log(`[POLL] ✅ Job ${body.job.id} found! Starting import...`);
         const payload = decompressPayload(body.job.payload);
         postHandoffStatus("job-ready", `Importing job ${body.job.id}`);
-        await handleImportRequest(payload, { jobId: body.job.id }, "auto-import");
+        await handleImportRequest(
+          payload,
+          { jobId: body.job.id },
+          "auto-import"
+        );
       } else {
         console.log("[POLL] No job in response");
         postHandoffStatus("waiting");
@@ -1219,18 +1459,13 @@ function decompressPayload(payload: any): any {
         throw new Error("Pako inflate function not available");
       }
 
-      // OPTIMIZATION: Inflate to Uint8Array first (default), then decode.
-      // This is often more memory-efficient than pako's internal string builder for large payloads.
-      const inflated = pako.inflate(compressedData); // Returns Uint8Array
+      // OPTIMIZATION: Inflate to string directly.
+      // In Figma's plugin environment, TextDecoder is not available in the main thread.
+      // Pako's to: 'string' option handles the decoding internally using a fallback
+      // that works in limited JS environments like QuickJS.
+      console.log("📦 [DECOMPRESS] Step 2: Pako inflate to string...");
+      const jsonString = pako.inflate(compressedData, { to: "string" });
       console.log("✅ [DECOMPRESS] Pako inflate successful", {
-        inflatedSize: inflated.length,
-      });
-
-      console.log("📦 [DECOMPRESS] Step 3: TextDecode...");
-      const decoder = new TextDecoder("utf-8");
-      const jsonString = decoder.decode(inflated); // Create string from typed array
-
-      console.log("✅ [DECOMPRESS] String decode successful", {
         stringLength: jsonString.length,
         preview: jsonString.substring(0, 200) + "...",
       });
@@ -1292,9 +1527,19 @@ function decompressPayload(payload: any): any {
         payloadPreview: getSafePayloadPreview(payload),
       });
 
+      // Handle specific error cases
+      const msg = e instanceof Error ? e.message : String(e);
+      
+      // Truncated JSON (common with large captures or network issues)
+      if (msg.includes("Unexpected end of JSON input")) {
+        throw new Error(
+          "Capture data is corrupt (truncated). The page may be too large to transfer reliably. Please try capturing a smaller section or use 'Server Capture'."
+        );
+      }
+
       // CRITICAL: Don't silently return corrupted data
       // If we failed to parse/inflate, it's a hard failure
-      if (e instanceof Error && e.message.match(/memory/i)) {
+      if (msg.match(/memory/i)) {
         throw new Error(
           "Out of memory during import. The web page is too large for Figma to process at once. Try capturing a smaller section."
         );
@@ -1948,9 +2193,18 @@ async function handleEnhancedImportV2(
 
     // AUTOMATED DEBUG EXPORT
     const mainFrame = enhancedImporter.getMainFrame();
-    const jobId = options?.jobId || (schema.metadata?.url ? "job_" + Date.now() : "unknown_job");
+    const jobId =
+      options?.jobId ||
+      (schema.metadata?.url ? "job_" + Date.now() : "unknown_job");
     if (mainFrame) {
-      await exportAndUploadDebugArtifacts(mainFrame, jobId, schema, stats);
+      const selectionMap = enhancedImporter.getSelectionMap();
+      await exportAndUploadDebugArtifacts(
+        mainFrame,
+        jobId,
+        schema,
+        stats,
+        selectionMap
+      );
     }
 
     // Show enhanced notification with verification info
