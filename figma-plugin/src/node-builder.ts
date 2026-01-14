@@ -3144,6 +3144,15 @@ export class NodeBuilder {
     const { matrix, origin } = absoluteTransform;
     const [a, b, c, d, tx, ty] = matrix;
 
+    // CRITICAL SAFETY: Validate matrix values to prevent engine crashes
+    if (![a, b, c, d, tx, ty].every((v) => typeof v === "number" && Number.isFinite(v))) {
+      console.warn(
+        `⚠️ [TRANSFORM] Skipping invalid matrix for ${data.tagName}:`,
+        matrix
+      );
+      return;
+    }
+
     // Apply the transform matrix directly to the Figma node
     // Matrix format: [scaleX, skewY, skewX, scaleY, translateX, translateY]
     try {
@@ -4167,30 +4176,23 @@ export class NodeBuilder {
           // removed agent log block
 
           // 1. Process regular fills (solid colors, gradients, images)
-          // CRITICAL FIX: Skip inherited fills if computed background is transparent
-          // ENHANCED: Also skip fills if computed bg is transparent AND fills exist (defensive check)
+          // PIXEL-PERFECT FIX: Process ALL fills from schema, don't skip inherited
+          // If fills array is empty, synthesize from computedStyle
           if (data.fills?.length) {
-            const shouldSkipFills =
-              computedBgIsTransparent &&
-              (fillsAreInherited ||
-                (data.fills.length > 0 &&
-                  data.colorInheritance?.backgroundColorSource !== "explicit"));
+            // Process fills even if inherited - visual fidelity requires all paints
+            console.log(
+              `  ✅ Processing ${data.fills.length} fills for ${data.name} ` +
+              `(inherited: ${fillsAreInherited}, computedBg: ${computedBgStr})`
+            );
+            console.log(
+              `  ✅ Processing ${data.fills.length} fills for ${data.name}`
+            );
+            const fillPaints = await this.convertFillsAsync(data.fills);
 
-            if (shouldSkipFills) {
-              console.log(
-                `  ⚪ [FILL] Skipping ${data.fills.length} inherited/transparent fills for ${data.name} (computed background is transparent: ${data.computedStyle?.backgroundColor}, inheritance: ${data.colorInheritance?.backgroundColorSource})`
-              );
-              // removed agent log block
-            } else {
-              console.log(
-                `  ✅ Processing ${data.fills.length} fills for ${data.name}`
-              );
-              const fillPaints = await this.convertFillsAsync(data.fills);
+            // removed agent log block
 
-              // removed agent log block
-
-              // DEBUG: Log conversion results
-              console.log(
+            // DEBUG: Log conversion results
+            console.log(
                 `  🎨 [FILL DEBUG] convertFillsAsync for ${data.name}:`,
                 {
                   schemaFillsCount: data.fills.length,
@@ -4348,16 +4350,51 @@ export class NodeBuilder {
                   );
                 }
               } // End if fillPaints.length === 0 fallback check
-            } // End else block for non-inherited fills
+          } else if (data.fills?.length === 0) {
+            // PIXEL-PERFECT FIX: Synthesize fills from computedStyle when schema has empty array
+            console.log(
+              `  🔧 [SYNTHESIS] Empty fills array for ${data.name}, attempting synthesis`
+            );
+
+            // Try computedStyle.backgroundColor first (most reliable)
+            if (data.computedStyle?.backgroundColor) {
+              const color = this.parseColorString(data.computedStyle.backgroundColor);
+              if (color && color.a > 0.01) {
+                console.log(
+                  `  ✓ [SYNTHESIS] Created fill from computedStyle for ${data.name}:`,
+                  color
+                );
+                paints.push({
+                  type: "SOLID",
+                  color: { r: color.r, g: color.g, b: color.b },
+                  opacity: color.a,
+                  visible: true,
+                });
+              }
+            }
+
+            // Fallback to style.backgroundColor
+            if (paints.length === 0 && data.style?.backgroundColor) {
+              const color = this.parseColorString(data.style.backgroundColor);
+              if (color && color.a > 0.01) {
+                console.log(
+                  `  ✓ [SYNTHESIS] Created fill from style.backgroundColor for ${data.name}:`,
+                  color
+                );
+                paints.push({
+                  type: "SOLID",
+                  color: { r: color.r, g: color.g, b: color.b },
+                  opacity: color.a,
+                  visible: true,
+                });
+              }
+            }
           }
 
           // 2. Process detailed background layers (usually images with specific positioning)
-          // CRITICAL FIX: Skip inherited backgrounds if computed background is transparent
-          const shouldSkipBackgrounds =
-            computedBgIsTransparent &&
-            (fillsAreInherited ||
-              (data.backgrounds?.length > 0 &&
-                data.colorInheritance?.backgroundColorSource !== "explicit"));
+          // CRITICAL FIX: Do NOT skip inherited backgrounds
+          // If the extractor captured backgrounds (images, gradients), they should be rendered.
+          const shouldSkipBackgrounds = false;
 
           if (hasDetailedBackgrounds && !shouldSkipBackgrounds) {
             console.log(
@@ -4434,12 +4471,10 @@ export class NodeBuilder {
             // If early fallback didn't work, try all other sources in order of preference
             if (!parsedColor) {
               // NEW: Check for inherited color information first
-              // CRITICAL FIX: Skip inherited colors if computed background is transparent
-              const shouldSkipInheritedFallback =
-                computedBgIsTransparent &&
-                (fillsAreInherited ||
-                  data.colorInheritance?.backgroundColorSource !== "explicit");
-
+                          // CRITICAL FIX: Do NOT skip inherited colors even if computed background is transparent
+                          // The whole point of inheritance tracking is to paint the parent's color when the child is transparent
+                          // but visually needs to block what's behind it (or just appear colored).
+                          const shouldSkipInheritedFallback = false;
               if (
                 data.colorInheritance?.backgroundColorSource === "inherited" &&
                 !shouldSkipInheritedFallback
@@ -6001,6 +6036,32 @@ export class NodeBuilder {
         Object.keys(this.assets?.images || {}).slice(0, 5)
       );
 
+      // PIXEL-PERFECT FIX: Detect hash mismatch by comparing hash formats
+      const allAssetKeys = Object.keys(this.assets?.images || {});
+
+      if (allAssetKeys.length > 0) {
+        console.log(`  🔍 [HASH MISMATCH DEBUG] Comparing hash formats:`);
+        console.log(`     Requested hash: ${hash} (length: ${hash.length})`);
+        console.log(`     Sample asset key: ${allAssetKeys[0]} (length: ${allAssetKeys[0].length})`);
+
+        // Check if hash format is completely different
+        const hashPattern = hash.match(/^[0-9a-f]+$/i) ? 'hex' : 'other';
+        const assetPattern = allAssetKeys[0].match(/^[0-9a-f]+$/i) ? 'hex' : 'other';
+
+        if (hashPattern !== assetPattern) {
+          console.warn(`  ⚠️ [HASH MISMATCH] Hash format mismatch: requested=${hashPattern}, assets=${assetPattern}`);
+          console.warn(`     This indicates a hashing algorithm inconsistency between extension and plugin.`);
+        }
+
+        // Check if hash is a URL but assets use hashed keys
+        if (hash.startsWith('http') && !allAssetKeys[0].startsWith('http')) {
+          console.warn(`  ⚠️ [HASH MISMATCH] Hash is a URL but assets use hashed keys.`);
+          console.warn(`     Extension may not be hashing URLs correctly in finalizeAssets.`);
+        }
+      } else {
+        console.error(`  ❌ [HASH MISMATCH DEBUG] No assets available at all! Asset object is empty.`);
+      }
+
       // Strategy 2: Try normalized hash (remove prefixes)
       const normalizedHash = hash?.replace(/^(image:|img_)/, "");
       if (normalizedHash && this.assets?.images?.[normalizedHash]) {
@@ -6104,9 +6165,30 @@ export class NodeBuilder {
             80
           )}...`
         );
-        // Use fetchImage which automatically routes external URLs to proxy
-        const bytes = await this.fetchImage(hash);
-        const contentType = "image/png";
+        
+        let bytes: Uint8Array;
+        let contentType = "image/png";
+
+        if (hash.startsWith("data:")) {
+          // Parse data URL directly
+          const matches = hash.match(/^data:([^;]+);base64,(.+)$/);
+          if (matches && matches.length === 3) {
+            contentType = matches[1];
+            const binaryString = atob(matches[2]);
+            const len = binaryString.length;
+            bytes = new Uint8Array(len);
+            for (let i = 0; i < len; i++) {
+              bytes[i] = binaryString.charCodeAt(i);
+            }
+          } else {
+             // Fallback to fetch for malformed data URLs or non-base64
+             bytes = await this.fetchImage(hash);
+          }
+        } else {
+           // Use fetchImage which automatically routes external URLs to proxy
+           bytes = await this.fetchImage(hash);
+        }
+
         const transcodedBytes = await this.transcodeIfUnsupportedRaster(
           bytes,
           contentType
@@ -6114,7 +6196,9 @@ export class NodeBuilder {
         image = figma.createImage(transcodedBytes);
         console.log(`  ✅ Successfully fetched image from hash URL`);
       } catch (e) {
+        const errorMsg = e instanceof Error ? e.message : String(e);
         console.warn(`  ❌ Failed to fetch image from URL ${hash}:`, e);
+        failureReason = `URL fetch error: ${errorMsg}`;
       }
     }
 
@@ -6458,11 +6542,7 @@ export class NodeBuilder {
       }
 
       // Convert base64 to Uint8Array
-      const binaryString = atob(base64Data);
-      const bytes = new Uint8Array(binaryString.length);
-      for (let i = 0; i < binaryString.length; i++) {
-        bytes[i] = binaryString.charCodeAt(i);
-      }
+      const bytes = this.base64ToUint8Array(base64Data);
 
       // Create Figma image from bytes
       const image = figma.createImage(bytes);
@@ -6813,25 +6893,36 @@ export class NodeBuilder {
       try {
         const proxyUrl = `${base}/api/proxy?url=${encodeURIComponent(url)}`;
         console.log(`  🔄 [PROXY] Attempting to fetch via proxy: ${base}`);
-        const response = await fetch(proxyUrl, {
+        
+        let signal: AbortSignal | undefined;
+        let timeoutId: any;
+        if (typeof AbortController !== "undefined") {
+          const controller = new AbortController();
+          timeoutId = setTimeout(() => controller.abort(), 20000); // 20s timeout
+          signal = controller.signal;
+        }
+
+        const fetchOptions: any = {
           headers: {
             Accept: "application/json",
           },
-        });
+        };
+        if (signal) {
+          fetchOptions.signal = signal;
+        }
+
+        const response = await fetch(proxyUrl, fetchOptions);
+        if (timeoutId) clearTimeout(timeoutId);
 
         if (response.ok) {
-          const data = await response.json();
+          const data = await response.json() as { ok?: boolean; data?: string; error?: string };
           if (data.ok && data.data) {
             // data.data is a data URL like "data:image/png;base64,..."
             const base64Match = data.data.match(/^data:[^;]+;base64,(.+)$/);
             if (base64Match) {
               const base64 = base64Match[1];
               // Convert base64 to Uint8Array
-              const binaryString = atob(base64);
-              const bytes = new Uint8Array(binaryString.length);
-              for (let i = 0; i < binaryString.length; i++) {
-                bytes[i] = binaryString.charCodeAt(i);
-              }
+              const bytes = this.base64ToUint8Array(base64);
               console.log(
                 `  ✅ [PROXY] Successfully fetched image via ${base} (${bytes.length} bytes)`
               );
@@ -6857,6 +6948,15 @@ export class NodeBuilder {
         continue;
       }
     }
+
+    // PIXEL-PERFECT FIX: Add diagnostic message when all proxies fail
+    console.error(`❌ [PROXY FAILED] All handoff server proxies failed for image fetch.`);
+    console.error(`   Attempted servers:`, handoffBases);
+    console.error(`   DIAGNOSIS:`);
+    console.error(`     1. Ensure handoff server is running: node handoff-server.cjs`);
+    console.error(`     2. Check server is accessible: curl http://localhost:4411/api/health`);
+    console.error(`     3. Check firewall/network settings`);
+    console.error(`     4. Check server logs for proxy errors`);
 
     throw new Error(`All proxy attempts failed for ${url.substring(0, 60)}...`);
   }
@@ -6888,12 +6988,27 @@ export class NodeBuilder {
 
     // For data URLs and blob URLs, try direct fetch (no CORS issues)
     try {
-      const response = await fetch(url, {
+      let signal: AbortSignal | undefined;
+      let timeoutId: any;
+      if (typeof AbortController !== "undefined") {
+        const controller = new AbortController();
+        timeoutId = setTimeout(() => controller.abort(), 20000); // 20s timeout
+        signal = controller.signal;
+      }
+
+      const fetchOptions: any = {
         headers: {
           Accept:
             "image/webp,image/png,image/jpeg,image/apng,image/svg+xml,*/*;q=0.8",
         },
-      });
+      };
+      if (signal) {
+        fetchOptions.signal = signal;
+      }
+
+      const response = await fetch(url, fetchOptions);
+      if (timeoutId) clearTimeout(timeoutId);
+
       if (response.ok) {
         const arrayBuffer = await response.arrayBuffer();
         const bytes = new Uint8Array(arrayBuffer);
@@ -7493,7 +7608,7 @@ export class NodeBuilder {
           try {
             // Use fetchImage which automatically routes external URLs to proxy
             const bytes = await this.fetchImage(url);
-            svgMarkup = new TextDecoder().decode(bytes);
+            svgMarkup = this.uint8ToString(bytes);
           } catch (fetchError) {
             console.warn("SVG fetch failed", fetchError);
           }
@@ -7816,6 +7931,16 @@ export class NodeBuilder {
     svgString: string,
     data: any
   ): SceneNode | null {
+    // CRITICAL SAFETY CHECK: Skip massive SVGs to prevent WASM memory crashes
+    // Figma's createNodeFromSvg engine crashes with "memory access out of bounds" on huge strings
+    const MAX_SVG_LENGTH = 300000; // 300KB limit
+    if (svgString && svgString.length > MAX_SVG_LENGTH) {
+      console.warn(
+        `⚠️ [SVG] Skipping massive SVG content (${(svgString.length / 1024).toFixed(1)} KB) for ${data.name || "Vector"}. Will fallback to raster image.`
+      );
+      return null;
+    }
+
     try {
       // FIX: Resolve 'currentColor' using the node's fill color
       // This fixes icons that rely on CSS color inheritance
@@ -8105,7 +8230,7 @@ export class NodeBuilder {
       const parser = new DOMParser();
       const doc = parser.parseFromString(svgMarkup, "image/svg+xml");
       const svg = doc.documentElement;
-      const uses = Array.from(svg.querySelectorAll("use"));
+      const uses = Array.from(svg.querySelectorAll("use")) as Element[];
       if (!uses.length) return svgMarkup;
 
       const spriteCache = new Map<string, Document>();
@@ -8127,7 +8252,7 @@ export class NodeBuilder {
             } else {
               // Use fetchImage which automatically routes external URLs to proxy
               const bytes = await this.fetchImage(absUrl);
-              const text = new TextDecoder().decode(bytes);
+              const text = this.uint8ToString(bytes);
               symbolDoc = parser.parseFromString(text, "image/svg+xml");
               spriteCache.set(absUrl, symbolDoc);
             }
@@ -8179,6 +8304,25 @@ export class NodeBuilder {
     }
   }
 
+  private uint8ToString(bytes: Uint8Array): string {
+    if (typeof TextDecoder !== "undefined") {
+      try {
+        return new TextDecoder("utf-8").decode(bytes);
+      } catch (e) {
+        console.warn("TextDecoder failed, using fallback", e);
+      }
+    }
+
+    // Fallback: simple character conversion (efficient for large arrays)
+    let result = "";
+    const CHUNK_SIZE = 8192;
+    for (let i = 0; i < bytes.length; i += CHUNK_SIZE) {
+      const chunk = bytes.subarray(i, i + CHUNK_SIZE);
+      result += String.fromCharCode.apply(null, chunk as any);
+    }
+    return result;
+  }
+
   private base64ToString(
     base64: string,
     options?: { allowSvg?: boolean }
@@ -8187,16 +8331,7 @@ export class NodeBuilder {
     const clean = normalized.replace(/\s/g, "");
 
     const bytes = this.base64ToUint8Array(clean, options?.allowSvg === true);
-
-    if (typeof TextDecoder !== "undefined") {
-      return new TextDecoder("utf-8").decode(bytes);
-    }
-
-    let result = "";
-    for (let i = 0; i < bytes.length; i++) {
-      result += String.fromCharCode(bytes[i]);
-    }
-    return result;
+    return this.uint8ToString(bytes);
   }
 
   private mapFontWeight(weight: number): string {
@@ -8593,10 +8728,13 @@ export class NodeBuilder {
     x: number,
     y: number
   ): Transform {
-    // CORRECTED: Start with identity matrix per Figma API: [[1, 0, 0], [0, 1, 0]]
+    // CORRECTED: Start with scale matrix per Figma API
+    const scaleX = parsedTransform.scaleX !== undefined ? parsedTransform.scaleX : 1;
+    const scaleY = parsedTransform.scaleY !== undefined ? parsedTransform.scaleY : 1;
+    
     let matrix: Transform = [
-      [1, 0, 0],
-      [0, 1, 0],
+      [scaleX, 0, 0],
+      [0, scaleY, 0],
     ];
 
     // Apply rotation if present (per Figma API spec)
@@ -8605,11 +8743,20 @@ export class NodeBuilder {
       const cos = Math.cos(angle);
       const sin = Math.sin(angle);
 
-      // CORRECTED: Rotation matrix per Figma docs: [[cos, sin, 0], [-sin, cos, 0]]
-      matrix = [
-        [cos, sin, 0],
-        [-sin, cos, 0],
+      // CORRECTED: Rotation matrix multiplication with scale
+      const newMatrix: Transform = [
+        [
+          matrix[0][0] * cos - matrix[1][0] * sin,
+          matrix[0][1] * cos - matrix[1][1] * sin,
+          0
+        ],
+        [
+          matrix[0][0] * sin + matrix[1][0] * cos,
+          matrix[0][1] * sin + matrix[1][1] * cos,
+          0
+        ]
       ];
+      matrix = newMatrix;
     }
 
     // Apply skew if present (following affine transform rules)
