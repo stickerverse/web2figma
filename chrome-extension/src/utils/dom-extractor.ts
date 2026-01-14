@@ -9396,7 +9396,7 @@ export class DOMExtractor {
     // MEMORY OPTIMIZATION: Re-enabled eager base64 embedding for fidelity.
     // The plugin will use these bytes directly.
     const EMBED_IMAGE_BASE64 = true; 
-    const STRICT_MODE = true; // Fail capture if critical images can't be embedded
+    const STRICT_MODE = false; // Allow partial capture if some images fail (plugin will try proxy fallback)
 
     if (!EMBED_IMAGE_BASE64) {
       // Ensure URL is set for all assets so plugin can fetch later.
