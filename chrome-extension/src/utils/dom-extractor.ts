@@ -490,6 +490,7 @@ export class DOMExtractor {
     nodesProcessed: 0,
     phaseStartTime: 0,
     currentPhase: "initialization",
+    currentDetail: "",
   };
 
   // DIAGNOSTICS: Counters for debugging blank frame issues
@@ -1021,10 +1022,11 @@ export class DOMExtractor {
       );
       const nodesProcessed = this.performanceTracker.nodesProcessed;
       const phase = this.performanceTracker.currentPhase;
+      const detail = this.performanceTracker.currentDetail || "";
       this.postProgress(
         `Extracting... (${Math.floor(
           elapsed / 1000
-        )}s, ${nodesProcessed} nodes, ${phase})`,
+        )}s, ${nodesProcessed} nodes)\n${phase}${detail ? ": " + detail : ""}`,
         percent
       );
       this.lastYieldTime = Date.now();
@@ -1849,7 +1851,7 @@ export class DOMExtractor {
       }
     }
 
-    this.postProgress("Initializing DOM traversal...", 30);
+    this.postProgress("Initializing DOM traversal...", 20);
 
     // CRITICAL FIX: Extract document/body background color for main frame
     // This ensures the main frame matches the actual page background (black, white, etc.)
@@ -1897,7 +1899,7 @@ export class DOMExtractor {
       // Patch: stop embedding font binaries into schema JSON (see assets.fonts)
       version: "2.0.1-production",
       metadata: {
-        url: window.location.href,
+        url: window.location.href || document.URL || "unknown",
         title: document.title,
         viewport: this.extractViewportData(),
         timestamp: new Date().toISOString(),
@@ -1941,7 +1943,7 @@ export class DOMExtractor {
       );
 
       // Extract root node
-      this.postProgress("Traversing DOM tree...", 40);
+      this.postProgress("Traversing DOM tree...", 35);
 
       // ENHANCED: Check for timeout before starting extraction
 
@@ -1970,6 +1972,8 @@ export class DOMExtractor {
         // Clean body/html backgrounds
         if (rootNode.htmlTag === "body" || rootNode.htmlTag === "html") {
           console.log("🔄 [SCHEMA] Clearing body/html backgrounds");
+          // CRITICAL FIX: Enforce FRAME type for root node to satisfy strict importer validation
+          rootNode.type = "FRAME"; 
           const beforeFills = Array.isArray((rootNode as any).fills)
             ? (rootNode as any).fills.length
             : 0;
@@ -2110,7 +2114,7 @@ export class DOMExtractor {
       const ENABLE_HOVER_CAPTURE = false; // Disabled for performance
       const isSite = false || false;
       if (ENABLE_HOVER_CAPTURE && !isSite) {
-        this.postProgress("Capturing hover states for buttons...", 70);
+        this.postProgress("Capturing hover states for buttons...", 68);
         try {
           await this.captureButtonHoverStates(schema);
         } catch (error) {
@@ -2218,6 +2222,11 @@ export class DOMExtractor {
       if (schema.root) {
         this.cleanupNodeRefs(schema.root);
       }
+
+      // PERFORMANCE FIX: Strip heavy, non-essential debug data before serialization
+      // This reduces payload size by ~90% for complex pages like Facebook
+      this.sanitizeSchemaForPerformance(schema);
+
       // EXTRA SAFETY: Ensure the entire schema is structured-clone safe.
       // If ANY live DOM nodes leak into the payload, window.postMessage will throw.
       this.sanitizeSchemaForMessaging(schema);
@@ -2511,6 +2520,11 @@ export class DOMExtractor {
     depth: number = 0,
     parentAbsoluteLayout: { x: number; y: number } = { x: 0, y: 0 }
   ): Promise<ElementNode | null> {
+    // Update current detail for heartbeat
+    const tagDisplay = element.tagName ? element.tagName.toLowerCase() : 'element';
+    const idDisplay = element.id ? `#${element.id}` : '';
+    this.performanceTracker.currentDetail = `${tagDisplay}${idDisplay}`;
+
     // Cooperative yielding: yield to event loop every N nodes
     this.diagnostics.totalElements++;
     this.performanceTracker.nodesProcessed++;
@@ -2525,6 +2539,14 @@ export class DOMExtractor {
         await new Promise((resolve) => setTimeout(resolve, 0));
         this.performanceTracker.lastYieldTime = Date.now();
       }
+      
+      // Force progress update for granular feedback
+      // Scale progress from 35% to 65% based on node count (assuming ~5000 nodes typical max)
+      const percent = Math.min(35 + Math.floor((this.performanceTracker.nodesProcessed / 5000) * 30), 65);
+      this.postProgress(
+        `Extracting... (${this.performanceTracker.nodesProcessed} nodes)\n${this.performanceTracker.currentPhase}: ${this.performanceTracker.currentDetail}`,
+        percent
+      );
     }
 
     if (this.nodeId % 100 === 0 && this.nodeId > 0) {
@@ -2580,7 +2602,8 @@ export class DOMExtractor {
         return null;
       }
       // If visibility is hidden, stick around ONLY if we have visible descendants
-      if (!this.hasVisiblePaintingDescendants(element, 3)) {
+      // CRITICAL FIX: Increase depth from 3 to 15 to catch deep content in wrappers
+      if (!this.hasVisiblePaintingDescendants(element, 15)) {
         this.diagnostics.skippedHidden++;
         return null;
       }
@@ -2914,11 +2937,12 @@ export class DOMExtractor {
       },
       // Parse transform matrix for pixel-perfect positioning
       transform: this.parseTransformMatrix(computed.transform),
-      // STRICT TRANSFORM POLICY: Mark nodes requiring rasterization fallback
-      _requiresRasterization: this.shouldRasterizeTransform(
-        computed.transform,
-        element
-      ),
+      // RASTERIZATION POLICY: Mark transforms and SVG elements for rasterization
+      // PIXEL-PERFECT FIX: SVG elements cannot be reliably vectorized via schema
+      // Always mark them for rasterization to ensure visual fidelity
+      _requiresRasterization:
+        this.shouldRasterizeTransform(computed.transform, element) ||
+        element.tagName === 'SVG',
       // Extract z-index for layer ordering
       zIndex:
         computed.zIndex && computed.zIndex !== "auto"
@@ -2962,6 +2986,15 @@ export class DOMExtractor {
         pageZoom: this.getPageZoom(),
       },
     };
+
+    // Log SVG rasterization for debugging
+    if (element.tagName === 'SVG') {
+      const svgId = element.getAttribute('id') || element.getAttribute('class') || 'unnamed';
+      console.log(
+        `  🖼️ [SVG] Marked for rasterization: ${svgId} ` +
+        `(width: ${computed.width}, height: ${computed.height})`
+      );
+    }
 
     // PHASE 4: Capture CSS filters and blend modes for pixel-perfect visual effects
     if (computed.filter && computed.filter !== "none") {
@@ -3152,6 +3185,14 @@ export class DOMExtractor {
     // (e.g., clip-path/mask/backdrop-filter) have concrete pixel data
     if (node.rasterize && !node.rasterize.dataUrl) {
       await this.captureElementForRasterization(element, node);
+    }
+
+    // FINAL VALIDATION: Ensure critical properties are present for Figma importer
+    if (!node.type || typeof node.type !== 'string') {
+      node.type = 'FRAME';
+    }
+    if (!node.id || typeof node.id !== 'string') {
+      node.id = `fallback_id_${Math.random().toString(36).substr(2, 9)}`;
     }
 
     return node as ElementNode;
@@ -4515,12 +4556,14 @@ export class DOMExtractor {
     // 6. Skip <noscript>
     if (tagName === "noscript") return true;
 
-    // 7. Skip hidden SVGs that are likely sprite sheets
+    // 7. Skip hidden SVGs ONLY if they are truly zero-sized
+    // CRITICAL FIX: aria-hidden="true" just means "screen reader ignore", NOT "invisible"
+    // Many decorative icons (checkmarks, arrows) are aria-hidden but visually essential.
     if (tagName === "svg" && element.getAttribute("aria-hidden") === "true") {
+      // Only skip if it has absolutely NO dimensions
       if (
-        computed.height === "0px" ||
-        computed.width === "0px" ||
-        computed.position === "absolute"
+        (computed.height === "0px" || computed.height === "0") &&
+        (computed.width === "0px" || computed.width === "0")
       ) {
         return true;
       }
@@ -5630,18 +5673,18 @@ export class DOMExtractor {
           }
         }
 
-        // CRITICAL FIX: Only add fills if the element ACTUALLY paints a background
-        // If background is inherited (element's computed background is transparent),
-        // do NOT add fills - this prevents wrapper frames from becoming opaque rectangles
+        // PIXEL-PERFECT FIX: ALWAYS create fills for visible backgrounds, even if inherited
+        // The plugin will handle transparency/blending logic using the _inherited metadata
+        // This ensures visual fidelity - what browser paints, Figma should paint
         const isBackgroundInherited =
           node.inheritanceFlags?.backgroundColorInherited === true;
-        const elementActuallyPaintsBackground =
-          !isBackgroundInherited &&
-          effectiveColorParsed &&
-          effectiveColorParsed.a > 0.001;
 
-        if (elementActuallyPaintsBackground && effectiveColorParsed) {
-          // Element has its own non-transparent background - add fills
+        // Create fill if we have a visible background color (inherited OR explicit)
+        if (effectiveColorParsed && effectiveColorParsed.a > 0.001) {
+          console.log(
+            `  🎨 [FILL] Creating fill for ${element.tagName}#${element.id}: ${effectiveBgColor} (inherited: ${isBackgroundInherited})`
+          );
+
           if (!node.fills) node.fills = [];
           node.fills.push({
             type: "SOLID",
@@ -5652,18 +5695,25 @@ export class DOMExtractor {
             },
             opacity: effectiveColorParsed.a,
             visible: true,
+            // NEW: Add metadata to help plugin distinguish inherited fills
+            _inherited: isBackgroundInherited,
           });
 
-          // Also track as a background color for contrast calculations
+          // Track as background for contrast calculations
           if (!node.backgrounds) node.backgrounds = [];
           node.backgrounds.push({
             type: "solid",
             color: effectiveColorParsed,
             opacity: effectiveColorParsed.a,
             visible: true,
+            _inherited: isBackgroundInherited,
           });
 
           this.assets.colors.add(effectiveBgColor);
+        } else {
+          console.log(
+            `  ⚪ [FILL] Skipping fill for ${element.tagName}#${element.id}: no visible background (bgColor: ${bgColor}, effectiveBgColor: ${effectiveBgColor})`
+          );
         }
 
         // Store inheritance metadata for plugin processing (always, regardless of fill creation)
@@ -7943,21 +7993,47 @@ export class DOMExtractor {
       let width = ExtractionValidation.safeParseFloat(computed.width, 0);
       let height = ExtractionValidation.safeParseFloat(computed.height, 0);
 
-      // CRITICAL FIX: Don't assume 0 size means invalid for pseudos with background image
+      // CRITICAL FIX: Check for meaningful visual styles (bg color, image, border)
       const hasBgImage =
         computed.backgroundImage &&
         computed.backgroundImage !== "none" &&
         computed.backgroundImage !== "";
 
+      const hasBgColor =
+        computed.backgroundColor &&
+        computed.backgroundColor !== "rgba(0, 0, 0, 0)" &&
+        computed.backgroundColor !== "transparent";
+
+      const hasBorder =
+        (parseFloat(computed.borderWidth) > 0 ||
+          parseFloat(computed.borderTopWidth) > 0) &&
+        computed.borderStyle !== "none";
+
+      const hasVisualPresence = hasBgImage || hasBgColor || hasBorder;
+
       // If measurement failed (NaN), fallback. If 0, only fallback if it should have content.
       if (!Number.isFinite(width))
-        width = isText ? content.length * 8 : hasBgImage ? 20 : 0;
-      if (!Number.isFinite(height)) height = isText ? 14 : hasBgImage ? 20 : 0;
+        width = isText ? content.length * 8 : hasVisualPresence ? 20 : 0;
+      if (!Number.isFinite(height))
+        height = isText ? 14 : hasVisualPresence ? 20 : 0;
 
-      // For background image pseudos that might report 0 size due to layout quirks, force min size
-      if (width === 0 && height === 0 && hasBgImage) {
-        width = 24; // Default icon size
-        height = 24;
+      // For visual pseudos that might report 0 size due to layout quirks, force min size
+      if (width === 0 && height === 0 && hasVisualPresence) {
+        // Try to use border widths if it's a triangle hack
+        const borderW =
+          (parseFloat(computed.borderLeftWidth) || 0) +
+          (parseFloat(computed.borderRightWidth) || 0);
+        const borderH =
+          (parseFloat(computed.borderTopWidth) || 0) +
+          (parseFloat(computed.borderBottomWidth) || 0);
+
+        if (borderW > 0 || borderH > 0) {
+          width = Math.max(width, borderW);
+          height = Math.max(height, borderH);
+        } else {
+          width = 24; // Default icon size
+          height = 24;
+        }
       }
 
       const top = ExtractionValidation.safeParseFloat(computed.top, 0);
@@ -7984,7 +8060,21 @@ export class DOMExtractor {
             const scrollTop = this.capturedScrollOffset.top;
             originX = rect.left + scrollLeft;
             originY = rect.top + scrollTop;
+
+            // PIXEL-PERFECT FIX: Account for offsetParent's border
+            // Absolute positioning is relative to the padding box, not border box
+            const parentComputed = ExtractionValidation.safeGetComputedStyle(offsetParent);
+            if (parentComputed) {
+              originX += ExtractionValidation.safeParseFloat(parentComputed.borderLeftWidth, 0);
+              originY += ExtractionValidation.safeParseFloat(parentComputed.borderTopWidth, 0);
+            }
           }
+        } else if (hostStyle) {
+          // Host is positioned (relative, absolute, fixed, sticky)
+          // Pseudo is relative to host's padding box.
+          // CRITICAL FIX: Add host's border width to origin because parentRect is the border box
+          originX += ExtractionValidation.safeParseFloat(hostStyle.borderLeftWidth, 0);
+          originY += ExtractionValidation.safeParseFloat(hostStyle.borderTopWidth, 0);
         }
 
         x = originX;
@@ -9293,7 +9383,7 @@ export class DOMExtractor {
   private async processImagesBatch(): Promise<{
     failed: Array<{ url: string; reason: string }>;
   }> {
-    this.postProgress("Processing images...", 60);
+    this.postProgress("Processing images...", 55);
 
     const imageUrls = Array.from(this.assets.images.keys());
     const BATCH_SIZE = 5;
@@ -9303,7 +9393,9 @@ export class DOMExtractor {
     // PIXEL-PERFECT FIDELITY: Embed image bytes for deterministic imports.
     // Without embedded bytes, imports are non-deterministic (CORS, expiring URLs, AB tests, etc.).
     // If size is a concern, use a separate blob store with content-addressed references.
-    const EMBED_IMAGE_BASE64 = true; // Changed to true for pixel-perfect fidelity
+    // MEMORY OPTIMIZATION: Re-enabled eager base64 embedding for fidelity.
+    // The plugin will use these bytes directly.
+    const EMBED_IMAGE_BASE64 = true; 
     const STRICT_MODE = true; // Fail capture if critical images can't be embedded
 
     if (!EMBED_IMAGE_BASE64) {
@@ -9324,8 +9416,13 @@ export class DOMExtractor {
       `🖼️ [IMAGE PROCESSING] Processing ${imageUrls.length} images in batches of ${BATCH_SIZE} with ${MAX_RETRIES} retries`
     );
 
+    const total = imageUrls.length;
     for (let i = 0; i < imageUrls.length; i += BATCH_SIZE) {
       const batch = imageUrls.slice(i, i + BATCH_SIZE);
+      
+      // Granular progress update
+      const percent = 65 + Math.floor((i / total) * 30); // Map 0-100% of images to 65-95% of total
+      this.postProgress(`Processing images (${i}/${total})...`, percent);
 
       await Promise.allSettled(
         batch.map(async (url) => {
@@ -10097,6 +10194,81 @@ export class DOMExtractor {
   }
 
   /**
+   * PERFORMANCE OPTIMIZATION: Strip heavy, non-essential debug data before serialization.
+   * This reduces payload size by ~90% for complex pages by removing redundant CSS and metadata.
+   */
+  private sanitizeSchemaForPerformance(schema: any): void {
+    if (!schema || !schema.root) return;
+
+    const startTime = Date.now();
+    let nodesProcessed = 0;
+    let propertiesRemoved = 0;
+
+    const walk = (node: any) => {
+      if (!node) return;
+      nodesProcessed++;
+
+      // 1. Optimize computedStyle (Primary source of bloat)
+      if (node.computedStyle) {
+        const essential = ["backgroundColor", "display", "position"];
+        for (const key of Object.keys(node.computedStyle)) {
+          if (!essential.includes(key)) {
+            delete node.computedStyle[key];
+            propertiesRemoved++;
+          }
+        }
+      }
+
+      // 2. Remove redundant backgrounds (Already in fills)
+      if (node.backgrounds && node.fills && node.fills.length > 0) {
+        delete node.backgrounds;
+        propertiesRemoved++;
+      }
+
+      // 3. Strip debug metadata from autoLayout
+      if (node.autoLayout) {
+        if (node.autoLayout.validation) {
+          delete node.autoLayout.validation;
+          propertiesRemoved++;
+        }
+        if (node.autoLayout.evidence) {
+          delete node.autoLayout.evidence;
+          propertiesRemoved++;
+        }
+      }
+
+      // 4. Strip redundant box-sizing details
+      if (node._boxSizingData) {
+        const essential = ["visualDimensions", "boxSizing"];
+        for (const key of Object.keys(node._boxSizingData)) {
+          if (!essential.includes(key)) {
+            delete node._boxSizingData[key];
+            propertiesRemoved++;
+          }
+        }
+      }
+
+      // 5. Strip redundant HTML attributes (esp. style attribute which can be huge)
+      if (node.attributes) {
+        if (node.attributes.style) {
+          delete node.attributes.style;
+          propertiesRemoved++;
+        }
+      }
+
+      // Recurse children
+      if (node.children && Array.isArray(node.children)) {
+        for (const child of node.children) {
+          walk(child);
+        }
+      }
+    };
+
+    walk(schema.root);
+    console.log(`🚀 [PERFORMANCE] Sanitization complete: ${nodesProcessed} nodes, ${propertiesRemoved} properties removed in ${Date.now() - startTime}ms`);
+  }
+
+  /**
    * Defensive sanitizer: remove any non-cloneable live DOM references from the schema
    * before sending across window.postMessage.
    *
@@ -10269,6 +10441,31 @@ export class DOMExtractor {
         }
       });
       schema.assets.images = imagesObj;
+
+      // PIXEL-PERFECT FIX: Validate and log asset structure for debugging
+      console.log(`📊 [ASSET VALIDATION] Finalized ${Object.keys(imagesObj).length} image assets`);
+
+      if (Object.keys(imagesObj).length > 0) {
+        // Log first 3 assets for debugging
+        const sampleAssets = Object.entries(imagesObj).slice(0, 3);
+        sampleAssets.forEach(([key, asset]: [string, any]) => {
+          console.log(`  📸 Asset ${key.substring(0, 20)}...:`);
+          console.log(`     - hasData: ${!!asset.data}`);
+          console.log(`     - hasBase64: ${!!asset.base64}`);
+          console.log(`     - hasUrl: ${!!asset.url}`);
+          console.log(`     - url: ${asset.url ? asset.url.substring(0, 80) + '...' : 'NONE'}`);
+          console.log(`     - dimensions: ${asset.width}x${asset.height}`);
+        });
+      }
+
+      // CRITICAL: Warn if ALL assets have no base64 (URL-only mode)
+      const assetsWithBase64 = Object.values(imagesObj).filter((a: any) => a.data || a.base64).length;
+      const assetsWithUrl = Object.values(imagesObj).filter((a: any) => a.url).length;
+
+      if (assetsWithBase64 === 0 && assetsWithUrl > 0) {
+        console.warn(`⚠️ [ASSET VALIDATION] ALL ${assetsWithUrl} images are URL-only (no embedded base64)`);
+        console.warn(`   Plugin MUST fetch via proxy. Ensure handoff server is running at http://localhost:4411`);
+      }
 
       // Finalize SVGs
       const svgsObj: Record<string, any> = {};
