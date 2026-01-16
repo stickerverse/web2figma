@@ -1,0 +1,15 @@
+{
+  "jobId": "0308925c-e321-48da-9ede-e75f5a56a807",
+  "rootNodeId": "101:1440",
+  "viewport": {
+    "width": 1744,
+    "height": 16000
+  },
+  "scale": 2,
+  "stats": {
+    "elements": 2262,
+    "images": 0,
+    "processingTime": 48412
+  },
+  "timestamp": "2026-01-15T13:54:58.142Z"
+}

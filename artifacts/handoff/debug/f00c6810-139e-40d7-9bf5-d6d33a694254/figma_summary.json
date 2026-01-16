@@ -1,0 +1,69 @@
+{
+  "nodeCount": 3207,
+  "nodeTypes": {
+    "FRAME": 2611,
+    "VECTOR": 55,
+    "GROUP": 50,
+    "TEXT": 443,
+    "RECTANGLE": 48
+  },
+  "textNodes": 443,
+  "imageNodes": 1,
+  "zeroSizedNodes": 0,
+  "outOfBoundsNodes": 3207,
+  "largestNodes": [
+    {
+      "id": "37:4",
+      "name": "Import 09:47:57 AM",
+      "area": 10919040
+    },
+    {
+      "id": "37:14",
+      "name": "form",
+      "area": 10825980
+    },
+    {
+      "id": "37:15",
+      "name": "Banner Container",
+      "area": 10825980
+    },
+    {
+      "id": "37:29",
+      "name": "span",
+      "area": 10825980
+    },
+    {
+      "id": "37:64",
+      "name": "Container",
+      "area": 10825980
+    },
+    {
+      "id": "37:89",
+      "name": "Container",
+      "area": 10825980
+    },
+    {
+      "id": "37:135",
+      "name": "Container",
+      "area": 10825980
+    },
+    {
+      "id": "37:301",
+      "name": "X9f619",
+      "area": 10825980
+    },
+    {
+      "id": "37:493",
+      "name": "Container",
+      "area": 10825980
+    },
+    {
+      "id": "37:933",
+      "name": "X9f619",
+      "area": 10825980
+    }
+  ],
+  "warnings": [
+    "Found 3207 nodes outside expected viewport bounds"
+  ]
+}

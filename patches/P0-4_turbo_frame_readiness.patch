@@ -1,0 +1,60 @@
+--- a/chrome-extension/src/utils/page-readiness.ts
++++ b/chrome-extension/src/utils/page-readiness.ts
+@@ -242,7 +242,40 @@ export async function waitForStablePage(
+   try {
+     await new Promise<void>((resolve, reject) => {
+       const checkInterval = 100;
+-      const MINIMUM_WAIT_MS = 3000; // Wait at least 3 seconds before checking stability
++
++      // PIXEL-PERFECT FIX: Detect GitHub's turbo-frames and wait longer for dynamic content
++      const hasTurboFrames = document.querySelector('turbo-frame') !== null;
++      const hasGitHubCustomElements =
++        document.querySelector('feed-container, feed-live-container, react-partial') !== null;
++      const isGitHub = location.hostname.includes('github.com');
++
++      // GitHub needs more time for turbo-frame hydration
++      let MINIMUM_WAIT_MS = 3000; // Default: 3 seconds
++      if (isGitHub && (hasTurboFrames || hasGitHubCustomElements)) {
++        MINIMUM_WAIT_MS = 6000; // GitHub with turbo-frames: 6 seconds
++        logger.info(SCOPE, 'Detected GitHub turbo-frames, extending minimum wait to 6s');
++      }
++
++      // Monitor turbo-frame loading state
++      const monitorTurboFrames = () => {
++        const frames = Array.from(document.querySelectorAll('turbo-frame'));
++        const loadingFrames = frames.filter(frame => {
++          const busy = frame.getAttribute('busy');
++          const loading = frame.getAttribute('loading');
++          const complete = frame.getAttribute('complete');
++          return busy === 'true' || loading === 'lazy' || complete !== 'true';
++        });
++
++        if (loadingFrames.length > 0) {
++          lastChange = performance.now();
++          logger.debug(SCOPE, 'Turbo-frames still loading', {
++            loadingCount: loadingFrames.length,
++            totalCount: frames.length
++          });
++        }
++
++        return loadingFrames.length === 0;
++      };
++
+       let hasWaitedMinimum = false;
+
+       // For highly dynamic sites, force proceed after reasonable wait even if not stable
+@@ -269,6 +302,13 @@ export async function waitForStablePage(
+         const now = performance.now();
+         const elapsed = now - start;
+
++        // PIXEL-PERFECT FIX: Check turbo-frame completion before declaring stable
++        if (hasTurboFrames && elapsed >= MINIMUM_WAIT_MS) {
++          if (!monitorTurboFrames()) {
++            // Turbo-frames still loading, don't declare stable yet
++            return;
++          }
++        }
++
+         if (elapsed >= MINIMUM_WAIT_MS) {
+           hasWaitedMinimum = true;
+         }

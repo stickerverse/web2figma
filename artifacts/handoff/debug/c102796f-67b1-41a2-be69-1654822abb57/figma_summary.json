@@ -1,0 +1,69 @@
+{
+  "nodeCount": 358,
+  "nodeTypes": {
+    "FRAME": 206,
+    "RECTANGLE": 4,
+    "TEXT": 83,
+    "VECTOR": 40,
+    "GROUP": 25
+  },
+  "textNodes": 83,
+  "imageNodes": 2,
+  "zeroSizedNodes": 0,
+  "outOfBoundsNodes": 358,
+  "largestNodes": [
+    {
+      "id": "100:3434",
+      "name": "Import 1:24:09 AM",
+      "area": 6038368
+    },
+    {
+      "id": "100:3775",
+      "name": "next-route-announcer",
+      "area": 5969050
+    },
+    {
+      "id": "100:3777",
+      "name": "Container",
+      "area": 5969050
+    },
+    {
+      "id": "100:3435",
+      "name": "html",
+      "area": 5922838
+    },
+    {
+      "id": "100:3437",
+      "name": "Plasmo Shadow Container",
+      "area": 5922838
+    },
+    {
+      "id": "100:3438",
+      "name": "body",
+      "area": 5922838
+    },
+    {
+      "id": "100:3439",
+      "name": "Next",
+      "area": 5922838
+    },
+    {
+      "id": "100:3453",
+      "name": "Bg White",
+      "area": 4811633
+    },
+    {
+      "id": "100:3454",
+      "name": "Container",
+      "area": 4555096
+    },
+    {
+      "id": "100:3477",
+      "name": "Grid",
+      "area": 4426968
+    }
+  ],
+  "warnings": [
+    "Found 358 nodes outside expected viewport bounds"
+  ]
+}

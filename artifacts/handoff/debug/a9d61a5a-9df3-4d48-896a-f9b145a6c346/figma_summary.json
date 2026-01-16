@@ -1,0 +1,69 @@
+{
+  "nodeCount": 1134,
+  "nodeTypes": {
+    "FRAME": 791,
+    "TEXT": 274,
+    "GROUP": 2,
+    "VECTOR": 26,
+    "RECTANGLE": 41
+  },
+  "textNodes": 274,
+  "imageNodes": 7,
+  "zeroSizedNodes": 0,
+  "outOfBoundsNodes": 1134,
+  "largestNodes": [
+    {
+      "id": "74:21349",
+      "name": "LINK",
+      "area": 12946837.5
+    },
+    {
+      "id": "74:21350",
+      "name": "TEXT",
+      "area": 12833796
+    },
+    {
+      "id": "74:22049",
+      "name": "NAVIGATION 2",
+      "area": 12833796
+    },
+    {
+      "id": "74:22050",
+      "name": "NAVIGATION",
+      "area": 12833796
+    },
+    {
+      "id": "74:22052",
+      "name": "LINK",
+      "area": 12833796
+    },
+    {
+      "id": "74:22076",
+      "name": "Status Container",
+      "area": 12833796
+    },
+    {
+      "id": "74:22296",
+      "name": "Container",
+      "area": 12833796
+    },
+    {
+      "id": "74:22369",
+      "name": "Container",
+      "area": 12833796
+    },
+    {
+      "id": "74:22370",
+      "name": "Live Chat",
+      "area": 12833796
+    },
+    {
+      "id": "74:22469",
+      "name": "Button Container: Close",
+      "area": 12833796
+    }
+  ],
+  "warnings": [
+    "Found 1134 nodes outside expected viewport bounds"
+  ]
+}

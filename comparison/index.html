@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Web-to-Figma Fidelity Comparison</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          sans-serif;
+        background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+        color: #fff;
+        min-height: 100vh;
+        padding: 20px;
+      }
+
+      .header {
+        text-align: center;
+        margin-bottom: 30px;
+      }
+
+      .header h1 {
+        font-size: 2.5rem;
+        background: linear-gradient(90deg, #667eea, #764ba2);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin-bottom: 10px;
+      }
+
+      .header p {
+        color: #a0aec0;
+        font-size: 1.1rem;
+      }
+
+      .instructions {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 12px;
+        padding: 20px;
+        margin-bottom: 30px;
+        max-width: 800px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .instructions h2 {
+        color: #667eea;
+        margin-bottom: 15px;
+        font-size: 1.3rem;
+      }
+
+      .instructions ul {
+        list-style-position: inside;
+        line-height: 1.8;
+        color: #e2e8f0;
+      }
+
+      .instructions li {
+        margin-bottom: 8px;
+      }
+
+      .comparison-container {
+        display: flex;
+        gap: 20px;
+        justify-content: center;
+        flex-wrap: wrap;
+        margin-bottom: 30px;
+      }
+
+      .image-panel {
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 16px;
+        padding: 15px;
+        max-width: 48%;
+        flex: 1;
+        min-width: 400px;
+      }
+
+      .image-panel h3 {
+        text-align: center;
+        padding: 10px;
+        margin-bottom: 15px;
+        border-radius: 8px;
+        font-weight: 600;
+      }
+
+      .image-panel.original h3 {
+        background: linear-gradient(90deg, #10b981, #059669);
+      }
+
+      .image-panel.figma h3 {
+        background: linear-gradient(90deg, #f59e0b, #d97706);
+      }
+
+      .image-panel img {
+        width: 100%;
+        height: auto;
+        border-radius: 8px;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+      }
+
+      .slider-container {
+        max-width: 1200px;
+        margin: 0 auto 30px;
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 16px;
+        padding: 20px;
+      }
+
+      .slider-container h3 {
+        text-align: center;
+        margin-bottom: 15px;
+        color: #667eea;
+      }
+
+      .slider-wrapper {
+        position: relative;
+        max-width: 100%;
+        overflow: hidden;
+        border-radius: 8px;
+      }
+
+      .slider-wrapper img {
+        width: 100%;
+        display: block;
+      }
+
+      .slider-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 50%;
+        height: 100%;
+        overflow: hidden;
+      }
+
+      .slider-overlay img {
+        width: 200%;
+        max-width: none;
+      }
+
+      .slider-handle {
+        position: absolute;
+        top: 0;
+        left: 50%;
+        width: 4px;
+        height: 100%;
+        background: #667eea;
+        cursor: ew-resize;
+        transform: translateX(-50%);
+      }
+
+      .slider-handle::before {
+        content: "◀ ▶";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: #667eea;
+        color: white;
+        padding: 8px 12px;
+        border-radius: 20px;
+        font-size: 12px;
+        white-space: nowrap;
+      }
+
+      .checklist {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 12px;
+        padding: 25px;
+        max-width: 800px;
+        margin: 0 auto 30px;
+      }
+
+      .checklist h2 {
+        color: #f59e0b;
+        margin-bottom: 20px;
+        font-size: 1.3rem;
+        text-align: center;
+      }
+
+      .checklist-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        margin-bottom: 15px;
+        padding: 12px;
+        background: rgba(255, 255, 255, 0.02);
+        border-radius: 8px;
+      }
+
+      .checklist-item input[type="checkbox"] {
+        width: 20px;
+        height: 20px;
+        accent-color: #667eea;
+        margin-top: 2px;
+      }
+
+      .checklist-item label {
+        flex: 1;
+        line-height: 1.5;
+      }
+
+      .checklist-item .severity {
+        font-size: 0.8rem;
+        padding: 4px 8px;
+        border-radius: 4px;
+        font-weight: 600;
+      }
+
+      .severity.critical {
+        background: #ef4444;
+      }
+      .severity.high {
+        background: #f59e0b;
+      }
+      .severity.medium {
+        background: #3b82f6;
+      }
+
+      .notes-section {
+        max-width: 800px;
+        margin: 0 auto;
+      }
+
+      .notes-section h2 {
+        color: #667eea;
+        margin-bottom: 15px;
+      }
+
+      .notes-section textarea {
+        width: 100%;
+        height: 200px;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 8px;
+        padding: 15px;
+        color: #fff;
+        font-family: inherit;
+        font-size: 1rem;
+        resize: vertical;
+      }
+
+      .notes-section textarea:focus {
+        outline: none;
+        border-color: #667eea;
+      }
+
+      .footer {
+        text-align: center;
+        margin-top: 40px;
+        padding-top: 20px;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        color: #64748b;
+      }
+
+      @media (max-width: 900px) {
+        .image-panel {
+          max-width: 100%;
+          min-width: 100%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="header">
+      <h1>🎨 Web-to-Figma Fidelity Test</h1>
+      <p>Compare the original website screenshot with our Figma render</p>
+    </div>
+
+    <div class="instructions">
+      <h2>📋 Your Task</h2>
+      <ul>
+        <li>
+          <strong>Compare</strong> the Original (left/green) with the Figma
+          Render (right/orange)
+        </li>
+        <li>
+          <strong>Identify</strong> any visual differences: missing images,
+          wrong colors, layout issues
+        </li>
+        <li>
+          <strong>Note</strong> which elements are missing, broken, or
+          incorrectly positioned
+        </li>
+        <li>
+          <strong>Rate</strong> the overall fidelity from 1-10 (10 = perfect
+          match)
+        </li>
+      </ul>
+    </div>
+
+    <div class="comparison-container">
+      <div class="image-panel original">
+        <h3>✅ Original Website</h3>
+        <img src="original.png" alt="Original website screenshot" />
+      </div>
+      <div class="image-panel figma">
+        <h3>🎯 Figma Render</h3>
+        <img src="figma_render.png" alt="Figma render output" />
+      </div>
+    </div>
+
+    <div class="checklist">
+      <h2>🔍 Evaluation Checklist</h2>
+
+      <div class="checklist-item">
+        <input type="checkbox" id="images" />
+        <label for="images">
+          <strong>Images:</strong> Do all images render correctly? (Not
+          grey/orange placeholder boxes)
+        </label>
+        <span class="severity critical">CRITICAL</span>
+      </div>
+
+      <div class="checklist-item">
+        <input type="checkbox" id="svgs" />
+        <label for="svgs">
+          <strong>Icons/Logos:</strong> Do SVG icons and logos appear correctly?
+        </label>
+        <span class="severity critical">CRITICAL</span>
+      </div>
+
+      <div class="checklist-item">
+        <input type="checkbox" id="layout" />
+        <label for="layout">
+          <strong>Layout:</strong> Are elements positioned correctly? (headers,
+          sections, footers)
+        </label>
+        <span class="severity high">HIGH</span>
+      </div>
+
+      <div class="checklist-item">
+        <input type="checkbox" id="text" />
+        <label for="text">
+          <strong>Text:</strong> Does text content, fonts, and sizes match?
+        </label>
+        <span class="severity high">HIGH</span>
+      </div>
+
+      <div class="checklist-item">
+        <input type="checkbox" id="colors" />
+        <label for="colors">
+          <strong>Colors:</strong> Do background and text colors match?
+        </label>
+        <span class="severity medium">MEDIUM</span>
+      </div>
+
+      <div class="checklist-item">
+        <input type="checkbox" id="hidden" />
+        <label for="hidden">
+          <strong>Hidden Elements:</strong> Are any elements visible that should
+          be hidden? (sidebars, modals)
+        </label>
+        <span class="severity high">HIGH</span>
+      </div>
+    </div>
+
+    <div class="notes-section">
+      <h2>📝 Your Findings</h2>
+      <textarea
+        placeholder="Describe any visual differences you notice. Be specific about:
+        
+• Which elements are missing or broken
+• Where on the page the issues appear
+• How severe each issue is
+
+Example:
+- Header logo is missing (top-left)
+- Profile images are grey boxes instead of actual photos
+- Footer text color is lighter than original"
+      ></textarea>
+    </div>
+
+    <div class="footer">
+      <p>Web-to-Figma Converter • QA Fidelity Test</p>
+    </div>
+  </body>
+</html>

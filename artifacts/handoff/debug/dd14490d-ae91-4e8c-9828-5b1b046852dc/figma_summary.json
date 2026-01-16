@@ -1,0 +1,69 @@
+{
+  "nodeCount": 717,
+  "nodeTypes": {
+    "FRAME": 466,
+    "TEXT": 245,
+    "VECTOR": 4,
+    "RECTANGLE": 2
+  },
+  "textNodes": 245,
+  "imageNodes": 0,
+  "zeroSizedNodes": 0,
+  "outOfBoundsNodes": 717,
+  "largestNodes": [
+    {
+      "id": "101:721",
+      "name": "Import 4:39:23 AM",
+      "area": 8038968
+    },
+    {
+      "id": "101:1336",
+      "name": "Jobs Global Components",
+      "area": 6850432
+    },
+    {
+      "id": "101:1362",
+      "name": "span",
+      "area": 6850432
+    },
+    {
+      "id": "101:1363",
+      "name": "span",
+      "area": 6850432
+    },
+    {
+      "id": "101:1364",
+      "name": "span",
+      "area": 6850432
+    },
+    {
+      "id": "101:722",
+      "name": "html",
+      "area": 6791512
+    },
+    {
+      "id": "101:724",
+      "name": "Plasmo Shadow Container",
+      "area": 6791512
+    },
+    {
+      "id": "101:725",
+      "name": "body",
+      "area": 6791512
+    },
+    {
+      "id": "101:1359",
+      "name": "Apply Widget",
+      "area": 6791512
+    },
+    {
+      "id": "101:1360",
+      "name": "span",
+      "area": 6791512
+    }
+  ],
+  "warnings": [
+    "Found 717 nodes outside expected viewport bounds",
+    "No image nodes detected in import"
+  ]
+}

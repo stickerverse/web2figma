@@ -1,0 +1,67 @@
+{
+  "nodeCount": 338,
+  "nodeTypes": {
+    "FRAME": 246,
+    "TEXT": 92
+  },
+  "textNodes": 92,
+  "imageNodes": 0,
+  "zeroSizedNodes": 0,
+  "outOfBoundsNodes": 338,
+  "largestNodes": [
+    {
+      "id": "97:331",
+      "name": "Import 9:00:27 PM",
+      "area": 2398000
+    },
+    {
+      "id": "97:334",
+      "name": "nfcu-online-banking-app",
+      "area": 2377375
+    },
+    {
+      "id": "97:335",
+      "name": "nfcu-layout",
+      "area": 2377375
+    },
+    {
+      "id": "97:336",
+      "name": "Button Container: Skip to Content",
+      "area": 2377375
+    },
+    {
+      "id": "97:337",
+      "name": "nfcu-retail-layout",
+      "area": 2377375
+    },
+    {
+      "id": "97:338",
+      "name": "Bb Page Layout",
+      "area": 2377375
+    },
+    {
+      "id": "97:339",
+      "name": "nfcu-header",
+      "area": 2377375
+    },
+    {
+      "id": "97:396",
+      "name": "nfcu-display-nav-dropdown",
+      "area": 2377375
+    },
+    {
+      "id": "97:397",
+      "name": "nfcu-error-modal",
+      "area": 2377375
+    },
+    {
+      "id": "97:398",
+      "name": "nfcu-confirm-modal",
+      "area": 2377375
+    }
+  ],
+  "warnings": [
+    "Found 338 nodes outside expected viewport bounds",
+    "No image nodes detected in import"
+  ]
+}

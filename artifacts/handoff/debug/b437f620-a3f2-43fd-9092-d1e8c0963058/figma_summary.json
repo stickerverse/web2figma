@@ -1,0 +1,69 @@
+{
+  "nodeCount": 1181,
+  "nodeTypes": {
+    "FRAME": 837,
+    "TEXT": 233,
+    "VECTOR": 72,
+    "RECTANGLE": 39
+  },
+  "textNodes": 233,
+  "imageNodes": 0,
+  "zeroSizedNodes": 0,
+  "outOfBoundsNodes": 1181,
+  "largestNodes": [
+    {
+      "id": "83:2",
+      "name": "LINK",
+      "area": 5479488
+    },
+    {
+      "id": "83:3",
+      "name": "NAVIGATION",
+      "area": 5431923
+    },
+    {
+      "id": "83:4",
+      "name": "TEXT",
+      "area": 5431923
+    },
+    {
+      "id": "83:13",
+      "name": "LINK 2",
+      "area": 5431923
+    },
+    {
+      "id": "83:14",
+      "name": "Statsig Comp",
+      "area": 5431923
+    },
+    {
+      "id": "83:15",
+      "name": "In App Page  App  KxUei",
+      "area": 5431923
+    },
+    {
+      "id": "83:16",
+      "name": "In App Page  Content  5Tb91",
+      "area": 5431923
+    },
+    {
+      "id": "83:17",
+      "name": "Button Container: Stephen Kirk",
+      "area": 5431923
+    },
+    {
+      "id": "83:18",
+      "name": "Community App  CommunityApp  JBVA0",
+      "area": 5431923
+    },
+    {
+      "id": "83:86",
+      "name": "Button Container: Try in",
+      "area": 5431923
+    }
+  ],
+  "warnings": [
+    "Found 1181 nodes outside expected viewport bounds",
+    "No image nodes detected in import"
+  ]
+}

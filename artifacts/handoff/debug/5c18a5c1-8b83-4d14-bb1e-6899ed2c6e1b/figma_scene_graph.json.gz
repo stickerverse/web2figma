@@ -1,0 +1,721 @@
+{
+  "exportId": "export-1768446434530-8u8pk8v2c",
+  "timestamp": "2026-01-15T03:07:14.530Z",
+  "rootNodeId": "97:3",
+  "rootNodeName": "LINK",
+  "totalNodes": 14,
+  "flatNodes": [
+    {
+      "figmaId": "97:3",
+      "name": "LINK",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 1928,
+        "y": 0,
+        "width": 1728,
+        "height": 15471
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.10980392247438431,
+            "g": 0.10980392247438431,
+            "b": 0.11372549086809158
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "depth": 0
+    },
+    {
+      "figmaId": "97:4",
+      "name": "TEXT",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 1928,
+        "y": 0,
+        "width": 1713,
+        "height": 13509
+      },
+      "fills": [],
+      "strokes": [],
+      "effects": [],
+      "parentId": "97:3",
+      "depth": 1
+    },
+    {
+      "figmaId": "97:5",
+      "name": "LINK",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 1928,
+        "y": 0,
+        "width": 1713,
+        "height": 13509
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.10980392247438431,
+            "g": 0.10980392247438431,
+            "b": 0.11372549086809158
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "97:4",
+      "depth": 2
+    },
+    {
+      "figmaId": "97:6",
+      "name": "TEXT",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 2596.5,
+        "y": 20,
+        "width": 376,
+        "height": 97
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.10980392247438431,
+            "g": 0.10980392247438431,
+            "b": 0.11372549086809158
+          },
+          "boundVariables": {}
+        },
+        {
+          "type": "GRADIENT_LINEAR",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "gradientStops": [
+            {
+              "color": {
+                "r": 0.4000000059604645,
+                "g": 0.4941176474094391,
+                "b": 0.9176470637321472,
+                "a": 0.949999988079071
+              },
+              "position": 0,
+              "boundVariables": {}
+            },
+            {
+              "color": {
+                "r": 0.4627451002597809,
+                "g": 0.29411765933036804,
+                "b": 0.6352941393852234,
+                "a": 0.949999988079071
+              },
+              "position": 1,
+              "boundVariables": {}
+            }
+          ],
+          "gradientTransform": [
+            [
+              0.7071067690849304,
+              -0.7071067690849304,
+              0.5
+            ],
+            [
+              0.7071067690849304,
+              0.7071067690849304,
+              -0.2071067839860916
+            ]
+          ]
+        }
+      ],
+      "strokes": [],
+      "effects": [
+        {
+          "type": "DROP_SHADOW",
+          "visible": true,
+          "radius": 24,
+          "boundVariables": {},
+          "color": {
+            "r": 0,
+            "g": 0,
+            "b": 0,
+            "a": 0.4000000059604645
+          },
+          "offset": {
+            "x": 0,
+            "y": 8
+          },
+          "spread": 0,
+          "blendMode": "NORMAL",
+          "showShadowBehindNode": true
+        },
+        {
+          "type": "BACKGROUND_BLUR",
+          "visible": true,
+          "radius": 12,
+          "boundVariables": {},
+          "blurType": "NORMAL"
+        }
+      ],
+      "parentId": "97:5",
+      "depth": 3
+    },
+    {
+      "figmaId": "97:7",
+      "name": "Processing children ",
+      "type": "TEXT",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 2624.5,
+        "y": 41,
+        "width": 320,
+        "height": 21
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.10980392247438431,
+            "g": 0.10980392247438431,
+            "b": 0.11372549086809158
+          },
+          "boundVariables": {}
+        },
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "97:6",
+      "depth": 4
+    },
+    {
+      "figmaId": "97:8",
+      "name": "Container",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": true,
+      "absoluteBoundingBox": {
+        "x": 2624.5,
+        "y": 69.4375,
+        "width": 320,
+        "height": 4
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 0.20000000298023224,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "97:6",
+      "depth": 4
+    },
+    {
+      "figmaId": "97:9",
+      "name": "Container",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 2624.5,
+        "y": 69.4375,
+        "width": 186,
+        "height": 4
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 0.20000000298023224,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        },
+        {
+          "type": "GRADIENT_LINEAR",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "gradientStops": [
+            {
+              "color": {
+                "r": 0,
+                "g": 0.8313725590705872,
+                "b": 0.6666666865348816,
+                "a": 1
+              },
+              "position": 0,
+              "boundVariables": {}
+            },
+            {
+              "color": {
+                "r": 0,
+                "g": 0.7372549176216125,
+                "b": 0.8313725590705872,
+                "a": 1
+              },
+              "position": 1,
+              "boundVariables": {}
+            }
+          ],
+          "gradientTransform": [
+            [
+              1,
+              0,
+              0
+            ],
+            [
+              0,
+              1,
+              0
+            ]
+          ]
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "97:8",
+      "depth": 5
+    },
+    {
+      "figmaId": "97:10",
+      "name": "⏱️ 11.5s",
+      "type": "TEXT",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 2624.5,
+        "y": 82.4375,
+        "width": 320,
+        "height": 15
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.10980392247438431,
+            "g": 0.10980392247438431,
+            "b": 0.11372549086809158
+          },
+          "boundVariables": {}
+        },
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 0.699999988079071,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "97:6",
+      "depth": 4
+    },
+    {
+      "figmaId": "97:11",
+      "name": "LINK",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 2596.5,
+        "y": 20,
+        "width": 376,
+        "height": 126
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.10980392247438431,
+            "g": 0.10980392247438431,
+            "b": 0.11372549086809158
+          },
+          "boundVariables": {}
+        },
+        {
+          "type": "GRADIENT_LINEAR",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "gradientStops": [
+            {
+              "color": {
+                "r": 0.4000000059604645,
+                "g": 0.4941176474094391,
+                "b": 0.9176470637321472,
+                "a": 0.949999988079071
+              },
+              "position": 0,
+              "boundVariables": {}
+            },
+            {
+              "color": {
+                "r": 0.4627451002597809,
+                "g": 0.29411765933036804,
+                "b": 0.6352941393852234,
+                "a": 0.949999988079071
+              },
+              "position": 1,
+              "boundVariables": {}
+            }
+          ],
+          "gradientTransform": [
+            [
+              0.7071067690849304,
+              -0.7071067690849304,
+              0.5
+            ],
+            [
+              0.7071067690849304,
+              0.7071067690849304,
+              -0.2071067839860916
+            ]
+          ]
+        }
+      ],
+      "strokes": [],
+      "effects": [
+        {
+          "type": "DROP_SHADOW",
+          "visible": true,
+          "radius": 24,
+          "boundVariables": {},
+          "color": {
+            "r": 0,
+            "g": 0,
+            "b": 0,
+            "a": 0.4000000059604645
+          },
+          "offset": {
+            "x": 0,
+            "y": 8
+          },
+          "spread": 0,
+          "blendMode": "NORMAL",
+          "showShadowBehindNode": true
+        },
+        {
+          "type": "BACKGROUND_BLUR",
+          "visible": true,
+          "radius": 12,
+          "boundVariables": {},
+          "blurType": "NORMAL"
+        }
+      ],
+      "parentId": "97:5",
+      "depth": 3
+    },
+    {
+      "figmaId": "97:12",
+      "name": "LINK",
+      "type": "TEXT",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 2624.5,
+        "y": 41,
+        "width": 320,
+        "height": 21
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.10980392247438431,
+            "g": 0.10980392247438431,
+            "b": 0.11372549086809158
+          },
+          "boundVariables": {}
+        },
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "97:11",
+      "depth": 4
+    },
+    {
+      "figmaId": "97:13",
+      "name": "📋 Extracting",
+      "type": "TEXT",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 2624.5,
+        "y": 70.4375,
+        "width": 320,
+        "height": 17
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.10980392247438431,
+            "g": 0.10980392247438431,
+            "b": 0.11372549086809158
+          },
+          "boundVariables": {}
+        },
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 0.8500000238418579,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "97:11",
+      "depth": 4
+    },
+    {
+      "figmaId": "97:14",
+      "name": "Container",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": true,
+      "absoluteBoundingBox": {
+        "x": 2624.5,
+        "y": 98.8515625,
+        "width": 320,
+        "height": 4
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 0.20000000298023224,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "97:11",
+      "depth": 4
+    },
+    {
+      "figmaId": "97:15",
+      "name": "Container",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 2624.5,
+        "y": 98.8515625,
+        "width": 186,
+        "height": 4
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 0.20000000298023224,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        },
+        {
+          "type": "GRADIENT_LINEAR",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "gradientStops": [
+            {
+              "color": {
+                "r": 0,
+                "g": 0.8313725590705872,
+                "b": 0.6666666865348816,
+                "a": 1
+              },
+              "position": 0,
+              "boundVariables": {}
+            },
+            {
+              "color": {
+                "r": 0,
+                "g": 0.7372549176216125,
+                "b": 0.8313725590705872,
+                "a": 1
+              },
+              "position": 1,
+              "boundVariables": {}
+            }
+          ],
+          "gradientTransform": [
+            [
+              1,
+              0,
+              0
+            ],
+            [
+              0,
+              1,
+              0
+            ]
+          ]
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "97:14",
+      "depth": 5
+    },
+    {
+      "figmaId": "97:16",
+      "name": "⏱️ 0.6s",
+      "type": "TEXT",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 2624.5,
+        "y": 111.8515625,
+        "width": 320,
+        "height": 15
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.10980392247438431,
+            "g": 0.10980392247438431,
+            "b": 0.11372549086809158
+          },
+          "boundVariables": {}
+        },
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 0.699999988079071,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "97:11",
+      "depth": 4
+    }
+  ],
+  "metadata": {
+    "exportedAt": 1768446434530,
+    "pluginVersion": "1.0.0"
+  }
+}

@@ -1,0 +1,68 @@
+{
+  "nodeCount": 490,
+  "nodeTypes": {
+    "FRAME": 325,
+    "TEXT": 126,
+    "VECTOR": 16,
+    "RECTANGLE": 23
+  },
+  "textNodes": 126,
+  "imageNodes": 2,
+  "zeroSizedNodes": 0,
+  "outOfBoundsNodes": 490,
+  "largestNodes": [
+    {
+      "id": "76:40950",
+      "name": "LINK",
+      "area": 15806016
+    },
+    {
+      "id": "76:40957",
+      "name": "Content",
+      "area": 15668811
+    },
+    {
+      "id": "76:40958",
+      "name": "LINK",
+      "area": 15668811
+    },
+    {
+      "id": "76:40959",
+      "name": "TEXT",
+      "area": 15668811
+    },
+    {
+      "id": "76:40960",
+      "name": "TEXT",
+      "area": 15668811
+    },
+    {
+      "id": "76:40961",
+      "name": "NAVIGATION",
+      "area": 15668811
+    },
+    {
+      "id": "76:41053",
+      "name": "picture",
+      "area": 15668811
+    },
+    {
+      "id": "76:41094",
+      "name": "picture",
+      "area": 15668811
+    },
+    {
+      "id": "76:41117",
+      "name": "picture",
+      "area": 15668811
+    },
+    {
+      "id": "76:41141",
+      "name": "picture",
+      "area": 15668811
+    }
+  ],
+  "warnings": [
+    "Found 490 nodes outside expected viewport bounds"
+  ]
+}

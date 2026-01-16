@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Pipeline Diagnostic Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 40px;
+            background: #f5f5f5;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 30px;
+        }
+        .image-row {
+            margin-bottom: 30px;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        p {
+            color: #666;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Image Pipeline Diagnostic Test</h1>
+
+        <div class="image-row">
+            <p><strong>Test Image 1:</strong> Small PNG from Unsplash</p>
+            <img src="https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0?w=400&h=300&fit=crop"
+                 alt="Landscape"
+                 width="400"
+                 height="300">
+        </div>
+
+        <div class="image-row">
+            <p><strong>Test Image 2:</strong> Small JPEG from Picsum</p>
+            <img src="https://picsum.photos/400/300"
+                 alt="Random photo"
+                 width="400"
+                 height="300">
+        </div>
+
+        <div class="image-row">
+            <p><strong>Test Image 3:</strong> Small PNG from Placeholder</p>
+            <img src="https://via.placeholder.com/400x300/4A90E2/ffffff?text=Test+Image"
+                 alt="Placeholder"
+                 width="400"
+                 height="300">
+        </div>
+    </div>
+</body>
+</html>

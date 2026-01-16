@@ -1,0 +1,8799 @@
+{
+  "exportId": "export-1768358300410-g2a67pepk",
+  "timestamp": "2026-01-14T02:38:20.410Z",
+  "rootNodeId": "76:31828",
+  "rootNodeName": "LINK",
+  "totalNodes": 237,
+  "flatNodes": [
+    {
+      "figmaId": "76:31828",
+      "name": "LINK",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4756,
+        "y": 0,
+        "width": 500,
+        "height": 4482
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.9803921580314636,
+            "g": 0.9803921580314636,
+            "b": 0.9803921580314636
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "depth": 0
+    },
+    {
+      "figmaId": "76:31829",
+      "name": "Content",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4756,
+        "y": 0,
+        "width": 485,
+        "height": 791
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.9803921580314636,
+            "g": 0.9803921580314636,
+            "b": 0.9803921580314636
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:31828",
+      "depth": 1
+    },
+    {
+      "figmaId": "76:31830",
+      "name": "TEXT",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4756,
+        "y": 0,
+        "width": 485,
+        "height": 791
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.9803921580314636,
+            "g": 0.9803921580314636,
+            "b": 0.9803921580314636
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:31829",
+      "depth": 2
+    },
+    {
+      "figmaId": "76:31831",
+      "name": "TEXT",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4756,
+        "y": 0,
+        "width": 485,
+        "height": 791
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.9803921580314636,
+            "g": 0.9803921580314636,
+            "b": 0.9803921580314636
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:31830",
+      "depth": 3
+    },
+    {
+      "figmaId": "76:31832",
+      "name": "LINK",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4756,
+        "y": 0,
+        "width": 485,
+        "height": 4482
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.9803921580314636,
+            "g": 0.9803921580314636,
+            "b": 0.9803921580314636
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:31831",
+      "depth": 4
+    },
+    {
+      "figmaId": "76:31833",
+      "name": "att-loader",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4756,
+        "y": 0,
+        "width": 485,
+        "height": 4482
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.9803921580314636,
+            "g": 0.9803921580314636,
+            "b": 0.9803921580314636
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:31832",
+      "depth": 5
+    },
+    {
+      "figmaId": "76:31834",
+      "name": "App Component",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4756,
+        "y": 0,
+        "width": 485,
+        "height": 791
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.9803921580314636,
+            "g": 0.9803921580314636,
+            "b": 0.9803921580314636
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:31831",
+      "depth": 4
+    },
+    {
+      "figmaId": "76:31835",
+      "name": "App Content Shrink",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4756,
+        "y": 0,
+        "width": 485,
+        "height": 3791
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.9803921580314636,
+            "g": 0.9803921580314636,
+            "b": 0.9803921580314636
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:31834",
+      "depth": 5
+    },
+    {
+      "figmaId": "76:31836",
+      "name": "app-landing",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4756,
+        "y": 32,
+        "width": 485,
+        "height": 3759
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.9803921580314636,
+            "g": 0.9803921580314636,
+            "b": 0.9803921580314636
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:31835",
+      "depth": 6
+    },
+    {
+      "figmaId": "76:31837",
+      "name": "Background",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4756,
+        "y": 32,
+        "width": 485,
+        "height": 3759
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.9058823585510254,
+            "g": 0.9098039269447327,
+            "b": 0.9137254953384399
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:31836",
+      "depth": 7
+    },
+    {
+      "figmaId": "76:31838",
+      "name": "Banner",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4756,
+        "y": 32,
+        "width": 485,
+        "height": 608
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:31837",
+      "depth": 8
+    },
+    {
+      "figmaId": "76:31839",
+      "name": "Banner Text",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4756,
+        "y": 352,
+        "width": 485,
+        "height": 288
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:31838",
+      "depth": 9
+    },
+    {
+      "figmaId": "76:31840",
+      "name": "AT&T covers more roa",
+      "type": "TEXT",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4776.796875,
+        "y": 382.5,
+        "width": 443,
+        "height": 72
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        },
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.11372549086809158,
+            "g": 0.13725490868091583,
+            "b": 0.16078431904315948
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:31839",
+      "depth": 10
+    },
+    {
+      "figmaId": "76:31841",
+      "name": "Get your AT&T Connec",
+      "type": "TEXT",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4776.796875,
+        "y": 480,
+        "width": 443,
+        "height": 40
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        },
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.11372549086809158,
+            "g": 0.13725490868091583,
+            "b": 0.16078431904315948
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:31839",
+      "depth": 10
+    },
+    {
+      "figmaId": "76:31842",
+      "name": "Choose your country ",
+      "type": "TEXT",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4776.796875,
+        "y": 532.5,
+        "width": 443,
+        "height": 18
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        },
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.11372549086809158,
+            "g": 0.13725490868091583,
+            "b": 0.16078431904315948
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:31839",
+      "depth": 10
+    },
+    {
+      "figmaId": "76:31843",
+      "name": "span",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4776.796875,
+        "y": 566,
+        "width": 443,
+        "height": 42
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:31839",
+      "depth": 10
+    },
+    {
+      "figmaId": "76:31844",
+      "name": "*Based on independen",
+      "type": "TEXT",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4776.796875,
+        "y": 564,
+        "width": 365.8590087890625,
+        "height": 44
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.11372549086809158,
+            "g": 0.13725490868091583,
+            "b": 0.16078431904315948
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:31843",
+      "depth": 11
+    },
+    {
+      "figmaId": "76:31845",
+      "name": "Banner Image",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4756,
+        "y": 32,
+        "width": 485,
+        "height": 320
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:31838",
+      "depth": 9
+    },
+    {
+      "figmaId": "76:31846",
+      "name": "Main Container",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4756,
+        "y": 672,
+        "width": 485,
+        "height": 2707
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:31837",
+      "depth": 8
+    },
+    {
+      "figmaId": "76:31847",
+      "name": "Main Content",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4756,
+        "y": 672,
+        "width": 485,
+        "height": 2707
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:31846",
+      "depth": 9
+    },
+    {
+      "figmaId": "76:31848",
+      "name": "Flex Row",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4756,
+        "y": 672,
+        "width": 485,
+        "height": 2707
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:31847",
+      "depth": 10
+    },
+    {
+      "figmaId": "76:31849",
+      "name": "Landing Page",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4772,
+        "y": 688,
+        "width": 453,
+        "height": 2675
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:31848",
+      "depth": 11
+    },
+    {
+      "figmaId": "76:31850",
+      "name": "Landing Page Container",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4772,
+        "y": 688,
+        "width": 453,
+        "height": 2643
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:31849",
+      "depth": 12
+    },
+    {
+      "figmaId": "76:31851",
+      "name": "form",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4772,
+        "y": 688,
+        "width": 453,
+        "height": 2643
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:31850",
+      "depth": 13
+    },
+    {
+      "figmaId": "76:31852",
+      "name": "Country Selector",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4772,
+        "y": 688,
+        "width": 453,
+        "height": 120
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:31851",
+      "depth": 14
+    },
+    {
+      "figmaId": "76:31853",
+      "name": "Radio Group",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4772,
+        "y": 688,
+        "width": 453,
+        "height": 120
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:31852",
+      "depth": 15
+    },
+    {
+      "figmaId": "76:31854",
+      "name": "att-radio-group",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4925.515625,
+        "y": 688,
+        "width": 146,
+        "height": 120
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:31853",
+      "depth": 16
+    },
+    {
+      "figmaId": "76:31855",
+      "name": "Radio Group",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4925.515625,
+        "y": 688,
+        "width": 146,
+        "height": 120
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.9803921580314636,
+            "g": 0.9803921580314636,
+            "b": 0.9803921580314636
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:31854",
+      "depth": 17
+    },
+    {
+      "figmaId": "76:31856",
+      "name": "Radio Container",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4925.515625,
+        "y": 688,
+        "width": 146,
+        "height": 40
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.9803921580314636,
+            "g": 0.9803921580314636,
+            "b": 0.9803921580314636
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:31855",
+      "depth": 18
+    },
+    {
+      "figmaId": "76:31857",
+      "name": "att-radio",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4950.515625,
+        "y": 693,
+        "width": 75,
+        "height": 35
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.9803921580314636,
+            "g": 0.9803921580314636,
+            "b": 0.9803921580314636
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:31856",
+      "depth": 19
+    },
+    {
+      "figmaId": "76:31858",
+      "name": "label",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4966.515625,
+        "y": 700.5,
+        "width": 43,
+        "height": 20
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.9803921580314636,
+            "g": 0.9803921580314636,
+            "b": 0.9803921580314636
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:31857",
+      "depth": 20
+    },
+    {
+      "figmaId": "76:31859",
+      "name": "::before",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4950.515625,
+        "y": 699.5,
+        "width": 24,
+        "height": 24
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0,
+            "g": 0.34117648005485535,
+            "b": 0.7215686440467834
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0,
+            "g": 0.34117648005485535,
+            "b": 0.7215686440467834
+          },
+          "boundVariables": {}
+        }
+      ],
+      "effects": [
+        {
+          "type": "INNER_SHADOW",
+          "visible": true,
+          "radius": 0,
+          "boundVariables": {},
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1,
+            "a": 1
+          },
+          "offset": {
+            "x": 0,
+            "y": 0
+          },
+          "spread": 3,
+          "blendMode": "NORMAL"
+        }
+      ],
+      "parentId": "76:31858",
+      "depth": 21
+    },
+    {
+      "figmaId": "76:31860",
+      "name": "Container",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4982.515625,
+        "y": 700.5,
+        "width": 27,
+        "height": 20
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.9803921580314636,
+            "g": 0.9803921580314636,
+            "b": 0.9803921580314636
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:31858",
+      "depth": 21
+    },
+    {
+      "figmaId": "76:31861",
+      "name": "USA",
+      "type": "TEXT",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4982.515625,
+        "y": 701,
+        "width": 27,
+        "height": 19
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.9803921580314636,
+            "g": 0.9803921580314636,
+            "b": 0.9803921580314636
+          },
+          "boundVariables": {}
+        },
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.2705882489681244,
+            "g": 0.29411765933036804,
+            "b": 0.32156863808631897
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:31860",
+      "depth": 22
+    },
+    {
+      "figmaId": "76:31862",
+      "name": "Radio Container",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4925.515625,
+        "y": 728,
+        "width": 146,
+        "height": 40
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.9803921580314636,
+            "g": 0.9803921580314636,
+            "b": 0.9803921580314636
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:31855",
+      "depth": 18
+    },
+    {
+      "figmaId": "76:31863",
+      "name": "att-radio",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4950.515625,
+        "y": 733,
+        "width": 96,
+        "height": 35
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.9803921580314636,
+            "g": 0.9803921580314636,
+            "b": 0.9803921580314636
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:31862",
+      "depth": 19
+    },
+    {
+      "figmaId": "76:31864",
+      "name": "label",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4966.515625,
+        "y": 740.5,
+        "width": 64,
+        "height": 20
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.9803921580314636,
+            "g": 0.9803921580314636,
+            "b": 0.9803921580314636
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:31863",
+      "depth": 20
+    },
+    {
+      "figmaId": "76:31865",
+      "name": "::before",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4950.515625,
+        "y": 739.5,
+        "width": 24,
+        "height": 24
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.40784314274787903,
+            "g": 0.4313725531101227,
+            "b": 0.45490196347236633
+          },
+          "boundVariables": {}
+        }
+      ],
+      "effects": [
+        {
+          "type": "INNER_SHADOW",
+          "visible": true,
+          "radius": 0,
+          "boundVariables": {},
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1,
+            "a": 1
+          },
+          "offset": {
+            "x": 0,
+            "y": 0
+          },
+          "spread": 3,
+          "blendMode": "NORMAL"
+        }
+      ],
+      "parentId": "76:31864",
+      "depth": 21
+    },
+    {
+      "figmaId": "76:31866",
+      "name": "Container",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4982.515625,
+        "y": 740.5,
+        "width": 48,
+        "height": 20
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.9803921580314636,
+            "g": 0.9803921580314636,
+            "b": 0.9803921580314636
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:31864",
+      "depth": 21
+    },
+    {
+      "figmaId": "76:31867",
+      "name": "Canada",
+      "type": "TEXT",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4982.515625,
+        "y": 741,
+        "width": 48,
+        "height": 19
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.9803921580314636,
+            "g": 0.9803921580314636,
+            "b": 0.9803921580314636
+          },
+          "boundVariables": {}
+        },
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.2705882489681244,
+            "g": 0.29411765933036804,
+            "b": 0.32156863808631897
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:31866",
+      "depth": 22
+    },
+    {
+      "figmaId": "76:31868",
+      "name": "Radio Container",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4925.515625,
+        "y": 768,
+        "width": 146,
+        "height": 40
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.9803921580314636,
+            "g": 0.9803921580314636,
+            "b": 0.9803921580314636
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:31855",
+      "depth": 18
+    },
+    {
+      "figmaId": "76:31869",
+      "name": "att-radio",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4950.515625,
+        "y": 773,
+        "width": 93,
+        "height": 35
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.9803921580314636,
+            "g": 0.9803921580314636,
+            "b": 0.9803921580314636
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:31868",
+      "depth": 19
+    },
+    {
+      "figmaId": "76:31870",
+      "name": "label",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4966.515625,
+        "y": 780.5,
+        "width": 61,
+        "height": 20
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.9803921580314636,
+            "g": 0.9803921580314636,
+            "b": 0.9803921580314636
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:31869",
+      "depth": 20
+    },
+    {
+      "figmaId": "76:31871",
+      "name": "::before",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4950.515625,
+        "y": 779.5,
+        "width": 24,
+        "height": 24
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.40784314274787903,
+            "g": 0.4313725531101227,
+            "b": 0.45490196347236633
+          },
+          "boundVariables": {}
+        }
+      ],
+      "effects": [
+        {
+          "type": "INNER_SHADOW",
+          "visible": true,
+          "radius": 0,
+          "boundVariables": {},
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1,
+            "a": 1
+          },
+          "offset": {
+            "x": 0,
+            "y": 0
+          },
+          "spread": 3,
+          "blendMode": "NORMAL"
+        }
+      ],
+      "parentId": "76:31870",
+      "depth": 21
+    },
+    {
+      "figmaId": "76:31872",
+      "name": "Container",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4982.515625,
+        "y": 780.5,
+        "width": 45,
+        "height": 20
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.9803921580314636,
+            "g": 0.9803921580314636,
+            "b": 0.9803921580314636
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:31870",
+      "depth": 21
+    },
+    {
+      "figmaId": "76:31873",
+      "name": "México",
+      "type": "TEXT",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4982.515625,
+        "y": 781,
+        "width": 45,
+        "height": 19
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.9803921580314636,
+            "g": 0.9803921580314636,
+            "b": 0.9803921580314636
+          },
+          "boundVariables": {}
+        },
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.2705882489681244,
+            "g": 0.29411765933036804,
+            "b": 0.32156863808631897
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:31872",
+      "depth": 22
+    },
+    {
+      "figmaId": "76:31874",
+      "name": "app-landing-grid",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4772,
+        "y": 848,
+        "width": 453,
+        "height": 2483
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:31851",
+      "depth": 14
+    },
+    {
+      "figmaId": "76:31875",
+      "name": "Thumbnails",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4772,
+        "y": 848,
+        "width": 453,
+        "height": 2483
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:31874",
+      "depth": 15
+    },
+    {
+      "figmaId": "76:31876",
+      "name": "app-thumbnail",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4807.5,
+        "y": 848,
+        "width": 191,
+        "height": 191
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:31875",
+      "depth": 16
+    },
+    {
+      "figmaId": "76:31877",
+      "name": "label",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4807.5,
+        "y": 847,
+        "width": 191,
+        "height": 192
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:31876",
+      "depth": 17
+    },
+    {
+      "figmaId": "76:31878",
+      "name": "Choose acura to continue",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4806.5,
+        "y": 847,
+        "width": 191,
+        "height": 192
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.8941176533699036,
+            "g": 0.8705882430076599,
+            "b": 0.8705882430076599
+          },
+          "boundVariables": {}
+        }
+      ],
+      "effects": [],
+      "parentId": "76:31877",
+      "depth": 18
+    },
+    {
+      "figmaId": "76:31879",
+      "name": "Check Selector",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4902,
+        "y": 848,
+        "width": 1,
+        "height": 190
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:31878",
+      "depth": 19
+    },
+    {
+      "figmaId": "76:31880",
+      "name": "app-thumbnail",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4997.5,
+        "y": 848,
+        "width": 191,
+        "height": 191
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:31875",
+      "depth": 16
+    },
+    {
+      "figmaId": "76:31881",
+      "name": "label",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4997.5,
+        "y": 847,
+        "width": 191,
+        "height": 192
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:31880",
+      "depth": 17
+    },
+    {
+      "figmaId": "76:31882",
+      "name": "Choose alfaromeo to continue",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4996.5,
+        "y": 847,
+        "width": 191,
+        "height": 192
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.8941176533699036,
+            "g": 0.8705882430076599,
+            "b": 0.8705882430076599
+          },
+          "boundVariables": {}
+        }
+      ],
+      "effects": [],
+      "parentId": "76:31881",
+      "depth": 18
+    },
+    {
+      "figmaId": "76:31883",
+      "name": "Check Selector",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 5092,
+        "y": 848,
+        "width": 1,
+        "height": 190
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:31882",
+      "depth": 19
+    },
+    {
+      "figmaId": "76:31884",
+      "name": "app-thumbnail",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4807.5,
+        "y": 1039,
+        "width": 191,
+        "height": 191
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:31875",
+      "depth": 16
+    },
+    {
+      "figmaId": "76:31885",
+      "name": "label",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4807.5,
+        "y": 1038,
+        "width": 191,
+        "height": 192
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:31884",
+      "depth": 17
+    },
+    {
+      "figmaId": "76:31886",
+      "name": "Choose bmw to continue",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4806.5,
+        "y": 1038,
+        "width": 191,
+        "height": 192
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.8941176533699036,
+            "g": 0.8705882430076599,
+            "b": 0.8705882430076599
+          },
+          "boundVariables": {}
+        }
+      ],
+      "effects": [],
+      "parentId": "76:31885",
+      "depth": 18
+    },
+    {
+      "figmaId": "76:31887",
+      "name": "Check Selector",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4902,
+        "y": 1039,
+        "width": 1,
+        "height": 190
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:31886",
+      "depth": 19
+    },
+    {
+      "figmaId": "76:31888",
+      "name": "app-thumbnail",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4997.5,
+        "y": 1039,
+        "width": 191,
+        "height": 191
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:31875",
+      "depth": 16
+    },
+    {
+      "figmaId": "76:31889",
+      "name": "label",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4997.5,
+        "y": 1038,
+        "width": 191,
+        "height": 192
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:31888",
+      "depth": 17
+    },
+    {
+      "figmaId": "76:31890",
+      "name": "Choose chrysler to continue",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4996.5,
+        "y": 1038,
+        "width": 191,
+        "height": 192
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.8941176533699036,
+            "g": 0.8705882430076599,
+            "b": 0.8705882430076599
+          },
+          "boundVariables": {}
+        }
+      ],
+      "effects": [],
+      "parentId": "76:31889",
+      "depth": 18
+    },
+    {
+      "figmaId": "76:31891",
+      "name": "Check Selector",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 5092,
+        "y": 1039,
+        "width": 1,
+        "height": 190
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:31890",
+      "depth": 19
+    },
+    {
+      "figmaId": "76:31892",
+      "name": "app-thumbnail",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4807.5,
+        "y": 1230,
+        "width": 191,
+        "height": 191
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:31875",
+      "depth": 16
+    },
+    {
+      "figmaId": "76:31893",
+      "name": "label",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4807.5,
+        "y": 1229,
+        "width": 191,
+        "height": 192
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:31892",
+      "depth": 17
+    },
+    {
+      "figmaId": "76:31894",
+      "name": "Choose dodge to continue",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4806.5,
+        "y": 1229,
+        "width": 191,
+        "height": 192
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.8941176533699036,
+            "g": 0.8705882430076599,
+            "b": 0.8705882430076599
+          },
+          "boundVariables": {}
+        }
+      ],
+      "effects": [],
+      "parentId": "76:31893",
+      "depth": 18
+    },
+    {
+      "figmaId": "76:31895",
+      "name": "Check Selector",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4902,
+        "y": 1230,
+        "width": 1,
+        "height": 190
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:31894",
+      "depth": 19
+    },
+    {
+      "figmaId": "76:31896",
+      "name": "app-thumbnail",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4997.5,
+        "y": 1230,
+        "width": 191,
+        "height": 191
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:31875",
+      "depth": 16
+    },
+    {
+      "figmaId": "76:31897",
+      "name": "label",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4997.5,
+        "y": 1229,
+        "width": 191,
+        "height": 192
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:31896",
+      "depth": 17
+    },
+    {
+      "figmaId": "76:31898",
+      "name": "Choose fiat to continue",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4996.5,
+        "y": 1229,
+        "width": 191,
+        "height": 192
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.8941176533699036,
+            "g": 0.8705882430076599,
+            "b": 0.8705882430076599
+          },
+          "boundVariables": {}
+        }
+      ],
+      "effects": [],
+      "parentId": "76:31897",
+      "depth": 18
+    },
+    {
+      "figmaId": "76:31899",
+      "name": "Check Selector",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 5092,
+        "y": 1230,
+        "width": 1,
+        "height": 190
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:31898",
+      "depth": 19
+    },
+    {
+      "figmaId": "76:31900",
+      "name": "app-thumbnail",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4807.5,
+        "y": 1421,
+        "width": 191,
+        "height": 191
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:31875",
+      "depth": 16
+    },
+    {
+      "figmaId": "76:31901",
+      "name": "label",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4807.5,
+        "y": 1420,
+        "width": 191,
+        "height": 192
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:31900",
+      "depth": 17
+    },
+    {
+      "figmaId": "76:31902",
+      "name": "Choose ford to continue",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4806.5,
+        "y": 1420,
+        "width": 191,
+        "height": 192
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.8941176533699036,
+            "g": 0.8705882430076599,
+            "b": 0.8705882430076599
+          },
+          "boundVariables": {}
+        }
+      ],
+      "effects": [],
+      "parentId": "76:31901",
+      "depth": 18
+    },
+    {
+      "figmaId": "76:31903",
+      "name": "Check Selector",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4902,
+        "y": 1421,
+        "width": 1,
+        "height": 190
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:31902",
+      "depth": 19
+    },
+    {
+      "figmaId": "76:31904",
+      "name": "app-thumbnail",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4997.5,
+        "y": 1421,
+        "width": 191,
+        "height": 191
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:31875",
+      "depth": 16
+    },
+    {
+      "figmaId": "76:31905",
+      "name": "label",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4997.5,
+        "y": 1420,
+        "width": 191,
+        "height": 192
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:31904",
+      "depth": 17
+    },
+    {
+      "figmaId": "76:31906",
+      "name": "Choose honda to continue",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4996.5,
+        "y": 1420,
+        "width": 191,
+        "height": 192
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.8941176533699036,
+            "g": 0.8705882430076599,
+            "b": 0.8705882430076599
+          },
+          "boundVariables": {}
+        }
+      ],
+      "effects": [],
+      "parentId": "76:31905",
+      "depth": 18
+    },
+    {
+      "figmaId": "76:31907",
+      "name": "Check Selector",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 5092,
+        "y": 1421,
+        "width": 1,
+        "height": 190
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:31906",
+      "depth": 19
+    },
+    {
+      "figmaId": "76:31908",
+      "name": "app-thumbnail",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4807.5,
+        "y": 1612,
+        "width": 191,
+        "height": 191
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:31875",
+      "depth": 16
+    },
+    {
+      "figmaId": "76:31909",
+      "name": "label",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4807.5,
+        "y": 1611,
+        "width": 191,
+        "height": 192
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:31908",
+      "depth": 17
+    },
+    {
+      "figmaId": "76:31910",
+      "name": "Choose infiniti to continue",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4806.5,
+        "y": 1611,
+        "width": 191,
+        "height": 192
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.8941176533699036,
+            "g": 0.8705882430076599,
+            "b": 0.8705882430076599
+          },
+          "boundVariables": {}
+        }
+      ],
+      "effects": [],
+      "parentId": "76:31909",
+      "depth": 18
+    },
+    {
+      "figmaId": "76:31911",
+      "name": "Check Selector",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4902,
+        "y": 1612,
+        "width": 1,
+        "height": 190
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:31910",
+      "depth": 19
+    },
+    {
+      "figmaId": "76:31912",
+      "name": "app-thumbnail",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4997.5,
+        "y": 1612,
+        "width": 191,
+        "height": 191
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:31875",
+      "depth": 16
+    },
+    {
+      "figmaId": "76:31913",
+      "name": "label",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4997.5,
+        "y": 1611,
+        "width": 191,
+        "height": 192
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:31912",
+      "depth": 17
+    },
+    {
+      "figmaId": "76:31914",
+      "name": "Choose jaguar to continue",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4996.5,
+        "y": 1611,
+        "width": 191,
+        "height": 192
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.8941176533699036,
+            "g": 0.8705882430076599,
+            "b": 0.8705882430076599
+          },
+          "boundVariables": {}
+        }
+      ],
+      "effects": [],
+      "parentId": "76:31913",
+      "depth": 18
+    },
+    {
+      "figmaId": "76:31915",
+      "name": "Check Selector",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 5092,
+        "y": 1612,
+        "width": 1,
+        "height": 190
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:31914",
+      "depth": 19
+    },
+    {
+      "figmaId": "76:31916",
+      "name": "app-thumbnail",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4807.5,
+        "y": 1803,
+        "width": 191,
+        "height": 191
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:31875",
+      "depth": 16
+    },
+    {
+      "figmaId": "76:31917",
+      "name": "label",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4807.5,
+        "y": 1802,
+        "width": 191,
+        "height": 192
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:31916",
+      "depth": 17
+    },
+    {
+      "figmaId": "76:31918",
+      "name": "Choose jeep to continue",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4806.5,
+        "y": 1802,
+        "width": 191,
+        "height": 192
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.8941176533699036,
+            "g": 0.8705882430076599,
+            "b": 0.8705882430076599
+          },
+          "boundVariables": {}
+        }
+      ],
+      "effects": [],
+      "parentId": "76:31917",
+      "depth": 18
+    },
+    {
+      "figmaId": "76:31919",
+      "name": "Check Selector",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4902,
+        "y": 1803,
+        "width": 1,
+        "height": 190
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:31918",
+      "depth": 19
+    },
+    {
+      "figmaId": "76:31920",
+      "name": "app-thumbnail",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4997.5,
+        "y": 1803,
+        "width": 191,
+        "height": 191
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:31875",
+      "depth": 16
+    },
+    {
+      "figmaId": "76:31921",
+      "name": "label",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4997.5,
+        "y": 1802,
+        "width": 191,
+        "height": 192
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:31920",
+      "depth": 17
+    },
+    {
+      "figmaId": "76:31922",
+      "name": "Choose landrover to continue",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4996.5,
+        "y": 1802,
+        "width": 191,
+        "height": 192
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.8941176533699036,
+            "g": 0.8705882430076599,
+            "b": 0.8705882430076599
+          },
+          "boundVariables": {}
+        }
+      ],
+      "effects": [],
+      "parentId": "76:31921",
+      "depth": 18
+    },
+    {
+      "figmaId": "76:31923",
+      "name": "Check Selector",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 5092,
+        "y": 1803,
+        "width": 1,
+        "height": 190
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:31922",
+      "depth": 19
+    },
+    {
+      "figmaId": "76:31924",
+      "name": "app-thumbnail",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4807.5,
+        "y": 1994,
+        "width": 191,
+        "height": 191
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:31875",
+      "depth": 16
+    },
+    {
+      "figmaId": "76:31925",
+      "name": "label",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4807.5,
+        "y": 1993,
+        "width": 191,
+        "height": 192
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:31924",
+      "depth": 17
+    },
+    {
+      "figmaId": "76:31926",
+      "name": "Choose lexus to continue",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4806.5,
+        "y": 1993,
+        "width": 191,
+        "height": 192
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.8941176533699036,
+            "g": 0.8705882430076599,
+            "b": 0.8705882430076599
+          },
+          "boundVariables": {}
+        }
+      ],
+      "effects": [],
+      "parentId": "76:31925",
+      "depth": 18
+    },
+    {
+      "figmaId": "76:31927",
+      "name": "Check Selector",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4902,
+        "y": 1994,
+        "width": 1,
+        "height": 190
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:31926",
+      "depth": 19
+    },
+    {
+      "figmaId": "76:31928",
+      "name": "app-thumbnail",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4997.5,
+        "y": 1994,
+        "width": 191,
+        "height": 191
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:31875",
+      "depth": 16
+    },
+    {
+      "figmaId": "76:31929",
+      "name": "label",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4997.5,
+        "y": 1993,
+        "width": 191,
+        "height": 192
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:31928",
+      "depth": 17
+    },
+    {
+      "figmaId": "76:31930",
+      "name": "Choose lincoln to continue",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4996.5,
+        "y": 1993,
+        "width": 191,
+        "height": 192
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.8941176533699036,
+            "g": 0.8705882430076599,
+            "b": 0.8705882430076599
+          },
+          "boundVariables": {}
+        }
+      ],
+      "effects": [],
+      "parentId": "76:31929",
+      "depth": 18
+    },
+    {
+      "figmaId": "76:31931",
+      "name": "Check Selector",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 5092,
+        "y": 1994,
+        "width": 1,
+        "height": 190
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:31930",
+      "depth": 19
+    },
+    {
+      "figmaId": "76:31932",
+      "name": "app-thumbnail",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4807.5,
+        "y": 2185,
+        "width": 191,
+        "height": 191
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:31875",
+      "depth": 16
+    },
+    {
+      "figmaId": "76:31933",
+      "name": "label",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4807.5,
+        "y": 2184,
+        "width": 191,
+        "height": 192
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:31932",
+      "depth": 17
+    },
+    {
+      "figmaId": "76:31934",
+      "name": "Choose maserati to continue",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4806.5,
+        "y": 2184,
+        "width": 191,
+        "height": 192
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.8941176533699036,
+            "g": 0.8705882430076599,
+            "b": 0.8705882430076599
+          },
+          "boundVariables": {}
+        }
+      ],
+      "effects": [],
+      "parentId": "76:31933",
+      "depth": 18
+    },
+    {
+      "figmaId": "76:31935",
+      "name": "Check Selector",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4902,
+        "y": 2185,
+        "width": 1,
+        "height": 190
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:31934",
+      "depth": 19
+    },
+    {
+      "figmaId": "76:31936",
+      "name": "app-thumbnail",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4997.5,
+        "y": 2185,
+        "width": 191,
+        "height": 191
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:31875",
+      "depth": 16
+    },
+    {
+      "figmaId": "76:31937",
+      "name": "label",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4997.5,
+        "y": 2184,
+        "width": 191,
+        "height": 192
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:31936",
+      "depth": 17
+    },
+    {
+      "figmaId": "76:31938",
+      "name": "Choose mazda to continue",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4996.5,
+        "y": 2184,
+        "width": 191,
+        "height": 192
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.8941176533699036,
+            "g": 0.8705882430076599,
+            "b": 0.8705882430076599
+          },
+          "boundVariables": {}
+        }
+      ],
+      "effects": [],
+      "parentId": "76:31937",
+      "depth": 18
+    },
+    {
+      "figmaId": "76:31939",
+      "name": "Check Selector",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 5092,
+        "y": 2185,
+        "width": 1,
+        "height": 190
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:31938",
+      "depth": 19
+    },
+    {
+      "figmaId": "76:31940",
+      "name": "app-thumbnail",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4807.5,
+        "y": 2376,
+        "width": 191,
+        "height": 191
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:31875",
+      "depth": 16
+    },
+    {
+      "figmaId": "76:31941",
+      "name": "label",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4807.5,
+        "y": 2375,
+        "width": 191,
+        "height": 192
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:31940",
+      "depth": 17
+    },
+    {
+      "figmaId": "76:31942",
+      "name": "Choose mercedes to continue",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4806.5,
+        "y": 2375,
+        "width": 191,
+        "height": 192
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.8941176533699036,
+            "g": 0.8705882430076599,
+            "b": 0.8705882430076599
+          },
+          "boundVariables": {}
+        }
+      ],
+      "effects": [],
+      "parentId": "76:31941",
+      "depth": 18
+    },
+    {
+      "figmaId": "76:31943",
+      "name": "Check Selector",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4902,
+        "y": 2376,
+        "width": 1,
+        "height": 190
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:31942",
+      "depth": 19
+    },
+    {
+      "figmaId": "76:31944",
+      "name": "app-thumbnail",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4997.5,
+        "y": 2376,
+        "width": 191,
+        "height": 191
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:31875",
+      "depth": 16
+    },
+    {
+      "figmaId": "76:31945",
+      "name": "label",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4997.5,
+        "y": 2375,
+        "width": 191,
+        "height": 192
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:31944",
+      "depth": 17
+    },
+    {
+      "figmaId": "76:31946",
+      "name": "Choose nissan to continue",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4996.5,
+        "y": 2375,
+        "width": 191,
+        "height": 192
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.8941176533699036,
+            "g": 0.8705882430076599,
+            "b": 0.8705882430076599
+          },
+          "boundVariables": {}
+        }
+      ],
+      "effects": [],
+      "parentId": "76:31945",
+      "depth": 18
+    },
+    {
+      "figmaId": "76:31947",
+      "name": "Check Selector",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 5092,
+        "y": 2376,
+        "width": 1,
+        "height": 190
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:31946",
+      "depth": 19
+    },
+    {
+      "figmaId": "76:31948",
+      "name": "app-thumbnail",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4807.5,
+        "y": 2567,
+        "width": 191,
+        "height": 191
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:31875",
+      "depth": 16
+    },
+    {
+      "figmaId": "76:31949",
+      "name": "label",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4807.5,
+        "y": 2566,
+        "width": 191,
+        "height": 192
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:31948",
+      "depth": 17
+    },
+    {
+      "figmaId": "76:31950",
+      "name": "Choose porsche to continue",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4806.5,
+        "y": 2566,
+        "width": 191,
+        "height": 192
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.8941176533699036,
+            "g": 0.8705882430076599,
+            "b": 0.8705882430076599
+          },
+          "boundVariables": {}
+        }
+      ],
+      "effects": [],
+      "parentId": "76:31949",
+      "depth": 18
+    },
+    {
+      "figmaId": "76:31951",
+      "name": "Check Selector",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4902,
+        "y": 2567,
+        "width": 1,
+        "height": 190
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:31950",
+      "depth": 19
+    },
+    {
+      "figmaId": "76:31952",
+      "name": "app-thumbnail",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4997.5,
+        "y": 2567,
+        "width": 191,
+        "height": 191
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:31875",
+      "depth": 16
+    },
+    {
+      "figmaId": "76:31953",
+      "name": "label",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4997.5,
+        "y": 2566,
+        "width": 191,
+        "height": 192
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:31952",
+      "depth": 17
+    },
+    {
+      "figmaId": "76:31954",
+      "name": "Choose ram to continue",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4996.5,
+        "y": 2566,
+        "width": 191,
+        "height": 192
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.8941176533699036,
+            "g": 0.8705882430076599,
+            "b": 0.8705882430076599
+          },
+          "boundVariables": {}
+        }
+      ],
+      "effects": [],
+      "parentId": "76:31953",
+      "depth": 18
+    },
+    {
+      "figmaId": "76:31955",
+      "name": "Check Selector",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 5092,
+        "y": 2567,
+        "width": 1,
+        "height": 190
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:31954",
+      "depth": 19
+    },
+    {
+      "figmaId": "76:31956",
+      "name": "app-thumbnail",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4807.5,
+        "y": 2758,
+        "width": 191,
+        "height": 191
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:31875",
+      "depth": 16
+    },
+    {
+      "figmaId": "76:31957",
+      "name": "label",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4807.5,
+        "y": 2757,
+        "width": 191,
+        "height": 192
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:31956",
+      "depth": 17
+    },
+    {
+      "figmaId": "76:31958",
+      "name": "Choose rollsroyce to continue",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4806.5,
+        "y": 2757,
+        "width": 191,
+        "height": 192
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.8941176533699036,
+            "g": 0.8705882430076599,
+            "b": 0.8705882430076599
+          },
+          "boundVariables": {}
+        }
+      ],
+      "effects": [],
+      "parentId": "76:31957",
+      "depth": 18
+    },
+    {
+      "figmaId": "76:31959",
+      "name": "Check Selector",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4902,
+        "y": 2758,
+        "width": 1,
+        "height": 190
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:31958",
+      "depth": 19
+    },
+    {
+      "figmaId": "76:31960",
+      "name": "app-thumbnail",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4997.5,
+        "y": 2758,
+        "width": 191,
+        "height": 191
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:31875",
+      "depth": 16
+    },
+    {
+      "figmaId": "76:31961",
+      "name": "label",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4997.5,
+        "y": 2757,
+        "width": 191,
+        "height": 192
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:31960",
+      "depth": 17
+    },
+    {
+      "figmaId": "76:31962",
+      "name": "Choose subaru or solterra to continue",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4996.5,
+        "y": 2757,
+        "width": 191,
+        "height": 192
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.8941176533699036,
+            "g": 0.8705882430076599,
+            "b": 0.8705882430076599
+          },
+          "boundVariables": {}
+        }
+      ],
+      "effects": [],
+      "parentId": "76:31961",
+      "depth": 18
+    },
+    {
+      "figmaId": "76:31963",
+      "name": "Check Selector",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 5092,
+        "y": 2758,
+        "width": 1,
+        "height": 190
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:31962",
+      "depth": 19
+    },
+    {
+      "figmaId": "76:31964",
+      "name": "app-thumbnail",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4807.5,
+        "y": 2949,
+        "width": 191,
+        "height": 191
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:31875",
+      "depth": 16
+    },
+    {
+      "figmaId": "76:31965",
+      "name": "label",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4807.5,
+        "y": 2948,
+        "width": 191,
+        "height": 192
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:31964",
+      "depth": 17
+    },
+    {
+      "figmaId": "76:31966",
+      "name": "Choose toyota to continue",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4806.5,
+        "y": 2948,
+        "width": 191,
+        "height": 192
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.8941176533699036,
+            "g": 0.8705882430076599,
+            "b": 0.8705882430076599
+          },
+          "boundVariables": {}
+        }
+      ],
+      "effects": [],
+      "parentId": "76:31965",
+      "depth": 18
+    },
+    {
+      "figmaId": "76:31967",
+      "name": "Check Selector",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4902,
+        "y": 2949,
+        "width": 1,
+        "height": 190
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:31966",
+      "depth": 19
+    },
+    {
+      "figmaId": "76:31968",
+      "name": "app-thumbnail",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4997.5,
+        "y": 2949,
+        "width": 191,
+        "height": 191
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:31875",
+      "depth": 16
+    },
+    {
+      "figmaId": "76:31969",
+      "name": "label",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4997.5,
+        "y": 2948,
+        "width": 191,
+        "height": 192
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:31968",
+      "depth": 17
+    },
+    {
+      "figmaId": "76:31970",
+      "name": "Choose volvo to continue",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4996.5,
+        "y": 2948,
+        "width": 191,
+        "height": 192
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.8941176533699036,
+            "g": 0.8705882430076599,
+            "b": 0.8705882430076599
+          },
+          "boundVariables": {}
+        }
+      ],
+      "effects": [],
+      "parentId": "76:31969",
+      "depth": 18
+    },
+    {
+      "figmaId": "76:31971",
+      "name": "Check Selector",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 5092,
+        "y": 2949,
+        "width": 1,
+        "height": 190
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:31970",
+      "depth": 19
+    },
+    {
+      "figmaId": "76:31972",
+      "name": "app-thumbnail",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4807.5,
+        "y": 3140,
+        "width": 191,
+        "height": 191
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:31875",
+      "depth": 16
+    },
+    {
+      "figmaId": "76:31973",
+      "name": "label",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4807.5,
+        "y": 3139,
+        "width": 191,
+        "height": 192
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:31972",
+      "depth": 17
+    },
+    {
+      "figmaId": "76:31974",
+      "name": "Choose wagoneer to continue",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4806.5,
+        "y": 3139,
+        "width": 191,
+        "height": 192
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.8941176533699036,
+            "g": 0.8705882430076599,
+            "b": 0.8705882430076599
+          },
+          "boundVariables": {}
+        }
+      ],
+      "effects": [],
+      "parentId": "76:31973",
+      "depth": 18
+    },
+    {
+      "figmaId": "76:31975",
+      "name": "Check Selector",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4902,
+        "y": 3140,
+        "width": 1,
+        "height": 190
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:31974",
+      "depth": 19
+    },
+    {
+      "figmaId": "76:31976",
+      "name": "app-thumbnail",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4997.5,
+        "y": 3140,
+        "width": 191,
+        "height": 191
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:31875",
+      "depth": 16
+    },
+    {
+      "figmaId": "76:31977",
+      "name": "Thumbnail Selector",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4996.5,
+        "y": 3139,
+        "width": 191,
+        "height": 192
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.8941176533699036,
+            "g": 0.8705882430076599,
+            "b": 0.8705882430076599
+          },
+          "boundVariables": {}
+        }
+      ],
+      "effects": [],
+      "parentId": "76:31976",
+      "depth": 17
+    },
+    {
+      "figmaId": "76:31978",
+      "name": "att-dialog",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4772,
+        "y": 3331,
+        "width": 485,
+        "height": 4482
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:31850",
+      "depth": 13
+    },
+    {
+      "figmaId": "76:31979",
+      "name": "app-contact-us",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4756,
+        "y": 3379,
+        "width": 485,
+        "height": 152
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.9058823585510254,
+            "g": 0.9098039269447327,
+            "b": 0.9137254953384399
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:31837",
+      "depth": 8
+    },
+    {
+      "figmaId": "76:31980",
+      "name": "Region Container",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4756,
+        "y": 3379,
+        "width": 485,
+        "height": 152
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.9490196108818054,
+            "g": 0.9490196108818054,
+            "b": 0.9490196108818054
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:31979",
+      "depth": 9
+    },
+    {
+      "figmaId": "76:31981",
+      "name": "Contact Screen",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": true,
+      "absoluteBoundingBox": {
+        "x": 4884.421875,
+        "y": 3358,
+        "width": 228,
+        "height": 194
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.9490196108818054,
+            "g": 0.9490196108818054,
+            "b": 0.9490196108818054
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:31980",
+      "depth": 10
+    },
+    {
+      "figmaId": "76:31982",
+      "name": "Have questions? Plea",
+      "type": "TEXT",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4884.421875,
+        "y": 3426,
+        "width": 228,
+        "height": 30
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.9490196108818054,
+            "g": 0.9490196108818054,
+            "b": 0.9490196108818054
+          },
+          "boundVariables": {}
+        },
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.3529411852359772,
+            "g": 0.3529411852359772,
+            "b": 0.3529411852359772
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:31981",
+      "depth": 11
+    },
+    {
+      "figmaId": "76:31983",
+      "name": "1 (866) 706-5773",
+      "type": "TEXT",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4884.421875,
+        "y": 3453,
+        "width": 228,
+        "height": 34
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.9490196108818054,
+            "g": 0.9490196108818054,
+            "b": 0.9490196108818054
+          },
+          "boundVariables": {}
+        },
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0,
+            "g": 0.34117648005485535,
+            "b": 0.7215686440467834
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:31981",
+      "depth": 11
+    },
+    {
+      "figmaId": "76:31984",
+      "name": "Ng Star Inserted",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4756,
+        "y": 3531,
+        "width": 485,
+        "height": 260
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.9058823585510254,
+            "g": 0.9098039269447327,
+            "b": 0.9137254953384399
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:31837",
+      "depth": 8
+    },
+    {
+      "figmaId": "76:31985",
+      "name": "app-general-disclaimer",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4756,
+        "y": 3531,
+        "width": 485,
+        "height": 260
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.9058823585510254,
+            "g": 0.9098039269447327,
+            "b": 0.9137254953384399
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:31984",
+      "depth": 9
+    },
+    {
+      "figmaId": "76:31986",
+      "name": "GeneralDisclaimerLayout",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4756,
+        "y": 3531,
+        "width": 485,
+        "height": 260
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.9058823585510254,
+            "g": 0.9098039269447327,
+            "b": 0.9137254953384399
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:31985",
+      "depth": 10
+    },
+    {
+      "figmaId": "76:31987",
+      "name": "p",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4776,
+        "y": 3563,
+        "width": 445,
+        "height": 196
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.9058823585510254,
+            "g": 0.9098039269447327,
+            "b": 0.9137254953384399
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:31986",
+      "depth": 11
+    },
+    {
+      "figmaId": "76:31988",
+      "name": "Wi-Fi Hotspot: Suppo",
+      "type": "TEXT",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4776,
+        "y": 3563.5,
+        "width": 431.0469970703125,
+        "height": 83
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.11372549086809158,
+            "g": 0.13725490868091583,
+            "b": 0.16078431904315948
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:31987",
+      "depth": 12
+    },
+    {
+      "figmaId": "76:31989",
+      "name": "att.com/csa",
+      "type": "TEXT",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 5066.28125,
+        "y": 3633.5,
+        "width": 54,
+        "height": 13
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.9058823585510254,
+            "g": 0.9098039269447327,
+            "b": 0.9137254953384399
+          },
+          "boundVariables": {}
+        },
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0,
+            "g": 0.34117648005485535,
+            "b": 0.7215686440467834
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:31987",
+      "depth": 12
+    },
+    {
+      "figmaId": "76:31990",
+      "name": ") / Prepaid - Subjec",
+      "type": "TEXT",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4776,
+        "y": 3633.5,
+        "width": 444.41400146484375,
+        "height": 125
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.11372549086809158,
+            "g": 0.13725490868091583,
+            "b": 0.16078431904315948
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:31987",
+      "depth": 12
+    },
+    {
+      "figmaId": "76:31991",
+      "name": "att-footer",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4756,
+        "y": 3791,
+        "width": 485,
+        "height": 691
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.9803921580314636,
+            "g": 0.9803921580314636,
+            "b": 0.9803921580314636
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:31834",
+      "depth": 5
+    },
+    {
+      "figmaId": "76:31992",
+      "name": "footer",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4756,
+        "y": 3791,
+        "width": 485,
+        "height": 691
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0,
+            "g": 0,
+            "b": 0
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0,
+            "g": 0.6235294342041016,
+            "b": 0.8588235378265381
+          },
+          "boundVariables": {}
+        }
+      ],
+      "effects": [],
+      "parentId": "76:31991",
+      "depth": 6
+    },
+    {
+      "figmaId": "76:31993",
+      "name": "Footer Inner",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": true,
+      "absoluteBoundingBox": {
+        "x": 4768.125,
+        "y": 3809,
+        "width": 470,
+        "height": 658
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0,
+            "g": 0,
+            "b": 0
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:31992",
+      "depth": 7
+    },
+    {
+      "figmaId": "76:31994",
+      "name": "Footer Top",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4773.125,
+        "y": 3814,
+        "width": 451,
+        "height": 505
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0,
+            "g": 0,
+            "b": 0
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:31993",
+      "depth": 8
+    },
+    {
+      "figmaId": "76:31995",
+      "name": "Column",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4773.125,
+        "y": 3814,
+        "width": 451,
+        "height": 236
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0,
+            "g": 0,
+            "b": 0
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:31994",
+      "depth": 9
+    },
+    {
+      "figmaId": "76:31996",
+      "name": "att-language-selector",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4969.34375,
+        "y": 3814,
+        "width": 58,
+        "height": 60
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0,
+            "g": 0,
+            "b": 0
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:31995",
+      "depth": 10
+    },
+    {
+      "figmaId": "76:31997",
+      "name": "Language Selector",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4969.34375,
+        "y": 3814,
+        "width": 58,
+        "height": 60
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0,
+            "g": 0,
+            "b": 0
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:31996",
+      "depth": 11
+    },
+    {
+      "figmaId": "76:31998",
+      "name": "a",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4971.8515625,
+        "y": 3814,
+        "width": 53,
+        "height": 30
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0,
+            "g": 0,
+            "b": 0
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:31997",
+      "depth": 12
+    },
+    {
+      "figmaId": "76:31999",
+      "name": "English",
+      "type": "TEXT",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4971.8515625,
+        "y": 3813.5,
+        "width": 53.28099822998047,
+        "height": 21
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:31998",
+      "depth": 13
+    },
+    {
+      "figmaId": "76:32000",
+      "name": "a",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4969.34375,
+        "y": 3844,
+        "width": 58,
+        "height": 30
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0,
+            "g": 0,
+            "b": 0
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:31997",
+      "depth": 12
+    },
+    {
+      "figmaId": "76:32001",
+      "name": "Español",
+      "type": "TEXT",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4969.34375,
+        "y": 3843.5,
+        "width": 58.30500030517578,
+        "height": 21
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:32000",
+      "depth": 13
+    },
+    {
+      "figmaId": "76:32002",
+      "name": "Footer Middle",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4758.5,
+        "y": 3904,
+        "width": 480,
+        "height": 146
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0,
+            "g": 0,
+            "b": 0
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:31995",
+      "depth": 10
+    },
+    {
+      "figmaId": "76:32003",
+      "name": "Footer Links",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4854.5,
+        "y": 3904,
+        "width": 288,
+        "height": 146
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0,
+            "g": 0,
+            "b": 0
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:32002",
+      "depth": 11
+    },
+    {
+      "figmaId": "76:32004",
+      "name": "a",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4879.5,
+        "y": 3904,
+        "width": 119,
+        "height": 34
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0,
+            "g": 0,
+            "b": 0
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:32003",
+      "depth": 12
+    },
+    {
+      "figmaId": "76:32005",
+      "name": "Privacy Policy",
+      "type": "TEXT",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4902.1796875,
+        "y": 3922,
+        "width": 73.63300323486328,
+        "height": 16
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.6000000238418579,
+            "g": 0.6000000238418579,
+            "b": 0.6000000238418579
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:32004",
+      "depth": 13
+    },
+    {
+      "figmaId": "76:32006",
+      "name": "a",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4998.5,
+        "y": 3904,
+        "width": 119,
+        "height": 34
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0,
+            "g": 0,
+            "b": 0
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:32003",
+      "depth": 12
+    },
+    {
+      "figmaId": "76:32007",
+      "name": "Terms of use",
+      "type": "TEXT",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 5022.8125,
+        "y": 3922,
+        "width": 70.375,
+        "height": 16
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.6000000238418579,
+            "g": 0.6000000238418579,
+            "b": 0.6000000238418579
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:32006",
+      "depth": 13
+    },
+    {
+      "figmaId": "76:32008",
+      "name": "a",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4879.5,
+        "y": 3948,
+        "width": 119,
+        "height": 34
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0,
+            "g": 0,
+            "b": 0
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:32003",
+      "depth": 12
+    },
+    {
+      "figmaId": "76:32009",
+      "name": "Broadband details",
+      "type": "TEXT",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4889.5078125,
+        "y": 3966,
+        "width": 98.97699737548828,
+        "height": 16
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.6000000238418579,
+            "g": 0.6000000238418579,
+            "b": 0.6000000238418579
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:32008",
+      "depth": 13
+    },
+    {
+      "figmaId": "76:32010",
+      "name": "a",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4998.5,
+        "y": 3948,
+        "width": 119,
+        "height": 34
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0,
+            "g": 0,
+            "b": 0
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:32003",
+      "depth": 12
+    },
+    {
+      "figmaId": "76:32011",
+      "name": "Advertising choices",
+      "type": "TEXT",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 5004.875,
+        "y": 3966,
+        "width": 106.24199676513672,
+        "height": 16
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.6000000238418579,
+            "g": 0.6000000238418579,
+            "b": 0.6000000238418579
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:32010",
+      "depth": 13
+    },
+    {
+      "figmaId": "76:32012",
+      "name": "a",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4879.5,
+        "y": 3999,
+        "width": 119,
+        "height": 34
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0,
+            "g": 0,
+            "b": 0
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:32003",
+      "depth": 12
+    },
+    {
+      "figmaId": "76:32013",
+      "name": "Accessibility",
+      "type": "TEXT",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4905.7109375,
+        "y": 4017,
+        "width": 66.56999969482422,
+        "height": 16
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.6000000238418579,
+            "g": 0.6000000238418579,
+            "b": 0.6000000238418579
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:32012",
+      "depth": 13
+    },
+    {
+      "figmaId": "76:32014",
+      "name": "Privacy Options",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4998.5,
+        "y": 3992,
+        "width": 119,
+        "height": 58
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0,
+            "g": 0,
+            "b": 0
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:32003",
+      "depth": 12
+    },
+    {
+      "figmaId": "76:32015",
+      "name": "a",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4998.5,
+        "y": 3992,
+        "width": 89,
+        "height": 48
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0,
+            "g": 0,
+            "b": 0
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:32014",
+      "depth": 13
+    },
+    {
+      "figmaId": "76:32016",
+      "name": "Your Privacy Choices",
+      "type": "TEXT",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 5005.4609375,
+        "y": 4010,
+        "width": 67.06999969482422,
+        "height": 30
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.6000000238418579,
+            "g": 0.6000000238418579,
+            "b": 0.6000000238418579
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:32015",
+      "depth": 14
+    },
+    {
+      "figmaId": "76:32017",
+      "name": "Image: California Consumer Privacy Act (CCPA) Opt-Out Icon",
+      "type": "RECTANGLE",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 5087.5,
+        "y": 4006,
+        "width": 30,
+        "height": 30
+      },
+      "fills": [
+        {
+          "type": "IMAGE",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "scaleMode": "FILL",
+          "imageTransform": [
+            [
+              1,
+              0,
+              0
+            ],
+            [
+              0,
+              1,
+              0
+            ]
+          ],
+          "scalingFactor": 1,
+          "rotation": 0,
+          "filters": {
+            "exposure": 0,
+            "contrast": 0,
+            "saturation": 0,
+            "temperature": 0,
+            "tint": 0,
+            "highlights": 0,
+            "shadows": 0
+          },
+          "imageHash": "25f447e5736bf701cad08a96f8f0d21265ec4f0b"
+        },
+        {
+          "type": "IMAGE",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "scaleMode": "FILL",
+          "imageTransform": [
+            [
+              1,
+              0,
+              0
+            ],
+            [
+              0,
+              1,
+              0
+            ]
+          ],
+          "scalingFactor": 1,
+          "rotation": 0,
+          "filters": {
+            "exposure": 0,
+            "contrast": 0,
+            "saturation": 0,
+            "temperature": 0,
+            "tint": 0,
+            "highlights": 0,
+            "shadows": 0
+          },
+          "imageHash": "25f447e5736bf701cad08a96f8f0d21265ec4f0b"
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:32014",
+      "depth": 13
+    },
+    {
+      "figmaId": "76:32018",
+      "name": "Vertical Line",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 0.1899999976158142,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4773.125,
+        "y": 4065,
+        "width": 451,
+        "height": 1
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.6000000238418579,
+            "g": 0.6000000238418579,
+            "b": 0.6000000238418579
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:31994",
+      "depth": 9
+    },
+    {
+      "figmaId": "76:32019",
+      "name": "Column",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4773.125,
+        "y": 4096,
+        "width": 451,
+        "height": 192
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0,
+            "g": 0,
+            "b": 0
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:31994",
+      "depth": 9
+    },
+    {
+      "figmaId": "76:32020",
+      "name": "Connect with AT&T",
+      "type": "TEXT",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4773.125,
+        "y": 4096,
+        "width": 451,
+        "height": 20
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0,
+            "g": 0,
+            "b": 0
+          },
+          "boundVariables": {}
+        },
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.6000000238418579,
+            "g": 0.6000000238418579,
+            "b": 0.6000000238418579
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:32019",
+      "depth": 10
+    },
+    {
+      "figmaId": "76:32021",
+      "name": "Icons",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4773.125,
+        "y": 4136,
+        "width": 451,
+        "height": 40
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0,
+            "g": 0,
+            "b": 0
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:32019",
+      "depth": 10
+    },
+    {
+      "figmaId": "76:32022",
+      "name": "a",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4923.5,
+        "y": 4136,
+        "width": 30,
+        "height": 30
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0,
+            "g": 0,
+            "b": 0
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:32021",
+      "depth": 11
+    },
+    {
+      "figmaId": "76:32023",
+      "name": "i",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4923.5,
+        "y": 4136,
+        "width": 30,
+        "height": 30
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0,
+            "g": 0,
+            "b": 0
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:32022",
+      "depth": 12
+    },
+    {
+      "figmaId": "76:32024",
+      "name": "a",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4963.5,
+        "y": 4136,
+        "width": 30,
+        "height": 30
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0,
+            "g": 0,
+            "b": 0
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:32021",
+      "depth": 11
+    },
+    {
+      "figmaId": "76:32025",
+      "name": "i",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4963.5,
+        "y": 4136,
+        "width": 30,
+        "height": 30
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0,
+            "g": 0,
+            "b": 0
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:32024",
+      "depth": 12
+    },
+    {
+      "figmaId": "76:32026",
+      "name": "a",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 5003.5,
+        "y": 4136,
+        "width": 30,
+        "height": 30
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0,
+            "g": 0,
+            "b": 0
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:32021",
+      "depth": 11
+    },
+    {
+      "figmaId": "76:32027",
+      "name": "i",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 5003.5,
+        "y": 4136,
+        "width": 30,
+        "height": 30
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0,
+            "g": 0,
+            "b": 0
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:32026",
+      "depth": 12
+    },
+    {
+      "figmaId": "76:32028",
+      "name": "a",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 5043.5,
+        "y": 4136,
+        "width": 30,
+        "height": 30
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0,
+            "g": 0,
+            "b": 0
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:32021",
+      "depth": 11
+    },
+    {
+      "figmaId": "76:32029",
+      "name": "i",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 5043.5,
+        "y": 4136,
+        "width": 30,
+        "height": 30
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0,
+            "g": 0,
+            "b": 0
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:32028",
+      "depth": 12
+    },
+    {
+      "figmaId": "76:32030",
+      "name": "Accepted payment met",
+      "type": "TEXT",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4773.125,
+        "y": 4224,
+        "width": 451,
+        "height": 20
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0,
+            "g": 0,
+            "b": 0
+          },
+          "boundVariables": {}
+        },
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.6000000238418579,
+            "g": 0.6000000238418579,
+            "b": 0.6000000238418579
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:32019",
+      "depth": 10
+    },
+    {
+      "figmaId": "76:32031",
+      "name": "Icons",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4885,
+        "y": 4264,
+        "width": 227,
+        "height": 24
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0,
+            "g": 0,
+            "b": 0
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:32019",
+      "depth": 10
+    },
+    {
+      "figmaId": "76:32032",
+      "name": "Image: American Express",
+      "type": "RECTANGLE",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4885,
+        "y": 4264,
+        "width": 38,
+        "height": 24
+      },
+      "fills": [
+        {
+          "type": "IMAGE",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "scaleMode": "FILL",
+          "imageTransform": [
+            [
+              1,
+              0,
+              0
+            ],
+            [
+              0,
+              1,
+              0
+            ]
+          ],
+          "scalingFactor": 1,
+          "rotation": 0,
+          "filters": {
+            "exposure": 0,
+            "contrast": 0,
+            "saturation": 0,
+            "temperature": 0,
+            "tint": 0,
+            "highlights": 0,
+            "shadows": 0
+          },
+          "imageHash": "7f2a8cc9c4f45cdc3e5fa11a5841fc4a21c9b569"
+        },
+        {
+          "type": "IMAGE",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "scaleMode": "FILL",
+          "imageTransform": [
+            [
+              1,
+              0,
+              0
+            ],
+            [
+              0,
+              1,
+              0
+            ]
+          ],
+          "scalingFactor": 1,
+          "rotation": 0,
+          "filters": {
+            "exposure": 0,
+            "contrast": 0,
+            "saturation": 0,
+            "temperature": 0,
+            "tint": 0,
+            "highlights": 0,
+            "shadows": 0
+          },
+          "imageHash": "7f2a8cc9c4f45cdc3e5fa11a5841fc4a21c9b569"
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:32031",
+      "depth": 11
+    },
+    {
+      "figmaId": "76:32033",
+      "name": "Image: Discover Card",
+      "type": "RECTANGLE",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4923,
+        "y": 4264,
+        "width": 38,
+        "height": 24
+      },
+      "fills": [
+        {
+          "type": "IMAGE",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "scaleMode": "FILL",
+          "imageTransform": [
+            [
+              1,
+              0,
+              0
+            ],
+            [
+              0,
+              1,
+              0
+            ]
+          ],
+          "scalingFactor": 1,
+          "rotation": 0,
+          "filters": {
+            "exposure": 0,
+            "contrast": 0,
+            "saturation": 0,
+            "temperature": 0,
+            "tint": 0,
+            "highlights": 0,
+            "shadows": 0
+          },
+          "imageHash": "4a206f3aa27f41423e88c401f46c264206ed226b"
+        },
+        {
+          "type": "IMAGE",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "scaleMode": "FILL",
+          "imageTransform": [
+            [
+              1,
+              0,
+              0
+            ],
+            [
+              0,
+              1,
+              0
+            ]
+          ],
+          "scalingFactor": 1,
+          "rotation": 0,
+          "filters": {
+            "exposure": 0,
+            "contrast": 0,
+            "saturation": 0,
+            "temperature": 0,
+            "tint": 0,
+            "highlights": 0,
+            "shadows": 0
+          },
+          "imageHash": "4a206f3aa27f41423e88c401f46c264206ed226b"
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:32031",
+      "depth": 11
+    },
+    {
+      "figmaId": "76:32034",
+      "name": "Image: Master Card",
+      "type": "RECTANGLE",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4961,
+        "y": 4264,
+        "width": 38,
+        "height": 24
+      },
+      "fills": [
+        {
+          "type": "IMAGE",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "scaleMode": "FILL",
+          "imageTransform": [
+            [
+              1,
+              0,
+              0
+            ],
+            [
+              0,
+              1,
+              0
+            ]
+          ],
+          "scalingFactor": 1,
+          "rotation": 0,
+          "filters": {
+            "exposure": 0,
+            "contrast": 0,
+            "saturation": 0,
+            "temperature": 0,
+            "tint": 0,
+            "highlights": 0,
+            "shadows": 0
+          },
+          "imageHash": "703d4f5cbaf087090215f08bf908d95642a80f45"
+        },
+        {
+          "type": "IMAGE",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "scaleMode": "FILL",
+          "imageTransform": [
+            [
+              1,
+              0,
+              0
+            ],
+            [
+              0,
+              1,
+              0
+            ]
+          ],
+          "scalingFactor": 1,
+          "rotation": 0,
+          "filters": {
+            "exposure": 0,
+            "contrast": 0,
+            "saturation": 0,
+            "temperature": 0,
+            "tint": 0,
+            "highlights": 0,
+            "shadows": 0
+          },
+          "imageHash": "703d4f5cbaf087090215f08bf908d95642a80f45"
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:32031",
+      "depth": 11
+    },
+    {
+      "figmaId": "76:32035",
+      "name": "Image: Visa Card",
+      "type": "RECTANGLE",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4999,
+        "y": 4264,
+        "width": 38,
+        "height": 24
+      },
+      "fills": [
+        {
+          "type": "IMAGE",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "scaleMode": "FILL",
+          "imageTransform": [
+            [
+              1,
+              0,
+              0
+            ],
+            [
+              0,
+              1,
+              0
+            ]
+          ],
+          "scalingFactor": 1,
+          "rotation": 0,
+          "filters": {
+            "exposure": 0,
+            "contrast": 0,
+            "saturation": 0,
+            "temperature": 0,
+            "tint": 0,
+            "highlights": 0,
+            "shadows": 0
+          },
+          "imageHash": "3b9509453668f7b6693ae3806eda80a6f88c1950"
+        },
+        {
+          "type": "IMAGE",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "scaleMode": "FILL",
+          "imageTransform": [
+            [
+              1,
+              0,
+              0
+            ],
+            [
+              0,
+              1,
+              0
+            ]
+          ],
+          "scalingFactor": 1,
+          "rotation": 0,
+          "filters": {
+            "exposure": 0,
+            "contrast": 0,
+            "saturation": 0,
+            "temperature": 0,
+            "tint": 0,
+            "highlights": 0,
+            "shadows": 0
+          },
+          "imageHash": "3b9509453668f7b6693ae3806eda80a6f88c1950"
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:32031",
+      "depth": 11
+    },
+    {
+      "figmaId": "76:32036",
+      "name": "Image: Amazon Pay",
+      "type": "RECTANGLE",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 5037,
+        "y": 4264,
+        "width": 38,
+        "height": 24
+      },
+      "fills": [
+        {
+          "type": "IMAGE",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "scaleMode": "FILL",
+          "imageTransform": [
+            [
+              1,
+              0,
+              0
+            ],
+            [
+              0,
+              1,
+              0
+            ]
+          ],
+          "scalingFactor": 1,
+          "rotation": 0,
+          "filters": {
+            "exposure": 0,
+            "contrast": 0,
+            "saturation": 0,
+            "temperature": 0,
+            "tint": 0,
+            "highlights": 0,
+            "shadows": 0
+          },
+          "imageHash": "f9833d2fc8cd223cf7e0a346512c1624f5ee465e"
+        },
+        {
+          "type": "IMAGE",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "scaleMode": "FILL",
+          "imageTransform": [
+            [
+              1,
+              0,
+              0
+            ],
+            [
+              0,
+              1,
+              0
+            ]
+          ],
+          "scalingFactor": 1,
+          "rotation": 0,
+          "filters": {
+            "exposure": 0,
+            "contrast": 0,
+            "saturation": 0,
+            "temperature": 0,
+            "tint": 0,
+            "highlights": 0,
+            "shadows": 0
+          },
+          "imageHash": "f9833d2fc8cd223cf7e0a346512c1624f5ee465e"
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:32031",
+      "depth": 11
+    },
+    {
+      "figmaId": "76:32037",
+      "name": "Image: PayPal",
+      "type": "RECTANGLE",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 5075,
+        "y": 4264,
+        "width": 38,
+        "height": 24
+      },
+      "fills": [
+        {
+          "type": "IMAGE",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "scaleMode": "FILL",
+          "imageTransform": [
+            [
+              1,
+              0,
+              0
+            ],
+            [
+              0,
+              1,
+              0
+            ]
+          ],
+          "scalingFactor": 1,
+          "rotation": 0,
+          "filters": {
+            "exposure": 0,
+            "contrast": 0,
+            "saturation": 0,
+            "temperature": 0,
+            "tint": 0,
+            "highlights": 0,
+            "shadows": 0
+          },
+          "imageHash": "edcec7a44363fac230437fc311f71f9379234857"
+        },
+        {
+          "type": "IMAGE",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "scaleMode": "FILL",
+          "imageTransform": [
+            [
+              1,
+              0,
+              0
+            ],
+            [
+              0,
+              1,
+              0
+            ]
+          ],
+          "scalingFactor": 1,
+          "rotation": 0,
+          "filters": {
+            "exposure": 0,
+            "contrast": 0,
+            "saturation": 0,
+            "temperature": 0,
+            "tint": 0,
+            "highlights": 0,
+            "shadows": 0
+          },
+          "imageHash": "edcec7a44363fac230437fc311f71f9379234857"
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:32031",
+      "depth": 11
+    },
+    {
+      "figmaId": "76:32038",
+      "name": "Vertical Line",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 0.1899999976158142,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4773.125,
+        "y": 4318,
+        "width": 451,
+        "height": 1
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.6000000238418579,
+            "g": 0.6000000238418579,
+            "b": 0.6000000238418579
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:31994",
+      "depth": 9
+    },
+    {
+      "figmaId": "76:32039",
+      "name": "Footer Bottom",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4773.125,
+        "y": 4319,
+        "width": 451,
+        "height": 143
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0,
+            "g": 0,
+            "b": 0
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:31993",
+      "depth": 8
+    },
+    {
+      "figmaId": "76:32040",
+      "name": "Columns",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4773.125,
+        "y": 4319,
+        "width": 451,
+        "height": 143
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0,
+            "g": 0,
+            "b": 0
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:32039",
+      "depth": 9
+    },
+    {
+      "figmaId": "76:32041",
+      "name": "Column",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4773.125,
+        "y": 4319,
+        "width": 451,
+        "height": 67
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0,
+            "g": 0,
+            "b": 0
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:32040",
+      "depth": 10
+    },
+    {
+      "figmaId": "76:32042",
+      "name": "p",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4784.390625,
+        "y": 4319,
+        "width": 428,
+        "height": 67
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0,
+            "g": 0,
+            "b": 0
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:32041",
+      "depth": 11
+    },
+    {
+      "figmaId": "76:32043",
+      "name": "© 2026 AT&T Intellec",
+      "type": "TEXT",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4815.21875,
+        "y": 4337,
+        "width": 366.55499267578125,
+        "height": 44
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.6000000238418579,
+            "g": 0.6000000238418579,
+            "b": 0.6000000238418579
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:32042",
+      "depth": 12
+    },
+    {
+      "figmaId": "76:32044",
+      "name": "Vertical Line",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 0.1899999976158142,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4773.125,
+        "y": 4401,
+        "width": 451,
+        "height": 1
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.6000000238418579,
+            "g": 0.6000000238418579,
+            "b": 0.6000000238418579
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:32040",
+      "depth": 10
+    },
+    {
+      "figmaId": "76:32045",
+      "name": "Column",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4773.125,
+        "y": 4432,
+        "width": 451,
+        "height": 20
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0,
+            "g": 0,
+            "b": 0
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:32040",
+      "depth": 10
+    },
+    {
+      "figmaId": "76:32046",
+      "name": "Footer Secure",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4773.125,
+        "y": 4432,
+        "width": 451,
+        "height": 20
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0,
+            "g": 0,
+            "b": 0
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:32045",
+      "depth": 11
+    },
+    {
+      "figmaId": "76:32047",
+      "name": "svg-icon",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4936.453125,
+        "y": 4432,
+        "width": 20,
+        "height": 20
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0,
+            "g": 0,
+            "b": 0
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:32046",
+      "depth": 12
+    },
+    {
+      "figmaId": "76:32048",
+      "name": "Container",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4956.453125,
+        "y": 4432,
+        "width": 104,
+        "height": 20
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0,
+            "g": 0,
+            "b": 0
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:32046",
+      "depth": 12
+    },
+    {
+      "figmaId": "76:32049",
+      "name": "Secure connection",
+      "type": "TEXT",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4956.453125,
+        "y": 4434,
+        "width": 104,
+        "height": 16
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0,
+            "g": 0,
+            "b": 0
+          },
+          "boundVariables": {}
+        },
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.6000000238418579,
+            "g": 0.6000000238418579,
+            "b": 0.6000000238418579
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:32048",
+      "depth": 13
+    },
+    {
+      "figmaId": "76:32050",
+      "name": "att-header",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4756,
+        "y": 0,
+        "width": 485,
+        "height": 64
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0,
+            "g": 0,
+            "b": 0
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:31834",
+      "depth": 5
+    },
+    {
+      "figmaId": "76:32051",
+      "name": "Header Cpm",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4756,
+        "y": 0,
+        "width": 485,
+        "height": 64
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0,
+            "g": 0,
+            "b": 0
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:32050",
+      "depth": 6
+    },
+    {
+      "figmaId": "76:32052",
+      "name": "Link Container",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4764,
+        "y": 0,
+        "width": 30,
+        "height": 64
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0,
+            "g": 0,
+            "b": 0
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:32051",
+      "depth": 7
+    },
+    {
+      "figmaId": "76:32053",
+      "name": "svg-icon",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4764,
+        "y": 17,
+        "width": 30,
+        "height": 30
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0,
+            "g": 0,
+            "b": 0
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:32052",
+      "depth": 8
+    },
+    {
+      "figmaId": "76:32054",
+      "name": "toast-message",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4756,
+        "y": 791,
+        "width": 485,
+        "height": 4482
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.9803921580314636,
+            "g": 0.9803921580314636,
+            "b": 0.9803921580314636
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:31831",
+      "depth": 4
+    },
+    {
+      "figmaId": "76:32055",
+      "name": "TEXT 2",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4838.5,
+        "y": 20,
+        "width": 320,
+        "height": 115
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.9803921580314636,
+            "g": 0.9803921580314636,
+            "b": 0.9803921580314636
+          },
+          "boundVariables": {}
+        },
+        {
+          "type": "GRADIENT_LINEAR",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "gradientStops": [
+            {
+              "color": {
+                "r": 0.4000000059604645,
+                "g": 0.4941176474094391,
+                "b": 0.9176470637321472,
+                "a": 0.949999988079071
+              },
+              "position": 0,
+              "boundVariables": {}
+            },
+            {
+              "color": {
+                "r": 0.4627451002597809,
+                "g": 0.29411765933036804,
+                "b": 0.6352941393852234,
+                "a": 0.949999988079071
+              },
+              "position": 1,
+              "boundVariables": {}
+            }
+          ],
+          "gradientTransform": [
+            [
+              0.7071067690849304,
+              -0.7071067690849304,
+              0.5
+            ],
+            [
+              0.7071067690849304,
+              0.7071067690849304,
+              -0.2071067839860916
+            ]
+          ]
+        }
+      ],
+      "strokes": [],
+      "effects": [
+        {
+          "type": "DROP_SHADOW",
+          "visible": true,
+          "radius": 24,
+          "boundVariables": {},
+          "color": {
+            "r": 0,
+            "g": 0,
+            "b": 0,
+            "a": 0.4000000059604645
+          },
+          "offset": {
+            "x": 0,
+            "y": 8
+          },
+          "spread": 0,
+          "blendMode": "NORMAL",
+          "showShadowBehindNode": true
+        },
+        {
+          "type": "BACKGROUND_BLUR",
+          "visible": true,
+          "radius": 12,
+          "boundVariables": {},
+          "blurType": "NORMAL"
+        }
+      ],
+      "parentId": "76:31830",
+      "depth": 3
+    },
+    {
+      "figmaId": "76:32056",
+      "name": "MAIN",
+      "type": "TEXT",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4866.5,
+        "y": 40,
+        "width": 264,
+        "height": 80
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.9803921580314636,
+            "g": 0.9803921580314636,
+            "b": 0.9803921580314636
+          },
+          "boundVariables": {}
+        },
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:32055",
+      "depth": 4
+    },
+    {
+      "figmaId": "76:32057",
+      "name": "FOOTER",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": true,
+      "absoluteBoundingBox": {
+        "x": 4866.5,
+        "y": 128,
+        "width": 264,
+        "height": 4
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 0.20000000298023224,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:32055",
+      "depth": 4
+    },
+    {
+      "figmaId": "76:32058",
+      "name": "FOOTER",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4866.5,
+        "y": 128,
+        "width": 1,
+        "height": 4
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 0.20000000298023224,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        },
+        {
+          "type": "GRADIENT_LINEAR",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "gradientStops": [
+            {
+              "color": {
+                "r": 0,
+                "g": 0.8313725590705872,
+                "b": 0.6666666865348816,
+                "a": 1
+              },
+              "position": 0,
+              "boundVariables": {}
+            },
+            {
+              "color": {
+                "r": 0,
+                "g": 0.7372549176216125,
+                "b": 0.8313725590705872,
+                "a": 1
+              },
+              "position": 1,
+              "boundVariables": {}
+            }
+          ],
+          "gradientTransform": [
+            [
+              1,
+              0,
+              0
+            ],
+            [
+              0,
+              1,
+              0
+            ]
+          ]
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:32057",
+      "depth": 5
+    },
+    {
+      "figmaId": "76:32059",
+      "name": "HEADER",
+      "type": "TEXT",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4866.5,
+        "y": 141,
+        "width": 264,
+        "height": 15
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.9803921580314636,
+            "g": 0.9803921580314636,
+            "b": 0.9803921580314636
+          },
+          "boundVariables": {}
+        },
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 0.699999988079071,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:32055",
+      "depth": 4
+    },
+    {
+      "figmaId": "76:32060",
+      "name": "LINK",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4838.5,
+        "y": 20,
+        "width": 320,
+        "height": 155
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.9803921580314636,
+            "g": 0.9803921580314636,
+            "b": 0.9803921580314636
+          },
+          "boundVariables": {}
+        },
+        {
+          "type": "GRADIENT_LINEAR",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "gradientStops": [
+            {
+              "color": {
+                "r": 0.4000000059604645,
+                "g": 0.4941176474094391,
+                "b": 0.9176470637321472,
+                "a": 0.949999988079071
+              },
+              "position": 0,
+              "boundVariables": {}
+            },
+            {
+              "color": {
+                "r": 0.4627451002597809,
+                "g": 0.29411765933036804,
+                "b": 0.6352941393852234,
+                "a": 0.949999988079071
+              },
+              "position": 1,
+              "boundVariables": {}
+            }
+          ],
+          "gradientTransform": [
+            [
+              0.7071067690849304,
+              -0.7071067690849304,
+              0.5
+            ],
+            [
+              0.7071067690849304,
+              0.7071067690849304,
+              -0.2071067839860916
+            ]
+          ]
+        }
+      ],
+      "strokes": [],
+      "effects": [
+        {
+          "type": "DROP_SHADOW",
+          "visible": true,
+          "radius": 24,
+          "boundVariables": {},
+          "color": {
+            "r": 0,
+            "g": 0,
+            "b": 0,
+            "a": 0.4000000059604645
+          },
+          "offset": {
+            "x": 0,
+            "y": 8
+          },
+          "spread": 0,
+          "blendMode": "NORMAL",
+          "showShadowBehindNode": true
+        },
+        {
+          "type": "BACKGROUND_BLUR",
+          "visible": true,
+          "radius": 12,
+          "boundVariables": {},
+          "blurType": "NORMAL"
+        }
+      ],
+      "parentId": "76:31830",
+      "depth": 3
+    },
+    {
+      "figmaId": "76:32061",
+      "name": "Extracting... (1s, 1",
+      "type": "TEXT",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4866.5,
+        "y": 40,
+        "width": 264,
+        "height": 80
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.9803921580314636,
+            "g": 0.9803921580314636,
+            "b": 0.9803921580314636
+          },
+          "boundVariables": {}
+        },
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:32060",
+      "depth": 4
+    },
+    {
+      "figmaId": "76:32062",
+      "name": "Container",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": true,
+      "absoluteBoundingBox": {
+        "x": 4866.5,
+        "y": 128,
+        "width": 264,
+        "height": 4
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 0.20000000298023224,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:32060",
+      "depth": 4
+    },
+    {
+      "figmaId": "76:32063",
+      "name": "Container",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4866.5,
+        "y": 128,
+        "width": 40,
+        "height": 4
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 0.20000000298023224,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        },
+        {
+          "type": "GRADIENT_LINEAR",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "gradientStops": [
+            {
+              "color": {
+                "r": 0,
+                "g": 0.8313725590705872,
+                "b": 0.6666666865348816,
+                "a": 1
+              },
+              "position": 0,
+              "boundVariables": {}
+            },
+            {
+              "color": {
+                "r": 0,
+                "g": 0.7372549176216125,
+                "b": 0.8313725590705872,
+                "a": 1
+              },
+              "position": 1,
+              "boundVariables": {}
+            }
+          ],
+          "gradientTransform": [
+            [
+              1,
+              0,
+              0
+            ],
+            [
+              0,
+              1,
+              0
+            ]
+          ]
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:32062",
+      "depth": 5
+    },
+    {
+      "figmaId": "76:32064",
+      "name": "⏱️ 8.0s",
+      "type": "TEXT",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 4866.5,
+        "y": 141,
+        "width": 264,
+        "height": 15
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.9803921580314636,
+            "g": 0.9803921580314636,
+            "b": 0.9803921580314636
+          },
+          "boundVariables": {}
+        },
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 0.699999988079071,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "76:32060",
+      "depth": 4
+    }
+  ],
+  "metadata": {
+    "exportedAt": 1768358300410,
+    "pluginVersion": "1.0.0"
+  }
+}

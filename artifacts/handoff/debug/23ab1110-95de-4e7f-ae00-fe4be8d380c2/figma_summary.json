@@ -1,0 +1,69 @@
+{
+  "nodeCount": 7907,
+  "nodeTypes": {
+    "FRAME": 5814,
+    "VECTOR": 319,
+    "GROUP": 190,
+    "TEXT": 1488,
+    "RECTANGLE": 96
+  },
+  "textNodes": 1488,
+  "imageNodes": 27,
+  "zeroSizedNodes": 0,
+  "outOfBoundsNodes": 7907,
+  "largestNodes": [
+    {
+      "id": "73:12909",
+      "name": "form",
+      "area": 14108074
+    },
+    {
+      "id": "73:12982",
+      "name": "Container",
+      "area": 14108074
+    },
+    {
+      "id": "73:12983",
+      "name": "Container",
+      "area": 14108074
+    },
+    {
+      "id": "73:12984",
+      "name": " Fb Dark Mode",
+      "area": 14108074
+    },
+    {
+      "id": "73:13186",
+      "name": "Container",
+      "area": 14108074
+    },
+    {
+      "id": "73:13187",
+      "name": "Container",
+      "area": 14108074
+    },
+    {
+      "id": "73:13188",
+      "name": "Container",
+      "area": 14108074
+    },
+    {
+      "id": "73:13189",
+      "name": "X1uvtmcs",
+      "area": 14108074
+    },
+    {
+      "id": "73:6310",
+      "name": "Html Div",
+      "area": 13676665
+    },
+    {
+      "id": "73:6313",
+      "name": "span",
+      "area": 13676665
+    }
+  ],
+  "warnings": [
+    "Found 7907 nodes outside expected viewport bounds"
+  ]
+}

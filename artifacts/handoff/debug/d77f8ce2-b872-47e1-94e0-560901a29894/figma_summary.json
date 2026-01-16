@@ -1,0 +1,69 @@
+{
+  "nodeCount": 449,
+  "nodeTypes": {
+    "FRAME": 336,
+    "TEXT": 84,
+    "RECTANGLE": 16,
+    "VECTOR": 13
+  },
+  "textNodes": 84,
+  "imageNodes": 0,
+  "zeroSizedNodes": 0,
+  "outOfBoundsNodes": 449,
+  "largestNodes": [
+    {
+      "id": "44:2692",
+      "name": "Import 10:57:11 PM",
+      "area": 4036027.5
+    },
+    {
+      "id": "44:2695",
+      "name": "Page",
+      "area": 3999855
+    },
+    {
+      "id": "44:2724",
+      "name": "Gallery Image Holder",
+      "area": 3999855
+    },
+    {
+      "id": "44:2775",
+      "name": "Gallery Thumbs Nav",
+      "area": 3999855
+    },
+    {
+      "id": "44:2848",
+      "name": "Accordion Content",
+      "area": 3999855
+    },
+    {
+      "id": "44:2860",
+      "name": "Accordion Content",
+      "area": 3999855
+    },
+    {
+      "id": "44:2870",
+      "name": "Accordion Content",
+      "area": 3999855
+    },
+    {
+      "id": "44:3123",
+      "name": "Container",
+      "area": 3999855
+    },
+    {
+      "id": "44:3124",
+      "name": "Cc Main",
+      "area": 3999855
+    },
+    {
+      "id": "44:3125",
+      "name": "Cc Div",
+      "area": 3999855
+    }
+  ],
+  "warnings": [
+    "Found 449 nodes outside expected viewport bounds",
+    "No image nodes detected in import"
+  ]
+}

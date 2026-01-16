@@ -1,0 +1,791 @@
+{
+  "clusters": [
+    {
+      "id": 0,
+      "bbox": {
+        "x": 35,
+        "y": 0,
+        "width": 1206,
+        "height": 1748
+      },
+      "pixel_count": 1218409,
+      "diff_mean": 104.69924926757812,
+      "diff_max": 441.6729431152344,
+      "diff_std": 139.64938354492188,
+      "gap_type": "MISSING_DETAIL",
+      "schema_matches": [
+        {
+          "id": "node_7905",
+          "name": "Xb57i2i",
+          "type": "FRAME",
+          "tag": "div",
+          "bbox": {
+            "x": 0,
+            "y": 0,
+            "width": 864,
+            "height": 812
+          },
+          "iou": 0.31506926255366235,
+          "_requiresRasterization": false
+        },
+        {
+          "id": "node_7906",
+          "name": "X78zum5",
+          "type": "FRAME",
+          "tag": "div",
+          "bbox": {
+            "x": 0,
+            "y": 0,
+            "width": 360,
+            "height": 1747
+          },
+          "iou": 0.26173997906172364,
+          "_requiresRasterization": false
+        },
+        {
+          "id": "node_7907",
+          "name": "X1y1aw1k",
+          "type": "FRAME",
+          "tag": "div",
+          "bbox": {
+            "x": 0,
+            "y": 0,
+            "width": 360,
+            "height": 1747
+          },
+          "iou": 0.26173997906172364,
+          "_requiresRasterization": false
+        },
+        {
+          "id": "node_4933",
+          "name": "X1lliihq",
+          "type": "FRAME",
+          "tag": "div",
+          "bbox": {
+            "x": 0,
+            "y": 139,
+            "width": 680,
+            "height": 860
+          },
+          "iou": 0.2594252703691163,
+          "_requiresRasterization": false
+        },
+        {
+          "id": "node_4934",
+          "name": "Image Container: ",
+          "type": "FRAME",
+          "tag": "div",
+          "bbox": {
+            "x": 0,
+            "y": 0,
+            "width": 680,
+            "height": 860
+          },
+          "iou": 0.2594252703691163,
+          "_requiresRasterization": false
+        },
+        {
+          "id": "node_4935",
+          "name": "Image Container: ",
+          "type": "FRAME",
+          "tag": "div",
+          "bbox": {
+            "x": 0,
+            "y": 0,
+            "width": 680,
+            "height": 860
+          },
+          "iou": 0.2594252703691163,
+          "_requiresRasterization": false
+        },
+        {
+          "id": "node_4936",
+          "name": "Image Container: ",
+          "type": "FRAME",
+          "tag": "div",
+          "bbox": {
+            "x": 0,
+            "y": 0,
+            "width": 680,
+            "height": 860
+          },
+          "iou": 0.2594252703691163,
+          "_requiresRasterization": false
+        },
+        {
+          "id": "node_4937",
+          "name": "X1n2onr6",
+          "type": "FRAME",
+          "tag": "div",
+          "bbox": {
+            "x": 0,
+            "y": 0,
+            "width": 680,
+            "height": 860
+          },
+          "iou": 0.2594252703691163,
+          "_requiresRasterization": false
+        },
+        {
+          "id": "node_4938",
+          "name": "X1n2onr6",
+          "type": "FRAME",
+          "tag": "div",
+          "bbox": {
+            "x": 0,
+            "y": 0,
+            "width": 680,
+            "height": 860
+          },
+          "iou": 0.2594252703691163,
+          "_requiresRasterization": false
+        },
+        {
+          "id": "node_4939",
+          "name": "Image Container: ",
+          "type": "FRAME",
+          "tag": "div",
+          "bbox": {
+            "x": 0,
+            "y": 0,
+            "width": 680,
+            "height": 860
+          },
+          "iou": 0.2594252703691163,
+          "_requiresRasterization": false
+        }
+      ],
+      "has_schema_node": true
+    },
+    {
+      "id": 3,
+      "bbox": {
+        "x": 829,
+        "y": 870,
+        "width": 153,
+        "height": 13
+      },
+      "pixel_count": 924,
+      "diff_mean": 83.15243530273438,
+      "diff_max": 367.7784729003906,
+      "diff_std": 115.56903076171875,
+      "gap_type": "MISSING_DETAIL",
+      "schema_matches": [
+        {
+          "id": "node_387",
+          "name": "Main Container",
+          "type": "FRAME",
+          "tag": "div",
+          "bbox": {
+            "x": 360,
+            "y": 0,
+            "width": 1025,
+            "height": 7958
+          },
+          "iou": 0.00024384114160317275,
+          "_requiresRasterization": false
+        },
+        {
+          "id": "node_5016",
+          "name": "Container",
+          "type": "FRAME",
+          "tag": "div",
+          "bbox": {
+            "x": 0,
+            "y": 0,
+            "width": 1745,
+            "height": 5903
+          },
+          "iou": 0.00019309301714877627,
+          "_requiresRasterization": false
+        },
+        {
+          "id": "node_5151",
+          "name": "Html Div",
+          "type": "FRAME",
+          "tag": "div",
+          "bbox": {
+            "x": 12,
+            "y": 12,
+            "width": 1745,
+            "height": 5903
+          },
+          "iou": 0.00019309301714877627,
+          "_requiresRasterization": false
+        },
+        {
+          "id": "node_5154",
+          "name": "span",
+          "type": "FRAME",
+          "tag": "span",
+          "bbox": {
+            "x": -544,
+            "y": -509,
+            "width": 1745,
+            "height": 5903
+          },
+          "iou": 0.00019309301714877627,
+          "_requiresRasterization": false
+        },
+        {
+          "id": "node_5167",
+          "name": "span",
+          "type": "FRAME",
+          "tag": "span",
+          "bbox": {
+            "x": -592,
+            "y": -510,
+            "width": 1745,
+            "height": 5903
+          },
+          "iou": 0.00019309301714877627,
+          "_requiresRasterization": false
+        },
+        {
+          "id": "node_5358",
+          "name": "Html Div",
+          "type": "FRAME",
+          "tag": "div",
+          "bbox": {
+            "x": 0,
+            "y": 680,
+            "width": 1745,
+            "height": 5903
+          },
+          "iou": 0.00019309301714877627,
+          "_requiresRasterization": false
+        },
+        {
+          "id": "node_4393",
+          "name": "Container",
+          "type": "FRAME",
+          "tag": "div",
+          "bbox": {
+            "x": 0,
+            "y": 0,
+            "width": 1745,
+            "height": 6633
+          },
+          "iou": 0.0001718420142061249,
+          "_requiresRasterization": false
+        },
+        {
+          "id": "node_4528",
+          "name": "Html Div",
+          "type": "FRAME",
+          "tag": "div",
+          "bbox": {
+            "x": 12,
+            "y": 12,
+            "width": 1745,
+            "height": 6633
+          },
+          "iou": 0.0001718420142061249,
+          "_requiresRasterization": false
+        },
+        {
+          "id": "node_4531",
+          "name": "span",
+          "type": "FRAME",
+          "tag": "span",
+          "bbox": {
+            "x": -544,
+            "y": -509,
+            "width": 1745,
+            "height": 6633
+          },
+          "iou": 0.0001718420142061249,
+          "_requiresRasterization": false
+        },
+        {
+          "id": "node_4544",
+          "name": "span",
+          "type": "FRAME",
+          "tag": "span",
+          "bbox": {
+            "x": -592,
+            "y": -510,
+            "width": 1745,
+            "height": 6633
+          },
+          "iou": 0.0001718420142061249,
+          "_requiresRasterization": false
+        }
+      ],
+      "has_schema_node": true
+    },
+    {
+      "id": 4,
+      "bbox": {
+        "x": 445,
+        "y": 1620,
+        "width": 369,
+        "height": 84
+      },
+      "pixel_count": 3455,
+      "diff_mean": 22.01093864440918,
+      "diff_max": 371.2425231933594,
+      "diff_std": 71.81375122070312,
+      "gap_type": "MISSING_DETAIL",
+      "schema_matches": [
+        {
+          "id": "node_388",
+          "name": "X9f619",
+          "type": "FRAME",
+          "tag": "div",
+          "bbox": {
+            "x": 172,
+            "y": 0,
+            "width": 680,
+            "height": 7958
+          },
+          "iou": 0.005727865411055098,
+          "_requiresRasterization": false
+        },
+        {
+          "id": "node_387",
+          "name": "Main Container",
+          "type": "FRAME",
+          "tag": "div",
+          "bbox": {
+            "x": 360,
+            "y": 0,
+            "width": 1025,
+            "height": 7958
+          },
+          "iou": 0.0037999497361146015,
+          "_requiresRasterization": false
+        },
+        {
+          "id": "node_916",
+          "name": "X1hc1fzr",
+          "type": "FRAME",
+          "tag": "div",
+          "bbox": {
+            "x": 0,
+            "y": 286,
+            "width": 680,
+            "height": 7640
+          },
+          "iou": 0.0037914466193510517,
+          "_requiresRasterization": false
+        },
+        {
+          "id": "node_917",
+          "name": "Image Container: May be an image of text that s",
+          "type": "FRAME",
+          "tag": "div",
+          "bbox": {
+            "x": 0,
+            "y": 0,
+            "width": 680,
+            "height": 7640
+          },
+          "iou": 0.0037914466193510517,
+          "_requiresRasterization": false
+        },
+        {
+          "id": "node_918",
+          "name": "Image Container: May be an image of text that s",
+          "type": "FRAME",
+          "tag": "div",
+          "bbox": {
+            "x": 0,
+            "y": 0,
+            "width": 680,
+            "height": 7640
+          },
+          "iou": 0.0037914466193510517,
+          "_requiresRasterization": false
+        },
+        {
+          "id": "node_390",
+          "name": "Xw7yly9",
+          "type": "FRAME",
+          "tag": "div",
+          "bbox": {
+            "x": 0,
+            "y": 16,
+            "width": 680,
+            "height": 7942
+          },
+          "iou": 0.003647574122993095,
+          "_requiresRasterization": false
+        },
+        {
+          "id": "node_391",
+          "name": "X78zum5",
+          "type": "FRAME",
+          "tag": "div",
+          "bbox": {
+            "x": 0,
+            "y": 0,
+            "width": 680,
+            "height": 7942
+          },
+          "iou": 0.003647574122993095,
+          "_requiresRasterization": false
+        },
+        {
+          "id": "node_392",
+          "name": "X193iq5w",
+          "type": "FRAME",
+          "tag": "div",
+          "bbox": {
+            "x": 0,
+            "y": 0,
+            "width": 680,
+            "height": 7942
+          },
+          "iou": 0.003647574122993095,
+          "_requiresRasterization": false
+        },
+        {
+          "id": "node_389",
+          "name": "X9f619",
+          "type": "FRAME",
+          "tag": "div",
+          "bbox": {
+            "x": 0,
+            "y": 0,
+            "width": 680,
+            "height": 7958
+          },
+          "iou": 0.003640255695690852,
+          "_requiresRasterization": false
+        },
+        {
+          "id": "node_5016",
+          "name": "Container",
+          "type": "FRAME",
+          "tag": "div",
+          "bbox": {
+            "x": 0,
+            "y": 0,
+            "width": 1745,
+            "height": 5903
+          },
+          "iou": 0.003009105660906722,
+          "_requiresRasterization": false
+        }
+      ],
+      "has_schema_node": true
+    },
+    {
+      "id": 1,
+      "bbox": {
+        "x": 829,
+        "y": 729,
+        "width": 68,
+        "height": 10
+      },
+      "pixel_count": 416,
+      "diff_mean": 114.18182373046875,
+      "diff_max": 367.7784729003906,
+      "diff_std": 125.96282196044922,
+      "gap_type": "MISSING_DETAIL",
+      "schema_matches": [
+        {
+          "id": "node_7905",
+          "name": "Xb57i2i",
+          "type": "FRAME",
+          "tag": "div",
+          "bbox": {
+            "x": 0,
+            "y": 0,
+            "width": 864,
+            "height": 812
+          },
+          "iou": 0.0004986479516966853,
+          "_requiresRasterization": false
+        },
+        {
+          "id": "node_387",
+          "name": "Main Container",
+          "type": "FRAME",
+          "tag": "div",
+          "bbox": {
+            "x": 360,
+            "y": 0,
+            "width": 1025,
+            "height": 7958
+          },
+          "iou": 8.336449285578556e-05,
+          "_requiresRasterization": false
+        },
+        {
+          "id": "node_5016",
+          "name": "Container",
+          "type": "FRAME",
+          "tag": "div",
+          "bbox": {
+            "x": 0,
+            "y": 0,
+            "width": 1745,
+            "height": 5903
+          },
+          "iou": 6.601470671753036e-05,
+          "_requiresRasterization": false
+        },
+        {
+          "id": "node_5151",
+          "name": "Html Div",
+          "type": "FRAME",
+          "tag": "div",
+          "bbox": {
+            "x": 12,
+            "y": 12,
+            "width": 1745,
+            "height": 5903
+          },
+          "iou": 6.601470671753036e-05,
+          "_requiresRasterization": false
+        },
+        {
+          "id": "node_5154",
+          "name": "span",
+          "type": "FRAME",
+          "tag": "span",
+          "bbox": {
+            "x": -544,
+            "y": -509,
+            "width": 1745,
+            "height": 5903
+          },
+          "iou": 6.601470671753036e-05,
+          "_requiresRasterization": false
+        },
+        {
+          "id": "node_5167",
+          "name": "span",
+          "type": "FRAME",
+          "tag": "span",
+          "bbox": {
+            "x": -592,
+            "y": -510,
+            "width": 1745,
+            "height": 5903
+          },
+          "iou": 6.601470671753036e-05,
+          "_requiresRasterization": false
+        },
+        {
+          "id": "node_5358",
+          "name": "Html Div",
+          "type": "FRAME",
+          "tag": "div",
+          "bbox": {
+            "x": 0,
+            "y": 680,
+            "width": 1745,
+            "height": 5903
+          },
+          "iou": 6.601470671753036e-05,
+          "_requiresRasterization": false
+        },
+        {
+          "id": "node_4393",
+          "name": "Container",
+          "type": "FRAME",
+          "tag": "div",
+          "bbox": {
+            "x": 0,
+            "y": 0,
+            "width": 1745,
+            "height": 6633
+          },
+          "iou": 5.8749406566196544e-05,
+          "_requiresRasterization": false
+        },
+        {
+          "id": "node_4528",
+          "name": "Html Div",
+          "type": "FRAME",
+          "tag": "div",
+          "bbox": {
+            "x": 12,
+            "y": 12,
+            "width": 1745,
+            "height": 6633
+          },
+          "iou": 5.8749406566196544e-05,
+          "_requiresRasterization": false
+        },
+        {
+          "id": "node_4531",
+          "name": "span",
+          "type": "FRAME",
+          "tag": "span",
+          "bbox": {
+            "x": -544,
+            "y": -509,
+            "width": 1745,
+            "height": 6633
+          },
+          "iou": 5.8749406566196544e-05,
+          "_requiresRasterization": false
+        }
+      ],
+      "has_schema_node": true
+    },
+    {
+      "id": 2,
+      "bbox": {
+        "x": 829,
+        "y": 800,
+        "width": 49,
+        "height": 10
+      },
+      "pixel_count": 294,
+      "diff_mean": 109.0411376953125,
+      "diff_max": 367.7784729003906,
+      "diff_std": 122.14042663574219,
+      "gap_type": "MISSING_DETAIL",
+      "schema_matches": [
+        {
+          "id": "node_7905",
+          "name": "Xb57i2i",
+          "type": "FRAME",
+          "tag": "div",
+          "bbox": {
+            "x": 0,
+            "y": 0,
+            "width": 864,
+            "height": 812
+          },
+          "iou": 0.0004987829695542876,
+          "_requiresRasterization": false
+        },
+        {
+          "id": "node_387",
+          "name": "Main Container",
+          "type": "FRAME",
+          "tag": "div",
+          "bbox": {
+            "x": 360,
+            "y": 0,
+            "width": 1025,
+            "height": 7958
+          },
+          "iou": 6.0071472793139594e-05,
+          "_requiresRasterization": false
+        },
+        {
+          "id": "node_5016",
+          "name": "Container",
+          "type": "FRAME",
+          "tag": "div",
+          "bbox": {
+            "x": 0,
+            "y": 0,
+            "width": 1745,
+            "height": 5903
+          },
+          "iou": 4.756942101704393e-05,
+          "_requiresRasterization": false
+        },
+        {
+          "id": "node_5151",
+          "name": "Html Div",
+          "type": "FRAME",
+          "tag": "div",
+          "bbox": {
+            "x": 12,
+            "y": 12,
+            "width": 1745,
+            "height": 5903
+          },
+          "iou": 4.756942101704393e-05,
+          "_requiresRasterization": false
+        },
+        {
+          "id": "node_5154",
+          "name": "span",
+          "type": "FRAME",
+          "tag": "span",
+          "bbox": {
+            "x": -544,
+            "y": -509,
+            "width": 1745,
+            "height": 5903
+          },
+          "iou": 4.756942101704393e-05,
+          "_requiresRasterization": false
+        },
+        {
+          "id": "node_5167",
+          "name": "span",
+          "type": "FRAME",
+          "tag": "span",
+          "bbox": {
+            "x": -592,
+            "y": -510,
+            "width": 1745,
+            "height": 5903
+          },
+          "iou": 4.756942101704393e-05,
+          "_requiresRasterization": false
+        },
+        {
+          "id": "node_5358",
+          "name": "Html Div",
+          "type": "FRAME",
+          "tag": "div",
+          "bbox": {
+            "x": 0,
+            "y": 680,
+            "width": 1745,
+            "height": 5903
+          },
+          "iou": 4.756942101704393e-05,
+          "_requiresRasterization": false
+        },
+        {
+          "id": "node_4393",
+          "name": "Container",
+          "type": "FRAME",
+          "tag": "div",
+          "bbox": {
+            "x": 0,
+            "y": 0,
+            "width": 1745,
+            "height": 6633
+          },
+          "iou": 4.2334131202112215e-05,
+          "_requiresRasterization": false
+        },
+        {
+          "id": "node_4528",
+          "name": "Html Div",
+          "type": "FRAME",
+          "tag": "div",
+          "bbox": {
+            "x": 12,
+            "y": 12,
+            "width": 1745,
+            "height": 6633
+          },
+          "iou": 4.2334131202112215e-05,
+          "_requiresRasterization": false
+        },
+        {
+          "id": "node_4531",
+          "name": "span",
+          "type": "FRAME",
+          "tag": "span",
+          "bbox": {
+            "x": -544,
+            "y": -509,
+            "width": 1745,
+            "height": 6633
+          },
+          "iou": 4.2334131202112215e-05,
+          "_requiresRasterization": false
+        }
+      ],
+      "has_schema_node": true
+    }
+  ],
+  "total_found": 5,
+  "has_figma_nodes": false
+}

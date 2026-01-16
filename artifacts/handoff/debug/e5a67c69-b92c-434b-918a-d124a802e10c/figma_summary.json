@@ -1,0 +1,68 @@
+{
+  "nodeCount": 114,
+  "nodeTypes": {
+    "FRAME": 106,
+    "TEXT": 7,
+    "RECTANGLE": 1
+  },
+  "textNodes": 7,
+  "imageNodes": 0,
+  "zeroSizedNodes": 0,
+  "outOfBoundsNodes": 114,
+  "largestNodes": [
+    {
+      "id": "97:218",
+      "name": "html",
+      "area": 53238205
+    },
+    {
+      "id": "97:219",
+      "name": "body",
+      "area": 53238205
+    },
+    {
+      "id": "97:220",
+      "name": "Watch7 Content",
+      "area": 53238205
+    },
+    {
+      "id": "97:221",
+      "name": "span",
+      "area": 53238205
+    },
+    {
+      "id": "97:222",
+      "name": "span",
+      "area": 53238205
+    },
+    {
+      "id": "97:223",
+      "name": "span",
+      "area": 53238205
+    },
+    {
+      "id": "97:224",
+      "name": "span",
+      "area": 53238205
+    },
+    {
+      "id": "97:225",
+      "name": "span",
+      "area": 53238205
+    },
+    {
+      "id": "97:226",
+      "name": "Container",
+      "area": 53238205
+    },
+    {
+      "id": "97:227",
+      "name": "Container",
+      "area": 53238205
+    }
+  ],
+  "warnings": [
+    "Found 114 nodes outside expected viewport bounds",
+    "No image nodes detected in import"
+  ]
+}

@@ -32,9 +32,11 @@ cd "$SCRIPT_DIR"
 #   SKIP_INSTALL=1  -> don't run npm install steps
 #   SKIP_BUILD=1    -> don't run npm build steps
 #   WATCH=1         -> run extension/plugin watchers after initial build
+#   DEBUG_LOOP=1    -> start debug-runner.js in background for automated validation
 SKIP_INSTALL="${SKIP_INSTALL:-0}"
 SKIP_BUILD="${SKIP_BUILD:-0}"
 WATCH="${WATCH:-0}"
+DEBUG_LOOP="${DEBUG_LOOP:-0}"
 
 # Auto-skip install if node_modules already exists, unless FORCE_INSTALL=1 is set
 FORCE_INSTALL="${FORCE_INSTALL:-0}"
@@ -267,6 +269,13 @@ echo -e "${GREEN}║          All Services Running!             ║${NC}"
 echo -e "${GREEN}╚════════════════════════════════════════════╝${NC}"
 echo ""
 echo -e "${BLUE}📍 Handoff Server:${NC} http://localhost:4411"
+
+# Start Debug Runner if requested
+if [ "$DEBUG_LOOP" = "1" ]; then
+  echo -e "${BLUE}📍 Starting Debug Runner Loop...${NC}"
+  node tools/debug-runner.js > debug-runner.log 2>&1 &
+  echo -e "${GREEN}✅ Debug Runner active (logs: tail -f debug-runner.log)${NC}"
+fi
 
 echo ""
 

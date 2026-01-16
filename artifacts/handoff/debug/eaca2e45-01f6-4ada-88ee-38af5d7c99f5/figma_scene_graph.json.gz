@@ -1,0 +1,3670 @@
+{
+  "exportId": "export-1768451104627-5u450ix7f",
+  "timestamp": "2026-01-15T04:25:04.627Z",
+  "rootNodeId": "97:109",
+  "rootNodeName": "LINK",
+  "totalNodes": 106,
+  "flatNodes": [
+    {
+      "figmaId": "97:109",
+      "name": "LINK",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 12664,
+        "y": 0,
+        "width": 1760,
+        "height": 16000
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.05882352963089943,
+            "g": 0.05882352963089943,
+            "b": 0.05882352963089943
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "depth": 0
+    },
+    {
+      "figmaId": "97:110",
+      "name": "Content",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 12664,
+        "y": 0,
+        "width": 1745,
+        "height": 22585
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.05882352963089943,
+            "g": 0.05882352963089943,
+            "b": 0.05882352963089943
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "97:109",
+      "depth": 1
+    },
+    {
+      "figmaId": "97:111",
+      "name": "TEXT",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 12664,
+        "y": 0,
+        "width": 1745,
+        "height": 22585
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.05882352963089943,
+            "g": 0.05882352963089943,
+            "b": 0.05882352963089943
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "97:110",
+      "depth": 2
+    },
+    {
+      "figmaId": "97:112",
+      "name": "MAIN",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": true,
+      "absoluteBoundingBox": {
+        "x": 12664,
+        "y": 0,
+        "width": 1745,
+        "height": 22585
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.05882352963089943,
+            "g": 0.05882352963089943,
+            "b": 0.05882352963089943
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "97:111",
+      "depth": 3
+    },
+    {
+      "figmaId": "97:113",
+      "name": "HEADER",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 12664,
+        "y": 56,
+        "width": 1745,
+        "height": 22529
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.05882352963089943,
+            "g": 0.05882352963089943,
+            "b": 0.05882352963089943
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "97:112",
+      "depth": 4
+    },
+    {
+      "figmaId": "97:114",
+      "name": "HEADER",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 12664,
+        "y": 0,
+        "width": 1745,
+        "height": 56
+      },
+      "fills": [],
+      "strokes": [],
+      "effects": [],
+      "parentId": "97:113",
+      "depth": 5
+    },
+    {
+      "figmaId": "97:115",
+      "name": "HEADER",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 12664,
+        "y": 0,
+        "width": 1745,
+        "height": 56
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.05882352963089943,
+            "g": 0.05882352963089943,
+            "b": 0.05882352963089943
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "97:114",
+      "depth": 6
+    },
+    {
+      "figmaId": "97:116",
+      "name": "HEADER",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 12664,
+        "y": 0,
+        "width": 1745,
+        "height": 56
+      },
+      "fills": [],
+      "strokes": [],
+      "effects": [],
+      "parentId": "97:115",
+      "depth": 7
+    },
+    {
+      "figmaId": "97:117",
+      "name": "HEADER",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 12680,
+        "y": 0,
+        "width": 169,
+        "height": 56
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.05882352963089943,
+            "g": 0.05882352963089943,
+            "b": 0.05882352963089943
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "97:116",
+      "depth": 8
+    },
+    {
+      "figmaId": "97:118",
+      "name": "BUTTON",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 12680,
+        "y": 8,
+        "width": 40,
+        "height": 40
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.05882352963089943,
+            "g": 0.05882352963089943,
+            "b": 0.05882352963089943
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "97:117",
+      "depth": 9
+    },
+    {
+      "figmaId": "97:119",
+      "name": "HEADER",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 12688,
+        "y": 16,
+        "width": 24,
+        "height": 24
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.05882352963089943,
+            "g": 0.05882352963089943,
+            "b": 0.05882352963089943
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "97:118",
+      "depth": 10
+    },
+    {
+      "figmaId": "97:120",
+      "name": "ICON",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 12688,
+        "y": 16,
+        "width": 24,
+        "height": 24
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.05882352963089943,
+            "g": 0.05882352963089943,
+            "b": 0.05882352963089943
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "97:119",
+      "depth": 11
+    },
+    {
+      "figmaId": "97:121",
+      "name": "LINK",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 12688,
+        "y": 16,
+        "width": 24,
+        "height": 24
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.05882352963089943,
+            "g": 0.05882352963089943,
+            "b": 0.05882352963089943
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "97:120",
+      "depth": 12
+    },
+    {
+      "figmaId": "97:122",
+      "name": "ICON",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 12688,
+        "y": 16,
+        "width": 24,
+        "height": 24
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.05882352963089943,
+            "g": 0.05882352963089943,
+            "b": 0.05882352963089943
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "97:121",
+      "depth": 13
+    },
+    {
+      "figmaId": "97:123",
+      "name": "ytd-topbar-logo-renderer",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 12720,
+        "y": 0,
+        "width": 129,
+        "height": 56
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.05882352963089943,
+            "g": 0.05882352963089943,
+            "b": 0.05882352963089943
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "97:117",
+      "depth": 9
+    },
+    {
+      "figmaId": "97:124",
+      "name": "a",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 12720,
+        "y": 0,
+        "width": 131,
+        "height": 56
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.05882352963089943,
+            "g": 0.05882352963089943,
+            "b": 0.05882352963089943
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "97:123",
+      "depth": 10
+    },
+    {
+      "figmaId": "97:125",
+      "name": "Style Scope",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 12720,
+        "y": 0,
+        "width": 131,
+        "height": 56
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.05882352963089943,
+            "g": 0.05882352963089943,
+            "b": 0.05882352963089943
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "97:124",
+      "depth": 11
+    },
+    {
+      "figmaId": "97:126",
+      "name": "ytd-logo",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 12720,
+        "y": 21.140625,
+        "width": 131,
+        "height": 12
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.05882352963089943,
+            "g": 0.05882352963089943,
+            "b": 0.05882352963089943
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "97:125",
+      "depth": 12
+    },
+    {
+      "figmaId": "97:127",
+      "name": "yt-icon",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 12720,
+        "y": 0,
+        "width": 131,
+        "height": 56
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.05882352963089943,
+            "g": 0.05882352963089943,
+            "b": 0.05882352963089943
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "97:126",
+      "depth": 13
+    },
+    {
+      "figmaId": "97:128",
+      "name": "span",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 12736,
+        "y": 18,
+        "width": 101,
+        "height": 20
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.05882352963089943,
+            "g": 0.05882352963089943,
+            "b": 0.05882352963089943
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "97:127",
+      "depth": 14
+    },
+    {
+      "figmaId": "97:129",
+      "name": "Container",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 12736,
+        "y": 18,
+        "width": 101,
+        "height": 20
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.05882352963089943,
+            "g": 0.05882352963089943,
+            "b": 0.05882352963089943
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "97:128",
+      "depth": 15
+    },
+    {
+      "figmaId": "97:130",
+      "name": "Skip Navigation",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 12680,
+        "y": -1000,
+        "width": 128,
+        "height": 36
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.05882352963089943,
+            "g": 0.05882352963089943,
+            "b": 0.05882352963089943
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "97:117",
+      "depth": 9
+    },
+    {
+      "figmaId": "97:131",
+      "name": "ytd-button-renderer",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 12680,
+        "y": -1000,
+        "width": 128,
+        "height": 36
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.05882352963089943,
+            "g": 0.05882352963089943,
+            "b": 0.05882352963089943
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "97:130",
+      "depth": 10
+    },
+    {
+      "figmaId": "97:132",
+      "name": "yt-button-shape",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 12680,
+        "y": -1000,
+        "width": 128,
+        "height": 36
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.05882352963089943,
+            "g": 0.05882352963089943,
+            "b": 0.05882352963089943
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "97:131",
+      "depth": 11
+    },
+    {
+      "figmaId": "97:133",
+      "name": "button",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 12680,
+        "y": -1000,
+        "width": 128,
+        "height": 36
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 0.10000000149011612,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "97:132",
+      "depth": 12
+    },
+    {
+      "figmaId": "97:134",
+      "name": "Yt Spec Button Shape Next Button Text Content",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": true,
+      "absoluteBoundingBox": {
+        "x": 12696,
+        "y": -1000,
+        "width": 96,
+        "height": 36
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.05882352963089943,
+            "g": 0.05882352963089943,
+            "b": 0.05882352963089943
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "97:133",
+      "depth": 13
+    },
+    {
+      "figmaId": "97:135",
+      "name": "Skip navigation",
+      "type": "TEXT",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 12696,
+        "y": -990.5,
+        "width": 96,
+        "height": 17
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.05882352963089943,
+            "g": 0.05882352963089943,
+            "b": 0.05882352963089943
+          },
+          "boundVariables": {}
+        },
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.9450980424880981,
+            "g": 0.9450980424880981,
+            "b": 0.9450980424880981
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "97:134",
+      "depth": 14
+    },
+    {
+      "figmaId": "97:136",
+      "name": "HEADER 2",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 13142.5,
+        "y": 8,
+        "width": 732,
+        "height": 40
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.05882352963089943,
+            "g": 0.05882352963089943,
+            "b": 0.05882352963089943
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "97:116",
+      "depth": 8
+    },
+    {
+      "figmaId": "97:137",
+      "name": "TEXT",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 13182.5,
+        "y": 8,
+        "width": 640,
+        "height": 40
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.05882352963089943,
+            "g": 0.05882352963089943,
+            "b": 0.05882352963089943
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "97:136",
+      "depth": 9
+    },
+    {
+      "figmaId": "97:138",
+      "name": "TEXT",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 13218.5,
+        "y": 8,
+        "width": 536,
+        "height": 40
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.07058823853731155,
+            "g": 0.07058823853731155,
+            "b": 0.07058823853731155
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.1882352977991104,
+            "g": 0.1882352977991104,
+            "b": 0.1882352977991104
+          },
+          "boundVariables": {}
+        }
+      ],
+      "effects": [],
+      "parentId": "97:137",
+      "depth": 10
+    },
+    {
+      "figmaId": "97:139",
+      "name": "TEXT",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 13235.5,
+        "y": 16,
+        "width": 515,
+        "height": 24
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.07058823853731155,
+            "g": 0.07058823853731155,
+            "b": 0.07058823853731155
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "97:138",
+      "depth": 11
+    },
+    {
+      "figmaId": "97:140",
+      "name": "ICON",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": true,
+      "absoluteBoundingBox": {
+        "x": 13235.5,
+        "y": 16,
+        "width": 515,
+        "height": 24
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.07058823853731155,
+            "g": 0.07058823853731155,
+            "b": 0.07058823853731155
+          },
+          "boundVariables": {}
+        },
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "97:139",
+      "depth": 12
+    },
+    {
+      "figmaId": "97:141",
+      "name": "button",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 13754.5,
+        "y": 8,
+        "width": 64,
+        "height": 40
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 0.07999999821186066,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.1882352977991104,
+            "g": 0.1882352977991104,
+            "b": 0.1882352977991104
+          },
+          "boundVariables": {}
+        }
+      ],
+      "effects": [],
+      "parentId": "97:137",
+      "depth": 10
+    },
+    {
+      "figmaId": "97:142",
+      "name": "span",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 13774.5,
+        "y": 16,
+        "width": 24,
+        "height": 24
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.05882352963089943,
+            "g": 0.05882352963089943,
+            "b": 0.05882352963089943
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "97:141",
+      "depth": 11
+    },
+    {
+      "figmaId": "97:143",
+      "name": "span",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 13774.5,
+        "y": 16,
+        "width": 24,
+        "height": 24
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.05882352963089943,
+            "g": 0.05882352963089943,
+            "b": 0.05882352963089943
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "97:142",
+      "depth": 12
+    },
+    {
+      "figmaId": "97:144",
+      "name": "Container",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 13774.5,
+        "y": 16,
+        "width": 24,
+        "height": 24
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.05882352963089943,
+            "g": 0.05882352963089943,
+            "b": 0.05882352963089943
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "97:143",
+      "depth": 13
+    },
+    {
+      "figmaId": "97:145",
+      "name": "Voice Search Button",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 13834.5,
+        "y": 8,
+        "width": 40,
+        "height": 40
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 0.10000000149011612,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "97:136",
+      "depth": 9
+    },
+    {
+      "figmaId": "97:146",
+      "name": "ytd-button-renderer",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 13834.5,
+        "y": 8,
+        "width": 40,
+        "height": 40
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.05882352963089943,
+            "g": 0.05882352963089943,
+            "b": 0.05882352963089943
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "97:145",
+      "depth": 10
+    },
+    {
+      "figmaId": "97:147",
+      "name": "yt-button-shape",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 13834.5,
+        "y": 8,
+        "width": 40,
+        "height": 40
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.05882352963089943,
+            "g": 0.05882352963089943,
+            "b": 0.05882352963089943
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "97:146",
+      "depth": 11
+    },
+    {
+      "figmaId": "97:148",
+      "name": "button",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 13834.5,
+        "y": 8,
+        "width": 40,
+        "height": 40
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.05882352963089943,
+            "g": 0.05882352963089943,
+            "b": 0.05882352963089943
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "97:147",
+      "depth": 12
+    },
+    {
+      "figmaId": "97:149",
+      "name": "Yt Spec Button Shape Next Icon",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 13842.5,
+        "y": 16,
+        "width": 24,
+        "height": 24
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.05882352963089943,
+            "g": 0.05882352963089943,
+            "b": 0.05882352963089943
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "97:148",
+      "depth": 13
+    },
+    {
+      "figmaId": "97:150",
+      "name": "span",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 13842.5,
+        "y": 16,
+        "width": 24,
+        "height": 24
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.05882352963089943,
+            "g": 0.05882352963089943,
+            "b": 0.05882352963089943
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "97:149",
+      "depth": 14
+    },
+    {
+      "figmaId": "97:151",
+      "name": "span",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 13842.5,
+        "y": 16,
+        "width": 24,
+        "height": 24
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.05882352963089943,
+            "g": 0.05882352963089943,
+            "b": 0.05882352963089943
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "97:150",
+      "depth": 15
+    },
+    {
+      "figmaId": "97:152",
+      "name": "Container",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 13842.5,
+        "y": 16,
+        "width": 24,
+        "height": 24
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.05882352963089943,
+            "g": 0.05882352963089943,
+            "b": 0.05882352963089943
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "97:151",
+      "depth": 16
+    },
+    {
+      "figmaId": "97:153",
+      "name": "tp-yt-paper-tooltip",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 13762.7421875,
+        "y": 56,
+        "width": 1745,
+        "height": 22585
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.05882352963089943,
+            "g": 0.05882352963089943,
+            "b": 0.05882352963089943
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "97:146",
+      "depth": 11
+    },
+    {
+      "figmaId": "97:154",
+      "name": "HEADER 3",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 14168,
+        "y": 8,
+        "width": 225,
+        "height": 40
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.05882352963089943,
+            "g": 0.05882352963089943,
+            "b": 0.05882352963089943
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "97:116",
+      "depth": 8
+    },
+    {
+      "figmaId": "97:155",
+      "name": "HEADER",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 14179.8203125,
+        "y": 8,
+        "width": 213,
+        "height": 40
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.05882352963089943,
+            "g": 0.05882352963089943,
+            "b": 0.05882352963089943
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "97:154",
+      "depth": 9
+    },
+    {
+      "figmaId": "97:156",
+      "name": "BUTTON",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 14179.8203125,
+        "y": 10,
+        "width": 97,
+        "height": 36
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.05882352963089943,
+            "g": 0.05882352963089943,
+            "b": 0.05882352963089943
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "97:155",
+      "depth": 10
+    },
+    {
+      "figmaId": "97:157",
+      "name": "BUTTON",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 14179.8203125,
+        "y": 10,
+        "width": 97,
+        "height": 36
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.05882352963089943,
+            "g": 0.05882352963089943,
+            "b": 0.05882352963089943
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "97:156",
+      "depth": 11
+    },
+    {
+      "figmaId": "97:158",
+      "name": "MAIN",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 14179.8203125,
+        "y": 10,
+        "width": 97,
+        "height": 36
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 0.10000000149011612,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [
+        {
+          "type": "BACKGROUND_BLUR",
+          "visible": true,
+          "radius": 4,
+          "boundVariables": {},
+          "blurType": "NORMAL"
+        }
+      ],
+      "parentId": "97:157",
+      "depth": 12
+    },
+    {
+      "figmaId": "97:159",
+      "name": "NAVIGATION",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 14189.8203125,
+        "y": 16,
+        "width": 24,
+        "height": 24
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.05882352963089943,
+            "g": 0.05882352963089943,
+            "b": 0.05882352963089943
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "97:158",
+      "depth": 13
+    },
+    {
+      "figmaId": "97:160",
+      "name": "span",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 14189.8203125,
+        "y": 16,
+        "width": 24,
+        "height": 24
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.05882352963089943,
+            "g": 0.05882352963089943,
+            "b": 0.05882352963089943
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "97:159",
+      "depth": 14
+    },
+    {
+      "figmaId": "97:161",
+      "name": "span",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 14189.8203125,
+        "y": 16,
+        "width": 24,
+        "height": 24
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.05882352963089943,
+            "g": 0.05882352963089943,
+            "b": 0.05882352963089943
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "97:160",
+      "depth": 15
+    },
+    {
+      "figmaId": "97:162",
+      "name": "Container",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 14189.8203125,
+        "y": 16,
+        "width": 24,
+        "height": 24
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.05882352963089943,
+            "g": 0.05882352963089943,
+            "b": 0.05882352963089943
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "97:161",
+      "depth": 16
+    },
+    {
+      "figmaId": "97:163",
+      "name": "Yt Spec Button Shape Next Button Text Content",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": true,
+      "absoluteBoundingBox": {
+        "x": 14219.8203125,
+        "y": 10,
+        "width": 41,
+        "height": 36
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.05882352963089943,
+            "g": 0.05882352963089943,
+            "b": 0.05882352963089943
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "97:158",
+      "depth": 13
+    },
+    {
+      "figmaId": "97:164",
+      "name": "Create",
+      "type": "TEXT",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 14219.8203125,
+        "y": 19.5,
+        "width": 41,
+        "height": 17
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.05882352963089943,
+            "g": 0.05882352963089943,
+            "b": 0.05882352963089943
+          },
+          "boundVariables": {}
+        },
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "97:163",
+      "depth": 14
+    },
+    {
+      "figmaId": "97:165",
+      "name": "ytd-notification-topbar-button-renderer",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 14285,
+        "y": 8,
+        "width": 40,
+        "height": 40
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.05882352963089943,
+            "g": 0.05882352963089943,
+            "b": 0.05882352963089943
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "97:155",
+      "depth": 10
+    },
+    {
+      "figmaId": "97:166",
+      "name": "yt-icon-button",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 14285,
+        "y": 8,
+        "width": 40,
+        "height": 40
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.05882352963089943,
+            "g": 0.05882352963089943,
+            "b": 0.05882352963089943
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "97:165",
+      "depth": 11
+    },
+    {
+      "figmaId": "97:167",
+      "name": "button",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 14285,
+        "y": 8,
+        "width": 40,
+        "height": 40
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.05882352963089943,
+            "g": 0.05882352963089943,
+            "b": 0.05882352963089943
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "97:166",
+      "depth": 12
+    },
+    {
+      "figmaId": "97:168",
+      "name": "yt-icon-badge-shape",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 14293,
+        "y": 19.453125,
+        "width": 24,
+        "height": 15
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.05882352963089943,
+            "g": 0.05882352963089943,
+            "b": 0.05882352963089943
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "97:167",
+      "depth": 13
+    },
+    {
+      "figmaId": "97:169",
+      "name": "Yt Spec Icon Badge Shape",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 14293,
+        "y": 16,
+        "width": 24,
+        "height": 24
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.05882352963089943,
+            "g": 0.05882352963089943,
+            "b": 0.05882352963089943
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "97:168",
+      "depth": 14
+    },
+    {
+      "figmaId": "97:170",
+      "name": "Yt Spec Icon Badge Shape Icon",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 14293,
+        "y": 16,
+        "width": 24,
+        "height": 24
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.05882352963089943,
+            "g": 0.05882352963089943,
+            "b": 0.05882352963089943
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "97:169",
+      "depth": 15
+    },
+    {
+      "figmaId": "97:171",
+      "name": "span",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 14293,
+        "y": 16,
+        "width": 24,
+        "height": 24
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.05882352963089943,
+            "g": 0.05882352963089943,
+            "b": 0.05882352963089943
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "97:170",
+      "depth": 16
+    },
+    {
+      "figmaId": "97:172",
+      "name": "span",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 14293,
+        "y": 16,
+        "width": 24,
+        "height": 24
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.05882352963089943,
+            "g": 0.05882352963089943,
+            "b": 0.05882352963089943
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "97:171",
+      "depth": 17
+    },
+    {
+      "figmaId": "97:173",
+      "name": "Container",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 14293,
+        "y": 16,
+        "width": 24,
+        "height": 24
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.05882352963089943,
+            "g": 0.05882352963089943,
+            "b": 0.05882352963089943
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "97:172",
+      "depth": 18
+    },
+    {
+      "figmaId": "97:174",
+      "name": "tp-yt-paper-tooltip",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 14285,
+        "y": 8,
+        "width": 1745,
+        "height": 22585
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.05882352963089943,
+            "g": 0.05882352963089943,
+            "b": 0.05882352963089943
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "97:165",
+      "depth": 11
+    },
+    {
+      "figmaId": "97:175",
+      "name": "ytd-topbar-menu-button-renderer",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 14333,
+        "y": 11,
+        "width": 60,
+        "height": 34
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.05882352963089943,
+            "g": 0.05882352963089943,
+            "b": 0.05882352963089943
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "97:155",
+      "depth": 10
+    },
+    {
+      "figmaId": "97:176",
+      "name": "button",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 14333,
+        "y": 11,
+        "width": 60,
+        "height": 34
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.05882352963089943,
+            "g": 0.05882352963089943,
+            "b": 0.05882352963089943
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "97:175",
+      "depth": 11
+    },
+    {
+      "figmaId": "97:177",
+      "name": "yt-img-shadow",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": true,
+      "absoluteBoundingBox": {
+        "x": 14347,
+        "y": 12,
+        "width": 32,
+        "height": 32
+      },
+      "fills": [],
+      "strokes": [],
+      "effects": [],
+      "parentId": "97:176",
+      "depth": 12
+    },
+    {
+      "figmaId": "97:178",
+      "name": "Image: Avatar image",
+      "type": "RECTANGLE",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 14347,
+        "y": 12,
+        "width": 32,
+        "height": 32
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.9019607901573181,
+            "g": 0.9019607901573181,
+            "b": 0.9019607901573181
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "97:177",
+      "depth": 13
+    },
+    {
+      "figmaId": "97:179",
+      "name": "::after",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 12664,
+        "y": -5,
+        "width": 1745,
+        "height": 5
+      },
+      "fills": [],
+      "strokes": [],
+      "effects": [],
+      "parentId": "97:114",
+      "depth": 6
+    },
+    {
+      "figmaId": "97:180",
+      "name": "TEXT",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 12664,
+        "y": -120,
+        "width": 1745,
+        "height": 1108
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.05882352963089943,
+            "g": 0.05882352963089943,
+            "b": 0.05882352963089943
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "97:113",
+      "depth": 5
+    },
+    {
+      "figmaId": "97:181",
+      "name": "Contentcontainer",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 12424,
+        "y": -120,
+        "width": 240,
+        "height": 1108
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.05882352963089943,
+            "g": 0.05882352963089943,
+            "b": 0.05882352963089943
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "97:180",
+      "depth": 6
+    },
+    {
+      "figmaId": "97:182",
+      "name": "Guide Wrapper",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 12424,
+        "y": 0,
+        "width": 240,
+        "height": 868
+      },
+      "fills": [],
+      "strokes": [],
+      "effects": [],
+      "parentId": "97:181",
+      "depth": 7
+    },
+    {
+      "figmaId": "97:183",
+      "name": "Guide Content",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 12424,
+        "y": 0,
+        "width": 240,
+        "height": 868
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.05882352963089943,
+            "g": 0.05882352963089943,
+            "b": 0.05882352963089943
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "97:182",
+      "depth": 8
+    },
+    {
+      "figmaId": "97:184",
+      "name": "Header",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 12424,
+        "y": 0,
+        "width": 240,
+        "height": 56
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.05882352963089943,
+            "g": 0.05882352963089943,
+            "b": 0.05882352963089943
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "97:183",
+      "depth": 9
+    },
+    {
+      "figmaId": "97:185",
+      "name": "yt-icon-button",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 12440,
+        "y": 8,
+        "width": 40,
+        "height": 40
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.05882352963089943,
+            "g": 0.05882352963089943,
+            "b": 0.05882352963089943
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "97:184",
+      "depth": 10
+    },
+    {
+      "figmaId": "97:186",
+      "name": "button",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 12448,
+        "y": 16,
+        "width": 24,
+        "height": 24
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.05882352963089943,
+            "g": 0.05882352963089943,
+            "b": 0.05882352963089943
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "97:185",
+      "depth": 11
+    },
+    {
+      "figmaId": "97:187",
+      "name": "yt-icon",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 12448,
+        "y": 16,
+        "width": 24,
+        "height": 24
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.05882352963089943,
+            "g": 0.05882352963089943,
+            "b": 0.05882352963089943
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "97:186",
+      "depth": 12
+    },
+    {
+      "figmaId": "97:188",
+      "name": "span",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 12448,
+        "y": 16,
+        "width": 24,
+        "height": 24
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.05882352963089943,
+            "g": 0.05882352963089943,
+            "b": 0.05882352963089943
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "97:187",
+      "depth": 13
+    },
+    {
+      "figmaId": "97:189",
+      "name": "Container",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 12448,
+        "y": 16,
+        "width": 24,
+        "height": 24
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.05882352963089943,
+            "g": 0.05882352963089943,
+            "b": 0.05882352963089943
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "97:188",
+      "depth": 14
+    },
+    {
+      "figmaId": "97:190",
+      "name": "yt-interaction",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 12440,
+        "y": 8,
+        "width": 40,
+        "height": 40
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.05882352963089943,
+            "g": 0.05882352963089943,
+            "b": 0.05882352963089943
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "97:185",
+      "depth": 11
+    },
+    {
+      "figmaId": "97:191",
+      "name": "ytd-topbar-logo-renderer",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 12480,
+        "y": 0,
+        "width": 121,
+        "height": 56
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.05882352963089943,
+            "g": 0.05882352963089943,
+            "b": 0.05882352963089943
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "97:184",
+      "depth": 10
+    },
+    {
+      "figmaId": "97:192",
+      "name": "a",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 12480,
+        "y": 0,
+        "width": 131,
+        "height": 56
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.05882352963089943,
+            "g": 0.05882352963089943,
+            "b": 0.05882352963089943
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "97:191",
+      "depth": 11
+    },
+    {
+      "figmaId": "97:193",
+      "name": "Style Scope",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 12480,
+        "y": 0,
+        "width": 131,
+        "height": 56
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.05882352963089943,
+            "g": 0.05882352963089943,
+            "b": 0.05882352963089943
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "97:192",
+      "depth": 12
+    },
+    {
+      "figmaId": "97:194",
+      "name": "ytd-logo",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 12480,
+        "y": 21.140625,
+        "width": 131,
+        "height": 12
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.05882352963089943,
+            "g": 0.05882352963089943,
+            "b": 0.05882352963089943
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "97:193",
+      "depth": 13
+    },
+    {
+      "figmaId": "97:195",
+      "name": "yt-icon",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 12480,
+        "y": 0,
+        "width": 131,
+        "height": 56
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.05882352963089943,
+            "g": 0.05882352963089943,
+            "b": 0.05882352963089943
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "97:194",
+      "depth": 14
+    },
+    {
+      "figmaId": "97:196",
+      "name": "span",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 12496,
+        "y": 18,
+        "width": 101,
+        "height": 20
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.05882352963089943,
+            "g": 0.05882352963089943,
+            "b": 0.05882352963089943
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "97:195",
+      "depth": 15
+    },
+    {
+      "figmaId": "97:197",
+      "name": "Container",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 12496,
+        "y": 18,
+        "width": 101,
+        "height": 20
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.05882352963089943,
+            "g": 0.05882352963089943,
+            "b": 0.05882352963089943
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "97:196",
+      "depth": 16
+    },
+    {
+      "figmaId": "97:198",
+      "name": "::after",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 12424,
+        "y": -64,
+        "width": 240,
+        "height": 5
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.05882352963089943,
+            "g": 0.05882352963089943,
+            "b": 0.05882352963089943
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "97:184",
+      "depth": 10
+    },
+    {
+      "figmaId": "97:199",
+      "name": "::after",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 12664,
+        "y": 0,
+        "width": 20,
+        "height": 1108
+      },
+      "fills": [],
+      "strokes": [],
+      "effects": [],
+      "parentId": "97:181",
+      "depth": 7
+    },
+    {
+      "figmaId": "97:200",
+      "name": "TEXT",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 12664,
+        "y": 0,
+        "width": 1745,
+        "height": 22585
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.05882352963089943,
+            "g": 0.05882352963089943,
+            "b": 0.05882352963089943
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "97:112",
+      "depth": 4
+    },
+    {
+      "figmaId": "97:201",
+      "name": "Video Preview",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 12664,
+        "y": 22584.9921875,
+        "width": 1745,
+        "height": 22585
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.05882352963089943,
+            "g": 0.05882352963089943,
+            "b": 0.05882352963089943
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "97:112",
+      "depth": 4
+    },
+    {
+      "figmaId": "97:202",
+      "name": "yt-tooltip",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 12664,
+        "y": 22584.9921875,
+        "width": 1745,
+        "height": 22585
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.05882352963089943,
+            "g": 0.05882352963089943,
+            "b": 0.05882352963089943
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "97:112",
+      "depth": 4
+    },
+    {
+      "figmaId": "97:203",
+      "name": "ytd-permission-role-bottom-bar-renderer",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 12664,
+        "y": 868,
+        "width": 1745,
+        "height": 22585
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.9450980424880981,
+            "g": 0.9450980424880981,
+            "b": 0.9450980424880981
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "97:112",
+      "depth": 4
+    },
+    {
+      "figmaId": "97:204",
+      "name": "MODAL",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 13301.7890625,
+        "y": 20,
+        "width": 469,
+        "height": 94
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.05882352963089943,
+            "g": 0.05882352963089943,
+            "b": 0.05882352963089943
+          },
+          "boundVariables": {}
+        },
+        {
+          "type": "GRADIENT_LINEAR",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "gradientStops": [
+            {
+              "color": {
+                "r": 0.4000000059604645,
+                "g": 0.4941176474094391,
+                "b": 0.9176470637321472,
+                "a": 0.949999988079071
+              },
+              "position": 0,
+              "boundVariables": {}
+            },
+            {
+              "color": {
+                "r": 0.4627451002597809,
+                "g": 0.29411765933036804,
+                "b": 0.6352941393852234,
+                "a": 0.949999988079071
+              },
+              "position": 1,
+              "boundVariables": {}
+            }
+          ],
+          "gradientTransform": [
+            [
+              0.7071067690849304,
+              -0.7071067690849304,
+              0.5
+            ],
+            [
+              0.7071067690849304,
+              0.7071067690849304,
+              -0.2071067839860916
+            ]
+          ]
+        }
+      ],
+      "strokes": [],
+      "effects": [
+        {
+          "type": "DROP_SHADOW",
+          "visible": true,
+          "radius": 24,
+          "boundVariables": {},
+          "color": {
+            "r": 0,
+            "g": 0,
+            "b": 0,
+            "a": 0.4000000059604645
+          },
+          "offset": {
+            "x": 0,
+            "y": 8
+          },
+          "spread": 0,
+          "blendMode": "NORMAL",
+          "showShadowBehindNode": true
+        },
+        {
+          "type": "BACKGROUND_BLUR",
+          "visible": true,
+          "radius": 12,
+          "boundVariables": {},
+          "blurType": "NORMAL"
+        }
+      ],
+      "parentId": "97:111",
+      "depth": 3
+    },
+    {
+      "figmaId": "97:205",
+      "name": "Extracting... (200 n",
+      "type": "TEXT",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 13317.5546875,
+        "y": 40,
+        "width": 438,
+        "height": 19
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.05882352963089943,
+            "g": 0.05882352963089943,
+            "b": 0.05882352963089943
+          },
+          "boundVariables": {}
+        },
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "97:204",
+      "depth": 4
+    },
+    {
+      "figmaId": "97:206",
+      "name": "Container",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": true,
+      "absoluteBoundingBox": {
+        "x": 13317.5546875,
+        "y": 67,
+        "width": 438,
+        "height": 4
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 0.20000000298023224,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "97:204",
+      "depth": 4
+    },
+    {
+      "figmaId": "97:207",
+      "name": "Container",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 13317.5546875,
+        "y": 67,
+        "width": 158,
+        "height": 4
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 0.20000000298023224,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        },
+        {
+          "type": "GRADIENT_LINEAR",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "gradientStops": [
+            {
+              "color": {
+                "r": 0,
+                "g": 0.8313725590705872,
+                "b": 0.6666666865348816,
+                "a": 1
+              },
+              "position": 0,
+              "boundVariables": {}
+            },
+            {
+              "color": {
+                "r": 0,
+                "g": 0.7372549176216125,
+                "b": 0.8313725590705872,
+                "a": 1
+              },
+              "position": 1,
+              "boundVariables": {}
+            }
+          ],
+          "gradientTransform": [
+            [
+              1,
+              0,
+              0
+            ],
+            [
+              0,
+              1,
+              0
+            ]
+          ]
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "97:206",
+      "depth": 5
+    },
+    {
+      "figmaId": "97:208",
+      "name": "⏱️ 24.3s",
+      "type": "TEXT",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 13317.5546875,
+        "y": 80,
+        "width": 438,
+        "height": 15
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.05882352963089943,
+            "g": 0.05882352963089943,
+            "b": 0.05882352963089943
+          },
+          "boundVariables": {}
+        },
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 0.699999988079071,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "97:204",
+      "depth": 4
+    },
+    {
+      "figmaId": "97:209",
+      "name": "TEXT",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 13315.8984375,
+        "y": 20,
+        "width": 441,
+        "height": 123
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.05882352963089943,
+            "g": 0.05882352963089943,
+            "b": 0.05882352963089943
+          },
+          "boundVariables": {}
+        },
+        {
+          "type": "GRADIENT_LINEAR",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "gradientStops": [
+            {
+              "color": {
+                "r": 0.4000000059604645,
+                "g": 0.4941176474094391,
+                "b": 0.9176470637321472,
+                "a": 0.949999988079071
+              },
+              "position": 0,
+              "boundVariables": {}
+            },
+            {
+              "color": {
+                "r": 0.4627451002597809,
+                "g": 0.29411765933036804,
+                "b": 0.6352941393852234,
+                "a": 0.949999988079071
+              },
+              "position": 1,
+              "boundVariables": {}
+            }
+          ],
+          "gradientTransform": [
+            [
+              0.7071067690849304,
+              -0.7071067690849304,
+              0.5
+            ],
+            [
+              0.7071067690849304,
+              0.7071067690849304,
+              -0.2071067839860916
+            ]
+          ]
+        }
+      ],
+      "strokes": [],
+      "effects": [
+        {
+          "type": "DROP_SHADOW",
+          "visible": true,
+          "radius": 24,
+          "boundVariables": {},
+          "color": {
+            "r": 0,
+            "g": 0,
+            "b": 0,
+            "a": 0.4000000059604645
+          },
+          "offset": {
+            "x": 0,
+            "y": 8
+          },
+          "spread": 0,
+          "blendMode": "NORMAL",
+          "showShadowBehindNode": true
+        },
+        {
+          "type": "BACKGROUND_BLUR",
+          "visible": true,
+          "radius": 12,
+          "boundVariables": {},
+          "blurType": "NORMAL"
+        }
+      ],
+      "parentId": "97:111",
+      "depth": 3
+    },
+    {
+      "figmaId": "97:210",
+      "name": "Extracting... (200 n",
+      "type": "TEXT",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 13343.8984375,
+        "y": 40,
+        "width": 385,
+        "height": 19
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.05882352963089943,
+            "g": 0.05882352963089943,
+            "b": 0.05882352963089943
+          },
+          "boundVariables": {}
+        },
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "97:209",
+      "depth": 4
+    },
+    {
+      "figmaId": "97:211",
+      "name": "📋 Extracting",
+      "type": "TEXT",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 13343.8984375,
+        "y": 67,
+        "width": 385,
+        "height": 17
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.05882352963089943,
+            "g": 0.05882352963089943,
+            "b": 0.05882352963089943
+          },
+          "boundVariables": {}
+        },
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 0.8500000238418579,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "97:209",
+      "depth": 4
+    },
+    {
+      "figmaId": "97:212",
+      "name": "Container",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": true,
+      "absoluteBoundingBox": {
+        "x": 13343.8984375,
+        "y": 96,
+        "width": 385,
+        "height": 4
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 0.20000000298023224,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "97:209",
+      "depth": 4
+    },
+    {
+      "figmaId": "97:213",
+      "name": "Container",
+      "type": "FRAME",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 13343.8984375,
+        "y": 96,
+        "width": 139,
+        "height": 4
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 0.20000000298023224,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        },
+        {
+          "type": "GRADIENT_LINEAR",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "gradientStops": [
+            {
+              "color": {
+                "r": 0,
+                "g": 0.8313725590705872,
+                "b": 0.6666666865348816,
+                "a": 1
+              },
+              "position": 0,
+              "boundVariables": {}
+            },
+            {
+              "color": {
+                "r": 0,
+                "g": 0.7372549176216125,
+                "b": 0.8313725590705872,
+                "a": 1
+              },
+              "position": 1,
+              "boundVariables": {}
+            }
+          ],
+          "gradientTransform": [
+            [
+              1,
+              0,
+              0
+            ],
+            [
+              0,
+              1,
+              0
+            ]
+          ]
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "97:212",
+      "depth": 5
+    },
+    {
+      "figmaId": "97:214",
+      "name": "⏱️ 0.7s",
+      "type": "TEXT",
+      "visible": true,
+      "opacity": 1,
+      "clipsContent": false,
+      "absoluteBoundingBox": {
+        "x": 13343.8984375,
+        "y": 109,
+        "width": 385,
+        "height": 15
+      },
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.05882352963089943,
+            "g": 0.05882352963089943,
+            "b": 0.05882352963089943
+          },
+          "boundVariables": {}
+        },
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 0.699999988079071,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          },
+          "boundVariables": {}
+        }
+      ],
+      "strokes": [],
+      "effects": [],
+      "parentId": "97:209",
+      "depth": 4
+    }
+  ],
+  "metadata": {
+    "exportedAt": 1768451104627,
+    "pluginVersion": "1.0.0"
+  }
+}

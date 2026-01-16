@@ -1,0 +1,60 @@
+--- a/chrome-extension/src/utils/dom-extractor.ts
++++ b/chrome-extension/src/utils/dom-extractor.ts
+@@ -5630,39 +5630,45 @@
+           }
+         }
+ 
+-        // CRITICAL FIX: Only add fills if the element ACTUALLY paints a background
+-        // If background is inherited (element's computed background is transparent),
+-        // do NOT add fills - this prevents wrapper frames from becoming opaque rectangles
++        // PIXEL-PERFECT FIX: ALWAYS create fills for visible backgrounds, even if inherited
++        // The plugin will handle transparency/blending logic using the _inherited metadata
++        // This ensures visual fidelity - what browser paints, Figma should paint
+         const isBackgroundInherited =
+           node.inheritanceFlags?.backgroundColorInherited === true;
+-        const elementActuallyPaintsBackground =
+-          !isBackgroundInherited &&
+-          effectiveColorParsed &&
+-          effectiveColorParsed.a > 0.001;
+-
+-        if (elementActuallyPaintsBackground && effectiveColorParsed) {
+-          // Element has its own non-transparent background - add fills
++        
++        // Create fill if we have a visible background color (inherited OR explicit)
++        if (effectiveColorParsed && effectiveColorParsed.a > 0.001) {
++          console.log(
++            `  🎨 [FILL] Creating fill for ${element.tagName}#${element.id}: ${effectiveBgColor} (inherited: ${isBackgroundInherited})`
++          );
++          
+           if (!node.fills) node.fills = [];
+           node.fills.push({
+             type: "SOLID",
+             color: {
+               r: effectiveColorParsed.r,
+               g: effectiveColorParsed.g,
+               b: effectiveColorParsed.b,
+             },
+             opacity: effectiveColorParsed.a,
+             visible: true,
++            // NEW: Add metadata to help plugin distinguish inherited fills
++            _inherited: isBackgroundInherited,
+           });
+ 
+-          // Also track as a background color for contrast calculations
++          // Track as background for contrast calculations
+           if (!node.backgrounds) node.backgrounds = [];
+           node.backgrounds.push({
+             type: "solid",
+             color: effectiveColorParsed,
+             opacity: effectiveColorParsed.a,
+             visible: true,
++            _inherited: isBackgroundInherited,
+           });
+ 
+           this.assets.colors.add(effectiveBgColor);
++        } else {
++          console.log(
++            `  ⚪ [FILL] Skipping fill for ${element.tagName}#${element.id}: no visible background (bgColor: ${bgColor}, effectiveBgColor: ${effectiveBgColor})`
++          );
+         }
+ 

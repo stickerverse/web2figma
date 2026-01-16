@@ -140,12 +140,13 @@ class FigmaImportDiagnostics {
 
     const emoji =
       severity === "critical" ? "💀" : severity === "error" ? "❌" : "⚠️";
-    console.group(`${emoji} [FIGMA IMPORT] ${nodeType} "${nodeName}"`);
-    console.log(`Issue: ${issue}`);
-    console.log(`🔧 Fix: ${suggestedFix}`);
-    if (expected) console.log("Expected:", expected);
-    if (actual) console.log("Actual:", actual);
-    console.groupEnd();
+    // NOTE: console.group/groupEnd are NOT available in Figma's plugin sandbox
+    // Using console.log instead to avoid "console.group is not a function" errors
+    console.log(
+      `${emoji} [FIGMA IMPORT] ${nodeType} "${nodeName}" | Issue: ${issue} | 🔧 Fix: ${suggestedFix}`
+    );
+    if (expected) console.log("  Expected:", expected);
+    if (actual) console.log("  Actual:", actual);
 
     const report: DiagnosticReport = {
       nodeId,
@@ -1358,8 +1359,49 @@ export class NodeBuilder {
         `❌ [NODE_BUILDER] createNode failed for ${nodeData.type} ${nodeData.id}:`,
         e
       );
-      return null;
+      // FAILURE RECOVERY: Return a red fallback frame so the user sees *something*
+      console.warn(`⚠️ [RECOVERY] Creating fallback node for ${nodeData.id}`);
+      return this.createFallbackNode(
+        nodeData,
+        e instanceof Error ? e.message : String(e)
+      );
     }
+  }
+
+  /**
+   * EMERGENCY FALLBACK: Creates a visible red box when node creation fails.
+   * Ensures the import process never silently drops a node.
+   */
+  private async createFallbackNode(
+    data: any,
+    errorMsg: string
+  ): Promise<FrameNode> {
+    const frame = figma.createFrame();
+    frame.name = `⚠️ ERROR: ${data.name || "Unknown"} (${data.type})`;
+
+    // Ensure we have valid dimensions
+    const width = Math.max(data.layout?.width || 100, 100);
+    const height = Math.max(data.layout?.height || 100, 100);
+    frame.resize(width, height);
+
+    // Bright red stroke to indicate error
+    frame.strokes = [{ type: "SOLID", color: { r: 1, g: 0, b: 0 } }];
+    frame.strokeWeight = 2;
+    frame.fills = [{ type: "SOLID", color: { r: 1, g: 0.9, b: 0.9 } }]; // Light red background
+
+    // Try to add text label
+    try {
+      await figma.loadFontAsync({ family: "Inter", style: "Regular" });
+      const text = figma.createText();
+      text.characters = `Failed: ${data.name}\n${errorMsg.substring(0, 50)}`;
+      text.fontSize = 10;
+      text.fills = [{ type: "SOLID", color: { r: 1, g: 0, b: 0 } }];
+      frame.appendChild(text);
+    } catch (e) {
+      // Ignore text failure
+    }
+
+    return frame;
   }
 
   private async createFrame(data: any): Promise<FrameNode> {
@@ -3145,7 +3187,11 @@ export class NodeBuilder {
     const [a, b, c, d, tx, ty] = matrix;
 
     // CRITICAL SAFETY: Validate matrix values to prevent engine crashes
-    if (![a, b, c, d, tx, ty].every((v) => typeof v === "number" && Number.isFinite(v))) {
+    if (
+      ![a, b, c, d, tx, ty].every(
+        (v) => typeof v === "number" && Number.isFinite(v)
+      )
+    ) {
       console.warn(
         `⚠️ [TRANSFORM] Skipping invalid matrix for ${data.tagName}:`,
         matrix
@@ -4182,7 +4228,7 @@ export class NodeBuilder {
             // Process fills even if inherited - visual fidelity requires all paints
             console.log(
               `  ✅ Processing ${data.fills.length} fills for ${data.name} ` +
-              `(inherited: ${fillsAreInherited}, computedBg: ${computedBgStr})`
+                `(inherited: ${fillsAreInherited}, computedBg: ${computedBgStr})`
             );
             console.log(
               `  ✅ Processing ${data.fills.length} fills for ${data.name}`
@@ -4193,163 +4239,161 @@ export class NodeBuilder {
 
             // DEBUG: Log conversion results
             console.log(
-                `  🎨 [FILL DEBUG] convertFillsAsync for ${data.name}:`,
-                {
-                  schemaFillsCount: data.fills.length,
-                  convertedPaintsCount: fillPaints.length,
-                  schemaFills: data.fills.map((f) => ({
-                    type: f.type,
-                    opacity: f.opacity,
-                    colorA: f.color?.a,
-                  })),
-                  convertedPaints: fillPaints.map((p) => ({
-                    type: p.type,
-                    opacity: p.opacity,
-                    visible: p.visible,
-                  })),
-                }
+              `  🎨 [FILL DEBUG] convertFillsAsync for ${data.name}:`,
+              {
+                schemaFillsCount: data.fills.length,
+                convertedPaintsCount: fillPaints.length,
+                schemaFills: data.fills.map((f) => ({
+                  type: f.type,
+                  opacity: f.opacity,
+                  colorA: f.color?.a,
+                })),
+                convertedPaints: fillPaints.map((p) => ({
+                  type: p.type,
+                  opacity: p.opacity,
+                  visible: p.visible,
+                })),
+              }
+            );
+
+            // BUGFIX: Only filter IMAGE fills if we actually have background layers AND they contain images.
+            // If backgrounds array exists but is empty or has no images, keep IMAGE fills from fills array.
+            const hasImageBackgrounds =
+              hasDetailedBackgrounds &&
+              data.backgrounds.some(
+                (bg: any) =>
+                  bg?.type === "IMAGE" ||
+                  bg?.fill?.type === "IMAGE" ||
+                  bg?.imageHash
               );
 
-              // BUGFIX: Only filter IMAGE fills if we actually have background layers AND they contain images.
-              // If backgrounds array exists but is empty or has no images, keep IMAGE fills from fills array.
-              const hasImageBackgrounds =
-                hasDetailedBackgrounds &&
-                data.backgrounds.some(
-                  (bg: any) =>
-                    bg?.type === "IMAGE" ||
-                    bg?.fill?.type === "IMAGE" ||
-                    bg?.imageHash
-                );
+            // If we have detailed image backgrounds, prefer those over generic IMAGE fills in `fills`.
+            // Otherwise, keep all fills (including IMAGE fills).
+            const filteredFills = fillPaints.filter(
+              (p) => !hasImageBackgrounds || p.type !== "IMAGE"
+            );
+            paints.push(...filteredFills);
 
-              // If we have detailed image backgrounds, prefer those over generic IMAGE fills in `fills`.
-              // Otherwise, keep all fills (including IMAGE fills).
-              const filteredFills = fillPaints.filter(
-                (p) => !hasImageBackgrounds || p.type !== "IMAGE"
+            // CRITICAL FIX: If fills were in schema but convertFillsAsync returned nothing,
+            // try fallback immediately (don't wait for all other checks to fail)
+            if (fillPaints.length === 0 && data.fills.length > 0) {
+              console.warn(
+                `  ⚠️ [FILL] ${data.fills.length} fills in schema but convertFillsAsync returned 0 paints for ${data.name}`
               );
-              paints.push(...filteredFills);
 
-              // CRITICAL FIX: If fills were in schema but convertFillsAsync returned nothing,
-              // try fallback immediately (don't wait for all other checks to fail)
-              if (fillPaints.length === 0 && data.fills.length > 0) {
-                console.warn(
-                  `  ⚠️ [FILL] ${data.fills.length} fills in schema but convertFillsAsync returned 0 paints for ${data.name}`
-                );
-
-                // CRITICAL FIX: Try to manually convert fills if async conversion failed
-                // This handles cases where convertFillsAsync silently fails
-                for (const fill of data.fills) {
-                  try {
-                    if (fill.type === "SOLID" && fill.color) {
-                      // BUGFIX: fill.color is already an object {r,g,b}, not a string to parse
-                      let color = null;
-
-                      if (
-                        typeof fill.color === "object" &&
-                        fill.color.r !== undefined
-                      ) {
-                        // Color is already in {r,g,b} format
-                        color = {
-                          r: Math.max(0, Math.min(1, fill.color.r)),
-                          g: Math.max(0, Math.min(1, fill.color.g)),
-                          b: Math.max(0, Math.min(1, fill.color.b)),
-                        };
-                      } else if (typeof fill.color === "string") {
-                        // Color is a string, parse it
-                        color = this.parseColorString(fill.color);
-                      }
-
-                      if (color) {
-                        const opacity =
-                          fill.opacity !== undefined
-                            ? fill.opacity
-                            : color.a !== undefined
-                            ? color.a
-                            : 1;
-                        paints.push(
-                          figma.util.solidPaint(
-                            { r: color.r, g: color.g, b: color.b },
-                            {
-                              opacity: opacity,
-                              visible: fill.visible !== false,
-                            }
-                          )
-                        );
-                        console.log(
-                          `  ✅ [FILL FIX] Manually converted SOLID fill for ${data.name}`
-                        );
-                        continue;
-                      }
-                    }
-
-                    // Try fallback color extraction from multiple sources
-                    let fallbackColor: RGBA | undefined =
-                      this.parseColorString(data.style?.backgroundColor) ||
-                      this.parseColorString(data.backgroundColor) ||
-                      this.parseColorString(data.fillColor);
+              // CRITICAL FIX: Try to manually convert fills if async conversion failed
+              // This handles cases where convertFillsAsync silently fails
+              for (const fill of data.fills) {
+                try {
+                  if (fill.type === "SOLID" && fill.color) {
+                    // BUGFIX: fill.color is already an object {r,g,b}, not a string to parse
+                    let color = null;
 
                     if (
-                      (!fallbackColor || fallbackColor.a === 0) &&
-                      data.computedStyle?.backgroundColor
+                      typeof fill.color === "object" &&
+                      fill.color.r !== undefined
                     ) {
-                      fallbackColor = this.parseColorString(
-                        data.computedStyle.backgroundColor
-                      );
+                      // Color is already in {r,g,b} format
+                      color = {
+                        r: Math.max(0, Math.min(1, fill.color.r)),
+                        g: Math.max(0, Math.min(1, fill.color.g)),
+                        b: Math.max(0, Math.min(1, fill.color.b)),
+                      };
+                    } else if (typeof fill.color === "string") {
+                      // Color is a string, parse it
+                      color = this.parseColorString(fill.color);
                     }
 
-                    // If still no color (transparent), try getPlaceholderColor
-                    if (!fallbackColor || fallbackColor.a === 0) {
-                      const placeholderColor = this.getPlaceholderColor(data);
-                      // Only use placeholder if it's not the default grey (meaning it found an actual color)
-                      const isDefaultGrey =
-                        Math.abs(placeholderColor.r - 0.92) < 0.01 &&
-                        Math.abs(placeholderColor.g - 0.92) < 0.01 &&
-                        Math.abs(placeholderColor.b - 0.92) < 0.01 &&
-                        Math.abs((placeholderColor.a || 1) - 1) < 0.01;
-                      if (!isDefaultGrey) {
-                        fallbackColor = placeholderColor;
-                      }
-                    }
-
-                    if (
-                      fallbackColor &&
-                      (fallbackColor.a === undefined || fallbackColor.a > 0)
-                    ) {
+                    if (color) {
+                      const opacity =
+                        fill.opacity !== undefined
+                          ? fill.opacity
+                          : color.a !== undefined
+                          ? color.a
+                          : 1;
                       paints.push(
                         figma.util.solidPaint(
+                          { r: color.r, g: color.g, b: color.b },
                           {
-                            r: fallbackColor.r,
-                            g: fallbackColor.g,
-                            b: fallbackColor.b,
-                          },
-                          {
-                            opacity:
-                              fallbackColor.a !== undefined
-                                ? fallbackColor.a
-                                : 1,
-                            visible: true,
+                            opacity: opacity,
+                            visible: fill.visible !== false,
                           }
                         )
                       );
                       console.log(
-                        `  🎨 [FILL FIX] Using backgroundColor fallback for ${data.name}:`,
-                        { color: fallbackColor }
+                        `  ✅ [FILL FIX] Manually converted SOLID fill for ${data.name}`
                       );
                       continue;
                     }
-                  } catch (fillErr) {
-                    console.warn(
-                      `  ⚠️ [FILL] Error processing fill ${fill.type}:`,
-                      fillErr
+                  }
+
+                  // Try fallback color extraction from multiple sources
+                  let fallbackColor: RGBA | undefined =
+                    this.parseColorString(data.style?.backgroundColor) ||
+                    this.parseColorString(data.backgroundColor) ||
+                    this.parseColorString(data.fillColor);
+
+                  if (
+                    (!fallbackColor || fallbackColor.a === 0) &&
+                    data.computedStyle?.backgroundColor
+                  ) {
+                    fallbackColor = this.parseColorString(
+                      data.computedStyle.backgroundColor
                     );
                   }
-                }
 
-                if (paints.length === 0) {
+                  // If still no color (transparent), try getPlaceholderColor
+                  if (!fallbackColor || fallbackColor.a === 0) {
+                    const placeholderColor = this.getPlaceholderColor(data);
+                    // Only use placeholder if it's not the default grey (meaning it found an actual color)
+                    const isDefaultGrey =
+                      Math.abs(placeholderColor.r - 0.92) < 0.01 &&
+                      Math.abs(placeholderColor.g - 0.92) < 0.01 &&
+                      Math.abs(placeholderColor.b - 0.92) < 0.01 &&
+                      Math.abs((placeholderColor.a || 1) - 1) < 0.01;
+                    if (!isDefaultGrey) {
+                      fallbackColor = placeholderColor;
+                    }
+                  }
+
+                  if (
+                    fallbackColor &&
+                    (fallbackColor.a === undefined || fallbackColor.a > 0)
+                  ) {
+                    paints.push(
+                      figma.util.solidPaint(
+                        {
+                          r: fallbackColor.r,
+                          g: fallbackColor.g,
+                          b: fallbackColor.b,
+                        },
+                        {
+                          opacity:
+                            fallbackColor.a !== undefined ? fallbackColor.a : 1,
+                          visible: true,
+                        }
+                      )
+                    );
+                    console.log(
+                      `  🎨 [FILL FIX] Using backgroundColor fallback for ${data.name}:`,
+                      { color: fallbackColor }
+                    );
+                    continue;
+                  }
+                } catch (fillErr) {
                   console.warn(
-                    `  ⚠️ [FILL] No fallback color found for ${data.name} after convertFillsAsync failed`
+                    `  ⚠️ [FILL] Error processing fill ${fill.type}:`,
+                    fillErr
                   );
                 }
-              } // End if fillPaints.length === 0 fallback check
+              }
+
+              if (paints.length === 0) {
+                console.warn(
+                  `  ⚠️ [FILL] No fallback color found for ${data.name} after convertFillsAsync failed`
+                );
+              }
+            } // End if fillPaints.length === 0 fallback check
           } else if (data.fills?.length === 0) {
             // PIXEL-PERFECT FIX: Synthesize fills from computedStyle when schema has empty array
             console.log(
@@ -4358,7 +4402,9 @@ export class NodeBuilder {
 
             // Try computedStyle.backgroundColor first (most reliable)
             if (data.computedStyle?.backgroundColor) {
-              const color = this.parseColorString(data.computedStyle.backgroundColor);
+              const color = this.parseColorString(
+                data.computedStyle.backgroundColor
+              );
               if (color && color.a > 0.01) {
                 console.log(
                   `  ✓ [SYNTHESIS] Created fill from computedStyle for ${data.name}:`,
@@ -4471,10 +4517,10 @@ export class NodeBuilder {
             // If early fallback didn't work, try all other sources in order of preference
             if (!parsedColor) {
               // NEW: Check for inherited color information first
-                          // CRITICAL FIX: Do NOT skip inherited colors even if computed background is transparent
-                          // The whole point of inheritance tracking is to paint the parent's color when the child is transparent
-                          // but visually needs to block what's behind it (or just appear colored).
-                          const shouldSkipInheritedFallback = false;
+              // CRITICAL FIX: Do NOT skip inherited colors even if computed background is transparent
+              // The whole point of inheritance tracking is to paint the parent's color when the child is transparent
+              // but visually needs to block what's behind it (or just appear colored).
+              const shouldSkipInheritedFallback = false;
               if (
                 data.colorInheritance?.backgroundColorSource === "inherited" &&
                 !shouldSkipInheritedFallback
@@ -5806,54 +5852,111 @@ export class NodeBuilder {
       return figma.util.solidPaint({ r: 0.9, g: 0.9, b: 0.9 });
     }
 
-    if (!this.assets) {
-      console.error(
-        `❌ resolveImagePaintWithBackground: No assets available! Hash: ${hash}`
-      );
-      return figma.util.solidPaint({ r: 1, g: 0.5, b: 0 }, { opacity: 0.5 });
-    }
+    // Try to resolve the image using the robust logic from resolveImagePaint
+    // We'll reuse the asset resolution part but handle the paint construction manually
+    let imageHash: string | undefined;
+    let image: Image | null = null;
 
-    if (!this.assets.images) {
-      console.error(
-        `❌ resolveImagePaintWithBackground: assets.images is undefined! Keys:`,
-        Object.keys(this.assets)
-      );
-      return figma.util.solidPaint({ r: 1, g: 1, b: 0 }, { opacity: 0.5 });
-    }
-
-    if (!this.assets.images[hash]) {
-      console.error(
-        `❌ resolveImagePaintWithBackground: Hash "${hash}" not found in assets.images`
-      );
-      console.error(
-        `Available hashes (${Object.keys(this.assets.images).length}):`,
-        Object.keys(this.assets.images).slice(0, 10)
-      );
-      return figma.util.solidPaint({ r: 0.5, g: 0, b: 1 }, { opacity: 0.5 });
-    }
-
-    let imageHash: string;
+    // Check cache first
     if (this.imagePaintCache.has(hash)) {
       imageHash = this.imagePaintCache.get(hash)!;
     } else {
-      try {
-        const asset = this.assets.images[hash];
-        console.log(`🔍 Creating Figma image from asset:`, {
-          hash,
-          hasData: !!asset.data,
-          hasBase64: !!asset.base64,
-          dataLen: (asset.data || asset.base64 || "").length,
-        });
-        const image = await this.createFigmaImageFromAsset(asset, hash);
-        if (!image) {
-          throw new Error("No image data available");
+      // 1. Try to find in assets
+      if (this.assets?.images?.[hash]) {
+        try {
+          const asset = this.assets.images[hash];
+          image = await this.createFigmaImageFromAsset(asset, hash);
+
+          // If asset exists but image creation failed (no data), try URL fallback from asset
+          if (!image) {
+            const assetUrl =
+              asset.url || asset.originalUrl || asset.absoluteUrl;
+            if (assetUrl && !assetUrl.startsWith("data:")) {
+              console.log(`  🔄 [BG FALLBACK] Trying asset URL: ${assetUrl}`);
+              try {
+                const bytes = await this.fetchImage(assetUrl);
+                const transcoded = await this.transcodeIfUnsupportedRaster(
+                  bytes,
+                  "image/png"
+                );
+                image = figma.createImage(transcoded);
+              } catch (e) {
+                console.warn(`  ❌ [BG FALLBACK] Asset URL fetch failed:`, e);
+              }
+            }
+          }
+        } catch (e) {
+          console.warn(
+            `  ⚠️ Failed to create image from asset ${hash} for background`,
+            e
+          );
+        }
+      }
+
+      // 2. Fallback: If not in assets, or asset failed, try URL extraction
+      if (!image) {
+        // Check if hash IS a URL
+        if (
+          hash.startsWith("http://") ||
+          hash.startsWith("https://") ||
+          hash.startsWith("data:")
+        ) {
+          console.log(
+            `  🔍 [BG] Hash is URL, fetching directly: ${hash.substring(
+              0,
+              50
+            )}...`
+          );
+          try {
+            let bytes: Uint8Array;
+            if (hash.startsWith("data:")) {
+              // Handle data URI
+              const matches = hash.match(/^data:([^;]+);base64,(.+)$/);
+              if (matches) {
+                const binary = atob(matches[2]);
+                bytes = new Uint8Array(binary.length);
+                for (let i = 0; i < binary.length; i++)
+                  bytes[i] = binary.charCodeAt(i);
+              } else {
+                bytes = await this.fetchImage(hash);
+              }
+            } else {
+              bytes = await this.fetchImage(hash);
+            }
+            const transcoded = await this.transcodeIfUnsupportedRaster(
+              bytes,
+              "image/png"
+            );
+            image = figma.createImage(transcoded);
+          } catch (e) {
+            console.error(`  ❌ [BG] Direct URL fetch failed for ${hash}`, e);
+          }
         }
 
+        // Check if fill has URL
+        if (!image && fill.url) {
+          console.log(`  🔍 [BG] Fetching from fill.url: ${fill.url}`);
+          try {
+            const bytes = await this.fetchImage(fill.url);
+            const transcoded = await this.transcodeIfUnsupportedRaster(
+              bytes,
+              "image/png"
+            );
+            image = figma.createImage(transcoded);
+          } catch (e) {
+            console.error(`  ❌ [BG] Fill URL fetch failed`, e);
+          }
+        }
+      }
+
+      if (image) {
         this.imagePaintCache.set(hash, image.hash);
         imageHash = image.hash;
-        console.log(`✅ Successfully created Figma image: ${imageHash}`);
-      } catch (error) {
-        console.error(`❌ Failed to resolve image paint for ${hash}:`, error);
+        console.log(
+          `✅ [BG] Successfully resolved background image: ${imageHash}`
+        );
+      } else {
+        console.error(`❌ [BG] Failed to resolve background image for ${hash}`);
         return {
           type: "SOLID",
           color: { r: 0.9, g: 0.9, b: 0.9 },
@@ -6030,41 +6133,72 @@ export class NodeBuilder {
         failureReason = `Asset creation error: ${errorMsg}`;
       }
     } else {
-      console.log(`  ⚠️ No asset found for hash ${hash}`);
-      console.log(
-        `  📂 Available image hashes:`,
-        Object.keys(this.assets?.images || {}).slice(0, 5)
+      console.warn(
+        `  ⚠️ No asset found for hash ${hash}, trying URL extraction`
       );
+
+      // CRITICAL FIX: If hash not found, try to extract URL from fill or hash itself
+      // This is the P0 Image Pipeline Fix
+
+      // Check if hash IS a URL (common in non-embedded mode)
+      if (hash.startsWith("http://") || hash.startsWith("https://")) {
+        console.log(`  🔍 Hash is a URL, attempting direct fetch`);
+        try {
+          const bytes = await this.fetchImage(hash);
+          const transcodedBytes = await this.transcodeIfUnsupportedRaster(
+            bytes,
+            "image/png"
+          );
+          image = figma.createImage(transcodedBytes);
+          console.log(`  ✅ Successfully fetched image from hash URL`);
+        } catch (urlError) {
+          console.error(`  ❌ Direct URL fetch failed for ${hash}`, urlError);
+        }
+      }
+
+      // Check if fill has URL
+      const fillUrl = fill.url;
+      if (
+        !image &&
+        fillUrl &&
+        (fillUrl.startsWith("http") || fillUrl.startsWith("data:"))
+      ) {
+        console.log(
+          `  🔍 Fill has URL, attempting fetch: ${fillUrl.substring(0, 60)}...`
+        );
+        try {
+          const bytes = await this.fetchImage(fillUrl);
+          const transcodedBytes = await this.transcodeIfUnsupportedRaster(
+            bytes,
+            "image/png"
+          );
+          image = figma.createImage(transcodedBytes);
+          console.log(`  ✅ Successfully fetched image from fill URL`);
+        } catch (urlError) {
+          console.error(`  ❌ Fill URL fetch failed`, urlError);
+        }
+      }
 
       // PIXEL-PERFECT FIX: Detect hash mismatch by comparing hash formats
       const allAssetKeys = Object.keys(this.assets?.images || {});
 
       if (allAssetKeys.length > 0) {
-        console.log(`  🔍 [HASH MISMATCH DEBUG] Comparing hash formats:`);
-        console.log(`     Requested hash: ${hash} (length: ${hash.length})`);
-        console.log(`     Sample asset key: ${allAssetKeys[0]} (length: ${allAssetKeys[0].length})`);
-
         // Check if hash format is completely different
-        const hashPattern = hash.match(/^[0-9a-f]+$/i) ? 'hex' : 'other';
-        const assetPattern = allAssetKeys[0].match(/^[0-9a-f]+$/i) ? 'hex' : 'other';
+        const hashPattern = hash.match(/^[0-9a-f]+$/i) ? "hex" : "other";
+        const assetPattern = allAssetKeys[0].match(/^[0-9a-f]+$/i)
+          ? "hex"
+          : "other";
 
         if (hashPattern !== assetPattern) {
-          console.warn(`  ⚠️ [HASH MISMATCH] Hash format mismatch: requested=${hashPattern}, assets=${assetPattern}`);
-          console.warn(`     This indicates a hashing algorithm inconsistency between extension and plugin.`);
+          console.warn(
+            `  ⚠️ [HASH MISMATCH] Hash format mismatch: requested=${hashPattern}, assets=${assetPattern}`
+          );
         }
-
-        // Check if hash is a URL but assets use hashed keys
-        if (hash.startsWith('http') && !allAssetKeys[0].startsWith('http')) {
-          console.warn(`  ⚠️ [HASH MISMATCH] Hash is a URL but assets use hashed keys.`);
-          console.warn(`     Extension may not be hashing URLs correctly in finalizeAssets.`);
-        }
-      } else {
-        console.error(`  ❌ [HASH MISMATCH DEBUG] No assets available at all! Asset object is empty.`);
       }
 
       // Strategy 2: Try normalized hash (remove prefixes)
       const normalizedHash = hash?.replace(/^(image:|img_)/, "");
-      if (normalizedHash && this.assets?.images?.[normalizedHash]) {
+      if (!image && normalizedHash && this.assets?.images?.[normalizedHash]) {
         console.log(`  🔍 Trying normalized hash: ${normalizedHash}`);
         // Check if normalized hash was preloaded with a different key
         if (this.imagePaintCache.has(normalizedHash)) {
@@ -6165,7 +6299,7 @@ export class NodeBuilder {
             80
           )}...`
         );
-        
+
         let bytes: Uint8Array;
         let contentType = "image/png";
 
@@ -6181,12 +6315,12 @@ export class NodeBuilder {
               bytes[i] = binaryString.charCodeAt(i);
             }
           } else {
-             // Fallback to fetch for malformed data URLs or non-base64
-             bytes = await this.fetchImage(hash);
+            // Fallback to fetch for malformed data URLs or non-base64
+            bytes = await this.fetchImage(hash);
           }
         } else {
-           // Use fetchImage which automatically routes external URLs to proxy
-           bytes = await this.fetchImage(hash);
+          // Use fetchImage which automatically routes external URLs to proxy
+          bytes = await this.fetchImage(hash);
         }
 
         const transcodedBytes = await this.transcodeIfUnsupportedRaster(
@@ -6893,7 +7027,7 @@ export class NodeBuilder {
       try {
         const proxyUrl = `${base}/api/proxy?url=${encodeURIComponent(url)}`;
         console.log(`  🔄 [PROXY] Attempting to fetch via proxy: ${base}`);
-        
+
         let signal: AbortSignal | undefined;
         let timeoutId: any;
         if (typeof AbortController !== "undefined") {
@@ -6915,7 +7049,11 @@ export class NodeBuilder {
         if (timeoutId) clearTimeout(timeoutId);
 
         if (response.ok) {
-          const data = await response.json() as { ok?: boolean; data?: string; error?: string };
+          const data = (await response.json()) as {
+            ok?: boolean;
+            data?: string;
+            error?: string;
+          };
           if (data.ok && data.data) {
             // data.data is a data URL like "data:image/png;base64,..."
             const base64Match = data.data.match(/^data:[^;]+;base64,(.+)$/);
@@ -6950,11 +7088,17 @@ export class NodeBuilder {
     }
 
     // PIXEL-PERFECT FIX: Add diagnostic message when all proxies fail
-    console.error(`❌ [PROXY FAILED] All handoff server proxies failed for image fetch.`);
+    console.error(
+      `❌ [PROXY FAILED] All handoff server proxies failed for image fetch.`
+    );
     console.error(`   Attempted servers:`, handoffBases);
     console.error(`   DIAGNOSIS:`);
-    console.error(`     1. Ensure handoff server is running: node handoff-server.cjs`);
-    console.error(`     2. Check server is accessible: curl http://localhost:4411/api/health`);
+    console.error(
+      `     1. Ensure handoff server is running: node handoff-server.cjs`
+    );
+    console.error(
+      `     2. Check server is accessible: curl http://localhost:4411/api/health`
+    );
     console.error(`     3. Check firewall/network settings`);
     console.error(`     4. Check server logs for proxy errors`);
 
@@ -7030,20 +7174,26 @@ export class NodeBuilder {
   }
 
   private uint8ToBase64(bytes: Uint8Array): string {
-    const CHUNK_SIZE = 0x8000;
-    const chunks: string[] = [];
-    for (let i = 0; i < bytes.length; i += CHUNK_SIZE) {
-      chunks.push(
-        String.fromCharCode.apply(
-          null,
-          Array.from(bytes.subarray(i, i + CHUNK_SIZE))
-        )
-      );
+    // Pure JavaScript base64 encoding - works in Figma's sandbox where btoa is unavailable
+    const BASE64_CHARS =
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+    let result = "";
+    const len = bytes.length;
+
+    for (let i = 0; i < len; i += 3) {
+      const byte1 = bytes[i];
+      const byte2 = i + 1 < len ? bytes[i + 1] : 0;
+      const byte3 = i + 2 < len ? bytes[i + 2] : 0;
+
+      const triplet = (byte1 << 16) | (byte2 << 8) | byte3;
+
+      result += BASE64_CHARS[(triplet >> 18) & 0x3f];
+      result += BASE64_CHARS[(triplet >> 12) & 0x3f];
+      result += i + 1 < len ? BASE64_CHARS[(triplet >> 6) & 0x3f] : "=";
+      result += i + 2 < len ? BASE64_CHARS[triplet & 0x3f] : "=";
     }
-    if (typeof btoa === "function") {
-      return btoa(chunks.join(""));
-    }
-    throw new Error("btoa not available for base64 encoding");
+
+    return result;
   }
 
   private isWebpBytes(bytes: Uint8Array): boolean {
@@ -7936,7 +8086,11 @@ export class NodeBuilder {
     const MAX_SVG_LENGTH = 300000; // 300KB limit
     if (svgString && svgString.length > MAX_SVG_LENGTH) {
       console.warn(
-        `⚠️ [SVG] Skipping massive SVG content (${(svgString.length / 1024).toFixed(1)} KB) for ${data.name || "Vector"}. Will fallback to raster image.`
+        `⚠️ [SVG] Skipping massive SVG content (${(
+          svgString.length / 1024
+        ).toFixed(1)} KB) for ${
+          data.name || "Vector"
+        }. Will fallback to raster image.`
       );
       return null;
     }
@@ -7947,19 +8101,25 @@ export class NodeBuilder {
       let processedSvg = svgString;
       if (processedSvg.match(/currentcolor/i)) {
         let replacementColor = "#000000"; // Default fallback
-        
+
         // Try to get color from fills
         if (data?.fills && Array.isArray(data.fills) && data.fills.length > 0) {
-          const fill = data.fills.find((f: any) => f.type === "SOLID" && f.visible !== false);
+          const fill = data.fills.find(
+            (f: any) => f.type === "SOLID" && f.visible !== false
+          );
           if (fill && fill.color) {
             const { r, g, b, a } = fill.color;
             // Use rgba for full fidelity including alpha
-            replacementColor = `rgba(${Math.round(r * 255)}, ${Math.round(g * 255)}, ${Math.round(b * 255)}, ${a !== undefined ? a : 1})`;
-            console.log(`🎨 [SVG] Replaced currentColor with ${replacementColor} for ${data.name}`);
+            replacementColor = `rgba(${Math.round(r * 255)}, ${Math.round(
+              g * 255
+            )}, ${Math.round(b * 255)}, ${a !== undefined ? a : 1})`;
+            console.log(
+              `🎨 [SVG] Replaced currentColor with ${replacementColor} for ${data.name}`
+            );
           }
         } else if (data?.style?.color) {
-             // Fallback to style.color if available
-             replacementColor = data.style.color;
+          // Fallback to style.color if available
+          replacementColor = data.style.color;
         }
 
         processedSvg = processedSvg.replace(/currentcolor/gi, replacementColor);
@@ -7970,7 +8130,7 @@ export class NodeBuilder {
         replaced,
         unresolved,
       } = this.resolveSvgCssVarFallbacks(processedSvg);
-      
+
       if (replaced > 0 || unresolved > 0) {
         console.log(
           `  🧩 [SVG] Resolved CSS var() in ${data?.name || "Vector"}:`,
@@ -8389,6 +8549,17 @@ export class NodeBuilder {
       node.x = finalX;
       node.y = finalY;
 
+      // FIX P2: If element is transformed far off-screen, hide it
+      // This handles sidebars/modals that are moved off-canvas via CSS transform
+      if (Math.abs(finalX) > 5000 || Math.abs(finalY) > 5000) {
+        if ("visible" in node) {
+          (node as any).visible = false;
+          console.log(
+            `🙈 [TRANSFORM] Hiding off-screen element "${node.name}" at (${finalX}, ${finalY})`
+          );
+        }
+      }
+
       if ("rotation" in node && this.shouldApplyRotation(matrix)) {
         const rotation = Math.atan2(b, a);
         (node as any).rotation = rotation;
@@ -8729,9 +8900,11 @@ export class NodeBuilder {
     y: number
   ): Transform {
     // CORRECTED: Start with scale matrix per Figma API
-    const scaleX = parsedTransform.scaleX !== undefined ? parsedTransform.scaleX : 1;
-    const scaleY = parsedTransform.scaleY !== undefined ? parsedTransform.scaleY : 1;
-    
+    const scaleX =
+      parsedTransform.scaleX !== undefined ? parsedTransform.scaleX : 1;
+    const scaleY =
+      parsedTransform.scaleY !== undefined ? parsedTransform.scaleY : 1;
+
     let matrix: Transform = [
       [scaleX, 0, 0],
       [0, scaleY, 0],
@@ -8748,13 +8921,13 @@ export class NodeBuilder {
         [
           matrix[0][0] * cos - matrix[1][0] * sin,
           matrix[0][1] * cos - matrix[1][1] * sin,
-          0
+          0,
         ],
         [
           matrix[0][0] * sin + matrix[1][0] * cos,
           matrix[0][1] * sin + matrix[1][1] * cos,
-          0
-        ]
+          0,
+        ],
       ];
       matrix = newMatrix;
     }

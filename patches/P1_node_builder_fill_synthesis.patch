@@ -1,0 +1,76 @@
+--- a/figma-plugin/src/node-builder.ts
++++ b/figma-plugin/src/node-builder.ts
+@@ -4167,20 +4167,14 @@
+           // removed agent log block
+ 
+           // 1. Process regular fills (solid colors, gradients, images)
+-          // CRITICAL FIX: Skip inherited fills if computed background is transparent
+-          // ENHANCED: Also skip fills if computed bg is transparent AND fills exist (defensive check)
++          // PIXEL-PERFECT FIX: Process ALL fills from schema, don't skip inherited
++          // If fills array is empty, synthesize from computedStyle
+           if (data.fills?.length) {
+-            const shouldSkipFills =
+-              computedBgIsTransparent &&
+-              (fillsAreInherited ||
+-                (data.fills.length > 0 &&
+-                  data.colorInheritance?.backgroundColorSource !== "explicit"));
+-
+-            if (shouldSkipFills) {
+-              console.log(
+-                `  ⚪ [FILL] Skipping ${data.fills.length} inherited/transparent fills for ${data.name} (computed background is transparent: ${data.computedStyle?.backgroundColor}, inheritance: ${data.colorInheritance?.backgroundColorSource})`
+-              );
+-              // removed agent log block
+-            } else {
++            // Process fills even if inherited - visual fidelity requires all paints
++            console.log(
++              `  ✅ Processing ${data.fills.length} fills for ${data.name} ` +
++              `(inherited: ${fillsAreInherited}, computedBg: ${computedBgStr})`
++            );
+               console.log(
+                 `  ✅ Processing ${data.fills.length} fills for ${data.name}`
+               );
+@@ -4285,7 +4279,43 @@
+                 }
+               }
+             }
++          } else if (data.fills?.length === 0) {
++            // PIXEL-PERFECT FIX: Synthesize fills from computedStyle when schema has empty array
++            console.log(
++              `  🔧 [SYNTHESIS] Empty fills array for ${data.name}, attempting synthesis`
++            );
++            
++            // Try computedStyle.backgroundColor first (most reliable)
++            if (data.computedStyle?.backgroundColor) {
++              const color = this.parseColorString(data.computedStyle.backgroundColor);
++              if (color && color.a > 0.01) {
++                console.log(
++                  `  ✓ [SYNTHESIS] Created fill from computedStyle for ${data.name}:`,
++                  color
++                );
++                paints.push({
++                  type: "SOLID",
++                  color: { r: color.r, g: color.g, b: color.b },
++                  opacity: color.a,
++                  visible: true,
++                });
++              }
++            }
++            
++            // Fallback to style.backgroundColor
++            if (paints.length === 0 && data.style?.backgroundColor) {
++              const color = this.parseColorString(data.style.backgroundColor);
++              if (color && color.a > 0.01) {
++                console.log(
++                  `  ✓ [SYNTHESIS] Created fill from style.backgroundColor for ${data.name}:`,
++                  color
++                );
++                paints.push({
++                  type: "SOLID",
++                  color: { r: color.r, g: color.g, b: color.b },
++                  opacity: color.a,
++                  visible: true,
++                });
++              }
+             }
+           }
+ 

@@ -1,0 +1,68 @@
+{
+  "nodeCount": 559,
+  "nodeTypes": {
+    "FRAME": 459,
+    "TEXT": 93,
+    "VECTOR": 7
+  },
+  "textNodes": 93,
+  "imageNodes": 0,
+  "zeroSizedNodes": 0,
+  "outOfBoundsNodes": 558,
+  "largestNodes": [
+    {
+      "id": "11:21871",
+      "name": "LINK",
+      "area": 1074187.5
+    },
+    {
+      "id": "11:21872",
+      "name": "TEXT",
+      "area": 1050372
+    },
+    {
+      "id": "11:21873",
+      "name": "MAIN",
+      "area": 1050372
+    },
+    {
+      "id": "11:21874",
+      "name": "HEADER",
+      "area": 1050372
+    },
+    {
+      "id": "11:21875",
+      "name": "HEADER",
+      "area": 1050372
+    },
+    {
+      "id": "11:21899",
+      "name": "TEXT Component",
+      "area": 1050372
+    },
+    {
+      "id": "11:21900",
+      "name": "LINK",
+      "area": 1050372
+    },
+    {
+      "id": "11:21901",
+      "name": "TEXT",
+      "area": 1050372
+    },
+    {
+      "id": "11:21924",
+      "name": "Experiencefragment 1e665009ef",
+      "area": 1050372
+    },
+    {
+      "id": "11:21988",
+      "name": "Conditionalwrapper Track",
+      "area": 1050372
+    }
+  ],
+  "warnings": [
+    "Found 558 nodes outside expected viewport bounds",
+    "No image nodes detected in import"
+  ]
+}

@@ -1,0 +1,69 @@
+{
+  "nodeCount": 8985,
+  "nodeTypes": {
+    "FRAME": 7497,
+    "RECTANGLE": 114,
+    "TEXT": 927,
+    "VECTOR": 427,
+    "GROUP": 20
+  },
+  "textNodes": 927,
+  "imageNodes": 7,
+  "zeroSizedNodes": 0,
+  "outOfBoundsNodes": 1237,
+  "largestNodes": [
+    {
+      "id": "75:22489",
+      "name": "html (Chunked)",
+      "area": 22586688
+    },
+    {
+      "id": "75:22490",
+      "name": "Chunk 1 of 1",
+      "area": 22586688
+    },
+    {
+      "id": "75:22491",
+      "name": "body",
+      "area": 22390623
+    },
+    {
+      "id": "75:22492",
+      "name": "ytd-app",
+      "area": 22390623
+    },
+    {
+      "id": "75:22496",
+      "name": "Microformat",
+      "area": 22390623
+    },
+    {
+      "id": "75:22497",
+      "name": "Full Bleed Container",
+      "area": 22390623
+    },
+    {
+      "id": "75:22498",
+      "name": "Player Full Bleed Container",
+      "area": 22390623
+    },
+    {
+      "id": "75:22499",
+      "name": "Player Container Background",
+      "area": 22390623
+    },
+    {
+      "id": "75:22500",
+      "name": "ytd-thumbnail",
+      "area": 22390623
+    },
+    {
+      "id": "75:22501",
+      "name": "a",
+      "area": 22390623
+    }
+  ],
+  "warnings": [
+    "Found 1237 nodes outside expected viewport bounds"
+  ]
+}

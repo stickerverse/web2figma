@@ -1,0 +1,357 @@
+{
+  "clusters": [
+    {
+      "id": 2,
+      "bbox": {
+        "x": 733,
+        "y": 30,
+        "width": 2137,
+        "height": 1508
+      },
+      "pixel_count": 1004122,
+      "diff_mean": 27.95314598083496,
+      "diff_max": 433.6277160644531,
+      "diff_std": 70.79805755615234,
+      "gap_type": "MISSING_DETAIL",
+      "schema_matches": [],
+      "has_schema_node": false
+    },
+    {
+      "id": 9,
+      "bbox": {
+        "x": 49,
+        "y": 350,
+        "width": 374,
+        "height": 383
+      },
+      "pixel_count": 28160,
+      "diff_mean": 50.86909484863281,
+      "diff_max": 396.0631408691406,
+      "diff_std": 116.58416748046875,
+      "gap_type": "MISSING_DETAIL",
+      "schema_matches": [],
+      "has_schema_node": false
+    },
+    {
+      "id": 16,
+      "bbox": {
+        "x": 1356,
+        "y": 1384,
+        "width": 804,
+        "height": 109
+      },
+      "pixel_count": 40745,
+      "diff_mean": 32.853511810302734,
+      "diff_max": 256.9688720703125,
+      "diff_std": 65.72760009765625,
+      "gap_type": "MISSING_ELEMENT",
+      "schema_matches": [],
+      "has_schema_node": false
+    },
+    {
+      "id": 13,
+      "bbox": {
+        "x": 1949,
+        "y": 864,
+        "width": 220,
+        "height": 56
+      },
+      "pixel_count": 12212,
+      "diff_mean": 58.54996871948242,
+      "diff_max": 395.4883117675781,
+      "diff_std": 63.88794708251953,
+      "gap_type": "MISSING_ELEMENT",
+      "schema_matches": [],
+      "has_schema_node": false
+    },
+    {
+      "id": 15,
+      "bbox": {
+        "x": 1949,
+        "y": 1126,
+        "width": 220,
+        "height": 56
+      },
+      "pixel_count": 12212,
+      "diff_mean": 58.54996871948242,
+      "diff_max": 395.4883117675781,
+      "diff_std": 63.88794708251953,
+      "gap_type": "MISSING_ELEMENT",
+      "schema_matches": [],
+      "has_schema_node": false
+    },
+    {
+      "id": 21,
+      "bbox": {
+        "x": 672,
+        "y": 1577,
+        "width": 2198,
+        "height": 2
+      },
+      "pixel_count": 4396,
+      "diff_mean": 111.53923034667969,
+      "diff_max": 111.53923034667969,
+      "diff_std": 0.0,
+      "gap_type": "MISSING_BACKGROUND",
+      "schema_matches": [],
+      "has_schema_node": false
+    },
+    {
+      "id": 7,
+      "bbox": {
+        "x": 48,
+        "y": 192,
+        "width": 218,
+        "height": 34
+      },
+      "pixel_count": 3240,
+      "diff_mean": 131.80691528320312,
+      "diff_max": 396.0631408691406,
+      "diff_std": 170.2494659423828,
+      "gap_type": "MISSING_DETAIL",
+      "schema_matches": [],
+      "has_schema_node": false
+    },
+    {
+      "id": 5,
+      "bbox": {
+        "x": 213,
+        "y": 52,
+        "width": 145,
+        "height": 28
+      },
+      "pixel_count": 2172,
+      "diff_mean": 166.57241821289062,
+      "diff_max": 418.02392578125,
+      "diff_std": 183.7960968017578,
+      "gap_type": "MISSING_DETAIL",
+      "schema_matches": [],
+      "has_schema_node": false
+    },
+    {
+      "id": 17,
+      "bbox": {
+        "x": 2193,
+        "y": 1384,
+        "width": 183,
+        "height": 36
+      },
+      "pixel_count": 6409,
+      "diff_mean": 43.50808334350586,
+      "diff_max": 256.4410400390625,
+      "diff_std": 58.95702362060547,
+      "gap_type": "STYLE_MISMATCH",
+      "schema_matches": [],
+      "has_schema_node": false
+    },
+    {
+      "id": 3,
+      "bbox": {
+        "x": 122,
+        "y": 34,
+        "width": 60,
+        "height": 58
+      },
+      "pixel_count": 1576,
+      "diff_mean": 176.86727905273438,
+      "diff_max": 418.011962890625,
+      "diff_std": 199.59095764160156,
+      "gap_type": "MISSING_ELEMENT",
+      "schema_matches": [],
+      "has_schema_node": false
+    },
+    {
+      "id": 18,
+      "bbox": {
+        "x": 770,
+        "y": 1419,
+        "width": 305,
+        "height": 61
+      },
+      "pixel_count": 3613,
+      "diff_mean": 39.43981170654297,
+      "diff_max": 256.9688720703125,
+      "diff_std": 84.44275665283203,
+      "gap_type": "MISSING_ELEMENT",
+      "schema_matches": [],
+      "has_schema_node": false
+    },
+    {
+      "id": 8,
+      "bbox": {
+        "x": 76,
+        "y": 268,
+        "width": 233,
+        "height": 28
+      },
+      "pixel_count": 1861,
+      "diff_mean": 49.6766471862793,
+      "diff_max": 217.08523559570312,
+      "diff_std": 84.80089569091797,
+      "gap_type": "MISSING_DETAIL",
+      "schema_matches": [],
+      "has_schema_node": false
+    },
+    {
+      "id": 12,
+      "bbox": {
+        "x": 49,
+        "y": 775,
+        "width": 124,
+        "height": 24
+      },
+      "pixel_count": 1266,
+      "diff_mean": 71.150146484375,
+      "diff_max": 234.4312286376953,
+      "diff_std": 93.5805435180664,
+      "gap_type": "MISSING_DETAIL",
+      "schema_matches": [],
+      "has_schema_node": false
+    },
+    {
+      "id": 11,
+      "bbox": {
+        "x": 1896,
+        "y": 502,
+        "width": 175,
+        "height": 23
+      },
+      "pixel_count": 1246,
+      "diff_mean": 58.134098052978516,
+      "diff_max": 234.4312286376953,
+      "diff_std": 92.59093475341797,
+      "gap_type": "MISSING_ELEMENT",
+      "schema_matches": [],
+      "has_schema_node": false
+    },
+    {
+      "id": 0,
+      "bbox": {
+        "x": 8,
+        "y": 0,
+        "width": 2,
+        "height": 544
+      },
+      "pixel_count": 1084,
+      "diff_mean": 66.25616455078125,
+      "diff_max": 78.14729309082031,
+      "diff_std": 7.528149127960205,
+      "gap_type": "STYLE_MISMATCH",
+      "schema_matches": [],
+      "has_schema_node": false
+    },
+    {
+      "id": 6,
+      "bbox": {
+        "x": 494,
+        "y": 176,
+        "width": 129,
+        "height": 56
+      },
+      "pixel_count": 1206,
+      "diff_mean": 40.53275680541992,
+      "diff_max": 321.6239929199219,
+      "diff_std": 99.36538696289062,
+      "gap_type": "MISSING_DETAIL",
+      "schema_matches": [],
+      "has_schema_node": false
+    },
+    {
+      "id": 1,
+      "bbox": {
+        "x": 48,
+        "y": 0,
+        "width": 16,
+        "height": 12
+      },
+      "pixel_count": 172,
+      "diff_mean": 242.2012939453125,
+      "diff_max": 287.0627136230469,
+      "diff_std": 93.98892974853516,
+      "gap_type": "STYLE_MISMATCH",
+      "schema_matches": [],
+      "has_schema_node": false
+    },
+    {
+      "id": 19,
+      "bbox": {
+        "x": 1242,
+        "y": 1433,
+        "width": 80,
+        "height": 24
+      },
+      "pixel_count": 610,
+      "diff_mean": 65.32781219482422,
+      "diff_max": 256.9688720703125,
+      "diff_std": 101.9065170288086,
+      "gap_type": "MISSING_ELEMENT",
+      "schema_matches": [],
+      "has_schema_node": false
+    },
+    {
+      "id": 20,
+      "bbox": {
+        "x": 1139,
+        "y": 1434,
+        "width": 69,
+        "height": 19
+      },
+      "pixel_count": 499,
+      "diff_mean": 77.97477722167969,
+      "diff_max": 256.9688720703125,
+      "diff_std": 107.3902359008789,
+      "gap_type": "MISSING_ELEMENT",
+      "schema_matches": [],
+      "has_schema_node": false
+    },
+    {
+      "id": 10,
+      "bbox": {
+        "x": 2137,
+        "y": 500,
+        "width": 32,
+        "height": 28
+      },
+      "pixel_count": 363,
+      "diff_mean": 77.41259002685547,
+      "diff_max": 234.4312286376953,
+      "diff_std": 100.68289947509766,
+      "gap_type": "MISSING_ELEMENT",
+      "schema_matches": [],
+      "has_schema_node": false
+    },
+    {
+      "id": 4,
+      "bbox": {
+        "x": 50,
+        "y": 52,
+        "width": 28,
+        "height": 23
+      },
+      "pixel_count": 252,
+      "diff_mean": 99.01405334472656,
+      "diff_max": 256.9688720703125,
+      "diff_std": 122.9314956665039,
+      "gap_type": "MISSING_ELEMENT",
+      "schema_matches": [],
+      "has_schema_node": false
+    },
+    {
+      "id": 14,
+      "bbox": {
+        "x": 0,
+        "y": 1028,
+        "width": 670,
+        "height": 836
+      },
+      "pixel_count": 3008,
+      "diff_mean": 1.3327876329421997,
+      "diff_max": 62.96824645996094,
+      "diff_std": 4.528958797454834,
+      "gap_type": "MISSING_BACKGROUND",
+      "schema_matches": [],
+      "has_schema_node": false
+    }
+  ],
+  "total_found": 22
+}

@@ -674,15 +674,20 @@ function getSelectedViewports(): ViewportSelection[] {
   const tablet = document.getElementById('viewport-tablet') as HTMLInputElement;
   const desktop = document.getElementById('viewport-desktop') as HTMLInputElement;
 
-  if (mobile?.checked) {
-    viewports.push({ name: 'Mobile', width: 375, height: 812, deviceScaleFactor: 2 });
-  }
-  if (tablet?.checked) {
-    viewports.push({ name: 'Tablet', width: 768, height: 1024, deviceScaleFactor: 2 });
-  }
+  // DESKTOP FIRST (Requirement 1)
   if (desktop?.checked) {
     // Use dynamic desktop size detection - let content script auto-detect the actual screen size
     viewports.push({ name: 'Desktop' }); // No hardcoded dimensions - content script will detect them
+  }
+
+  // TABLET SECOND (Requirement 2)
+  if (tablet?.checked) {
+    viewports.push({ name: 'Tablet', width: 768, height: 1024, deviceScaleFactor: 2 });
+  }
+
+  // MOBILE THIRD (Requirement 3)
+  if (mobile?.checked) {
+    viewports.push({ name: 'Mobile', width: 375, height: 812, deviceScaleFactor: 2 });
   }
 
   return viewports;
@@ -745,6 +750,17 @@ async function resolveCaptureTabId(targetUrlRaw: string): Promise<number> {
   const trimmed = targetUrlRaw.trim();
   
   try {
+    // 1. Check for tabId in URL parameter (used for automation)
+    const urlParams = new URLSearchParams(window.location.search);
+    const forcedTabId = urlParams.get('tabId');
+    if (forcedTabId) {
+      const tid = parseInt(forcedTabId, 10);
+      if (!isNaN(tid)) {
+        console.log(`🤖 [AUTOMATION] Using forced tabId from URL: ${tid}`);
+        return tid;
+      }
+    }
+
     const activeTab = await getActiveContentTab();
 
     if (trimmed) {
@@ -1100,20 +1116,20 @@ function updateDesktopViewportLabel() {
   chrome.tabs.query({active: true, currentWindow: true}, (tabs) => {
     if (tabs[0]) {
       // Execute script in the current tab to get screen dimensions
-      chrome.tabs.executeScript(tabs[0].id!, {
-        code: `
+      chrome.scripting.executeScript({
+        target: { tabId: tabs[0].id! },
+        func: () => {
           const screenWidth = screen.width;
           const screenHeight = screen.height;
           const viewportWidth = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
           const viewportHeight = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
           const devicePixelRatio = window.devicePixelRatio || 1;
           
-          // Send back the detected dimensions
-          ({screenWidth, screenHeight, viewportWidth, viewportHeight, devicePixelRatio});
-        `
-      }, (result) => {
-        if (result && result[0]) {
-          const { screenWidth, screenHeight, viewportWidth, viewportHeight } = result[0];
+          return {screenWidth, screenHeight, viewportWidth, viewportHeight, devicePixelRatio};
+        }
+      }, (results) => {
+        if (results && results[0] && results[0].result) {
+          const { screenWidth, screenHeight, viewportWidth, viewportHeight } = results[0].result;
           const displayWidth = screenWidth || viewportWidth || 1440;
           const displayHeight = screenHeight || viewportHeight || 900;
           desktopLabel.textContent = `💻 Desktop (${displayWidth}×${displayHeight})`;
@@ -1123,9 +1139,23 @@ function updateDesktopViewportLabel() {
   });
 }
 
+// Auto-fill URL from query parameter (for automation)
+function autoFillUrlFromQueryParam() {
+  const urlParams = new URLSearchParams(window.location.search);
+  const urlParam = urlParams.get('url');
+  if (urlParam && targetUrlInput) {
+    console.log(`🤖 [AUTOMATION] Auto-filling URL: ${urlParam}`);
+    targetUrlInput.value = urlParam;
+  }
+}
+
 // Initialize the popup when DOM content is loaded
 if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', updateDesktopViewportLabel);
+  document.addEventListener('DOMContentLoaded', () => {
+    autoFillUrlFromQueryParam();
+    updateDesktopViewportLabel();
+  });
 } else {
+  autoFillUrlFromQueryParam();
   updateDesktopViewportLabel();
 }

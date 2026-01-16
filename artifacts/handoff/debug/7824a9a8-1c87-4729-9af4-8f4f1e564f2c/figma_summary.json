@@ -1,0 +1,70 @@
+{
+  "nodeCount": 1079,
+  "nodeTypes": {
+    "FRAME": 799,
+    "GROUP": 1,
+    "VECTOR": 4,
+    "TEXT": 253,
+    "RECTANGLE": 22
+  },
+  "textNodes": 253,
+  "imageNodes": 0,
+  "zeroSizedNodes": 0,
+  "outOfBoundsNodes": 39,
+  "largestNodes": [
+    {
+      "id": "73:13201",
+      "name": "LINK",
+      "area": 5061667.96875
+    },
+    {
+      "id": "73:13878",
+      "name": "Search Bar Suggestions",
+      "area": 5061500
+    },
+    {
+      "id": "73:13202",
+      "name": "TEXT",
+      "area": 4909655
+    },
+    {
+      "id": "73:13205",
+      "name": "HEADER",
+      "area": 4909655
+    },
+    {
+      "id": "73:13206",
+      "name": "NAVIGATION",
+      "area": 4909655
+    },
+    {
+      "id": "73:13207",
+      "name": "NAVIGATION",
+      "area": 4909655
+    },
+    {
+      "id": "73:13755",
+      "name": "li",
+      "area": 4909655
+    },
+    {
+      "id": "73:13780",
+      "name": "li",
+      "area": 4909655
+    },
+    {
+      "id": "73:13807",
+      "name": "li",
+      "area": 4909655
+    },
+    {
+      "id": "73:13824",
+      "name": "li",
+      "area": 4909655
+    }
+  ],
+  "warnings": [
+    "Found 39 nodes outside expected viewport bounds",
+    "No image nodes detected in import"
+  ]
+}

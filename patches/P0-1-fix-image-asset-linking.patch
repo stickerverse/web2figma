@@ -1,0 +1,28 @@
+diff --git a/chrome-extension/src/utils/dom-extractor.ts b/chrome-extension/src/utils/dom-extractor.ts
+index XXXXXXX..YYYYYYY 100644
+--- a/chrome-extension/src/utils/dom-extractor.ts
++++ b/chrome-extension/src/utils/dom-extractor.ts
+@@ -8711,6 +8711,7 @@ export class DOMExtractor {
+     if (imageUrl && ExtractionValidation.isValidUrl(imageUrl)) {
+       await this.captureImageSafe(imageUrl, img);
+       const key = this.hashString(imageUrl);
++      const assetId = `img_${key}`;  // CRITICAL FIX: Match assets.images key format (has "img_" prefix)
+ 
+       const naturalWidth = ExtractionValidation.safeParseFloat(
+         img.naturalWidth || img.width,
+@@ -8824,11 +8825,12 @@ export class DOMExtractor {
+       node.fills = [
+         {
+           type: "IMAGE",
+-          imageHash: key,
++          imageHash: assetId,  // CHANGED: Use prefixed assetId instead of raw key
+           scaleMode: scaleMode,
+           visible: true,
+         },
+       ];
+-      node.imageHash = key;
++      node.imageHash = assetId;      // CHANGED: Use prefixed assetId
++      node.imageAssetId = assetId;   // NEW: Add imageAssetId for Figma plugin compatibility
+       // CRITICAL: Add component abstraction for Image elements (Builder.io compatibility)
+       // This simplifies the schema by using a component system for common elements
+       node.component = {

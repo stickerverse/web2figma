@@ -1,0 +1,69 @@
+{
+  "nodeCount": 448,
+  "nodeTypes": {
+    "FRAME": 336,
+    "TEXT": 83,
+    "RECTANGLE": 16,
+    "VECTOR": 13
+  },
+  "textNodes": 83,
+  "imageNodes": 0,
+  "zeroSizedNodes": 0,
+  "outOfBoundsNodes": 448,
+  "largestNodes": [
+    {
+      "id": "43:934",
+      "name": "Gallery Thumbs",
+      "area": 5937258
+    },
+    {
+      "id": "43:1050",
+      "name": "Accordion",
+      "area": 4150599
+    },
+    {
+      "id": "43:898",
+      "name": "Import 08:11:11 PM",
+      "area": 4036027.5
+    },
+    {
+      "id": "43:901",
+      "name": "Page",
+      "area": 3999855
+    },
+    {
+      "id": "43:930",
+      "name": "Gallery Image Holder",
+      "area": 3999855
+    },
+    {
+      "id": "43:981",
+      "name": "Gallery Thumbs Nav",
+      "area": 3999855
+    },
+    {
+      "id": "43:1054",
+      "name": "Accordion Content",
+      "area": 3999855
+    },
+    {
+      "id": "43:1066",
+      "name": "Accordion Content",
+      "area": 3999855
+    },
+    {
+      "id": "43:1076",
+      "name": "Accordion Content",
+      "area": 3999855
+    },
+    {
+      "id": "43:1329",
+      "name": "Container",
+      "area": 3999855
+    }
+  ],
+  "warnings": [
+    "Found 448 nodes outside expected viewport bounds",
+    "No image nodes detected in import"
+  ]
+}

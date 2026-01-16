@@ -1,0 +1,226 @@
+{
+  "stats": {
+    "totalNodes": 1,
+    "nodesByTag": {},
+    "nodesByType": {},
+    "nodesWithImages": 0,
+    "nodesWithText": 0,
+    "nodesWithBackground": 0,
+    "nodesWithBorder": 0,
+    "rasterized": 0,
+    "hidden": 0,
+    "positioned": 0
+  },
+  "gap_analysis": [
+    {
+      "cluster_id": 2,
+      "gap_type": "MISSING_DETAIL",
+      "bbox": {
+        "x": 733,
+        "y": 30,
+        "width": 2137,
+        "height": 1508
+      },
+      "impact": 28068368.848567963,
+      "schema_nodes_found": 0,
+      "nodes_summary": {
+        "total": 0,
+        "with_text": 0,
+        "with_image": 0,
+        "with_background": 0,
+        "tags": [],
+        "types": []
+      },
+      "sample_nodes": []
+    },
+    {
+      "cluster_id": 9,
+      "gap_type": "MISSING_DETAIL",
+      "bbox": {
+        "x": 49,
+        "y": 350,
+        "width": 374,
+        "height": 383
+      },
+      "impact": 1432473.7109375,
+      "schema_nodes_found": 0,
+      "nodes_summary": {
+        "total": 0,
+        "with_text": 0,
+        "with_image": 0,
+        "with_background": 0,
+        "tags": [],
+        "types": []
+      },
+      "sample_nodes": []
+    },
+    {
+      "cluster_id": 16,
+      "gap_type": "MISSING_ELEMENT",
+      "bbox": {
+        "x": 1356,
+        "y": 1384,
+        "width": 804,
+        "height": 109
+      },
+      "impact": 1338616.338710785,
+      "schema_nodes_found": 0,
+      "nodes_summary": {
+        "total": 0,
+        "with_text": 0,
+        "with_image": 0,
+        "with_background": 0,
+        "tags": [],
+        "types": []
+      },
+      "sample_nodes": []
+    },
+    {
+      "cluster_id": 13,
+      "gap_type": "MISSING_ELEMENT",
+      "bbox": {
+        "x": 1949,
+        "y": 864,
+        "width": 220,
+        "height": 56
+      },
+      "impact": 715012.2180023193,
+      "schema_nodes_found": 0,
+      "nodes_summary": {
+        "total": 0,
+        "with_text": 0,
+        "with_image": 0,
+        "with_background": 0,
+        "tags": [],
+        "types": []
+      },
+      "sample_nodes": []
+    },
+    {
+      "cluster_id": 15,
+      "gap_type": "MISSING_ELEMENT",
+      "bbox": {
+        "x": 1949,
+        "y": 1126,
+        "width": 220,
+        "height": 56
+      },
+      "impact": 715012.2180023193,
+      "schema_nodes_found": 0,
+      "nodes_summary": {
+        "total": 0,
+        "with_text": 0,
+        "with_image": 0,
+        "with_background": 0,
+        "tags": [],
+        "types": []
+      },
+      "sample_nodes": []
+    },
+    {
+      "cluster_id": 21,
+      "gap_type": "MISSING_BACKGROUND",
+      "bbox": {
+        "x": 672,
+        "y": 1577,
+        "width": 2198,
+        "height": 2
+      },
+      "impact": 490326.4566040039,
+      "schema_nodes_found": 0,
+      "nodes_summary": {
+        "total": 0,
+        "with_text": 0,
+        "with_image": 0,
+        "with_background": 0,
+        "tags": [],
+        "types": []
+      },
+      "sample_nodes": []
+    },
+    {
+      "cluster_id": 7,
+      "gap_type": "MISSING_DETAIL",
+      "bbox": {
+        "x": 48,
+        "y": 192,
+        "width": 218,
+        "height": 34
+      },
+      "impact": 427054.4055175781,
+      "schema_nodes_found": 0,
+      "nodes_summary": {
+        "total": 0,
+        "with_text": 0,
+        "with_image": 0,
+        "with_background": 0,
+        "tags": [],
+        "types": []
+      },
+      "sample_nodes": []
+    },
+    {
+      "cluster_id": 5,
+      "gap_type": "MISSING_DETAIL",
+      "bbox": {
+        "x": 213,
+        "y": 52,
+        "width": 145,
+        "height": 28
+      },
+      "impact": 361795.29235839844,
+      "schema_nodes_found": 0,
+      "nodes_summary": {
+        "total": 0,
+        "with_text": 0,
+        "with_image": 0,
+        "with_background": 0,
+        "tags": [],
+        "types": []
+      },
+      "sample_nodes": []
+    },
+    {
+      "cluster_id": 17,
+      "gap_type": "STYLE_MISMATCH",
+      "bbox": {
+        "x": 2193,
+        "y": 1384,
+        "width": 183,
+        "height": 36
+      },
+      "impact": 278843.30614852905,
+      "schema_nodes_found": 0,
+      "nodes_summary": {
+        "total": 0,
+        "with_text": 0,
+        "with_image": 0,
+        "with_background": 0,
+        "tags": [],
+        "types": []
+      },
+      "sample_nodes": []
+    },
+    {
+      "cluster_id": 3,
+      "gap_type": "MISSING_ELEMENT",
+      "bbox": {
+        "x": 122,
+        "y": 34,
+        "width": 60,
+        "height": 58
+      },
+      "impact": 278742.8317871094,
+      "schema_nodes_found": 0,
+      "nodes_summary": {
+        "total": 0,
+        "with_text": 0,
+        "with_image": 0,
+        "with_background": 0,
+        "tags": [],
+        "types": []
+      },
+      "sample_nodes": []
+    }
+  ]
+}

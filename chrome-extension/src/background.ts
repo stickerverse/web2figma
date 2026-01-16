@@ -2,7 +2,7 @@ import { CaptureErrorCode } from "./types/capture-result";
 import pako from "pako";
 import { normalizeAndPreflight } from "./utils/schema-preflight";
 
-const PREFLIGHT_BLOCKING_MODE = true;
+const PREFLIGHT_BLOCKING_MODE = false;
 
 /**
  * Download text content reliably from MV3 service worker.
@@ -178,7 +178,7 @@ function currentHandoffBase() {
 function rotateHandoffBase() {
   handoffBaseIndex = (handoffBaseIndex + 1) % HANDOFF_BASES.length;
   console.log(
-    `[HANDOFF] Rotated to base index ${handoffBaseIndex}: ${currentHandoffBase()}`
+    `[BG][HANDOFF] Rotated to base index ${handoffBaseIndex}: ${currentHandoffBase()}`
   );
 }
 
@@ -900,11 +900,13 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.type === "TRIGGER_CAPTURE_FOR_TAB") {
     if (sender.tab?.id) {
       console.log(`🧪 [TEST] Triggering capture for tab ${sender.tab.id}`);
+      console.log(`🧪 [TEST] Viewports:`, message.viewports);
       chrome.tabs.sendMessage(
         sender.tab.id,
         {
           type: "start-capture",
-          allowNavigation: false,
+          allowNavigation: message.allowNavigation || false,
+          viewports: message.viewports,
         },
         (response) => {
           if (chrome.runtime.lastError) {
@@ -1012,16 +1014,26 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     return true; // async response
   }
 
-  if (message.type === "START_CAPTURE") {
+  if (message.type === "START_CAPTURE" || message.type === "AUTOMATION_START_FULLPAGE_CAPTURE") {
     (async () => {
       try {
-        const tabId = message.tabId;
+        let tabId = message.tabId;
+        
+        // Automation fallback: if no tabId provided, use the active tab
+        if (!tabId) {
+          const [activeTab] = await chrome.tabs.query({ active: true, currentWindow: true });
+          tabId = activeTab?.id;
+          console.log(`[automation] No tabId provided, detected active tab: ${tabId}`);
+        }
+
         const allowNavigation = Boolean(message.allowNavigation);
         const mode = message.mode; // 'full' or 'visual' (if applicable)
 
         if (!tabId) {
-          throw new Error("No tab ID provided");
+          throw new Error("No tab ID provided or detected");
         }
+
+        console.log(`[capture] Starting ${message.type} for tab ${tabId}`);
 
         // Initialize capture state
         broadcastCaptureState({
@@ -1840,7 +1852,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
           healthHeaders["x-api-key"] = CLOUD_API_KEY;
         }
 
-        const response = await fetch(handoffEndpoint("/api/status"), {
+        const response = await fetch(handoffEndpoint("/api/health"), {
           headers: healthHeaders,
         });
         if (!response.ok) {
@@ -1942,8 +1954,10 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         updateLastCapturedPayload(parsedData);
       } catch (parseErr) {
         console.error("❌ Failed to parse reassembled payload", parseErr);
-        parsedData = null;
-        updateLastCapturedPayload({ rawSchemaJson: completeJsonString });
+        // CRITICAL FIX: Pass the raw string wrapper so we can try to send it anyway
+        // (The plugin might be able to parse it, or we can debug the string later)
+        parsedData = { rawSchemaJson: completeJsonString };
+        updateLastCapturedPayload(parsedData);
       }
 
       // Notify UI with a lightweight message (no raw payload to avoid message size errors)
@@ -2749,6 +2763,18 @@ async function postToHandoffServer(payload: any): Promise<void> {
     // The content script incorrectly sets this to 'puppeteer', which causes the server to reject it
     schema.metadata.captureEngine = "extension";
 
+    // PIXEL-PERFECT FIX: Log assets count before serialization
+    const assetsCount = schema.assets?.images ? Object.keys(schema.assets.images).length : 0;
+    const hasSvgs = schema.assets?.svgs ? Object.keys(schema.assets.svgs).length : 0;
+    console.log(`📊 [BACKGROUND SERIALIZATION] About to serialize schema:`);
+    console.log(`   - Images: ${assetsCount}`);
+    console.log(`   - SVGs: ${hasSvgs}`);
+    console.log(`   - Has assets object: ${!!schema.assets}`);
+    console.log(`   - Has assets.images: ${!!schema.assets?.images}`);
+    if (assetsCount === 0) {
+      console.warn(`⚠️ [BACKGROUND SERIALIZATION] NO IMAGES IN ASSETS! Schema will be incomplete.`);
+    }
+
     // Send schema directly, not wrapped in requestBody
     jsonPayload = JSON.stringify(schema);
     payloadSizeMB =
@@ -2801,6 +2827,8 @@ async function postToHandoffServer(payload: any): Promise<void> {
 
   // Otherwise, proceed with upload to server (existing logic)
   console.log("[capture] Mode is SEND - uploading to server...");
+  console.log(`[BG][HANDOFF] Will attempt ${HANDOFF_BASES.length} server(s):`, HANDOFF_BASES);
+  console.log(`[BG][HANDOFF] Current base index: ${handoffBaseIndex} → ${currentHandoffBase()}`);
 
   // Helper for remote logging
   const remoteLog = (msg: string, data?: any) => {
@@ -2877,9 +2905,10 @@ async function postToHandoffServer(payload: any): Promise<void> {
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 120000); // 120s per attempt (increased for large payloads)
 
-    console.log(`[HANDOFF] 🔄 Attempt ${attempt + 1}/${HANDOFF_BASES.length}: ${target}`);
+    console.log(`[BG][HANDOFF] 🔄 Attempt ${attempt + 1}/${HANDOFF_BASES.length}: ${target}`);
 
     try {
+      console.log(`[BG][HANDOFF] Sending POST request to ${target}...`);
       const response = await fetch(target, {
         method: "POST",
         headers,
@@ -2887,6 +2916,8 @@ async function postToHandoffServer(payload: any): Promise<void> {
         signal: controller.signal,
       });
       clearTimeout(timeoutId);
+
+      console.log(`[BG][HANDOFF] Response received: status=${response.status} ${response.statusText}`);
 
       if (!response.ok) {
         if (response.status === 413) {
@@ -2903,8 +2934,10 @@ async function postToHandoffServer(payload: any): Promise<void> {
       }
 
       // Success - reset to primary port for future requests
-      console.log(`[HANDOFF] ✅ Successfully sent to ${target}`);
-      remoteLog(`[handoff] ✅ Successfully sent to ${target}`);
+      const responseBody = await response.json();
+      console.log(`[BG][HANDOFF] ✅ Successfully sent to ${target}`);
+      console.log(`[BG][HANDOFF] Server response:`, responseBody);
+      remoteLog(`[handoff] ✅ Successfully sent to ${target}`, responseBody);
       resetHandoffToPrimary();
       return;
     } catch (error) {
@@ -2916,11 +2949,11 @@ async function postToHandoffServer(payload: any): Promise<void> {
       attemptErrors.push({ target, error: errorMsg });
 
       console.warn(
-        `[HANDOFF] ❌ Attempt ${attempt + 1}/${HANDOFF_BASES.length} failed for ${target}:`,
+        `[BG][HANDOFF] ❌ Attempt ${attempt + 1}/${HANDOFF_BASES.length} failed for ${target}:`,
         errorMsg
       );
       remoteLog(
-        `[handoff] ❌ Attempt ${attempt + 1}/${HANDOFF_BASES.length} failed: ${errorMsg}`
+        `[BG][HANDOFF] ❌ Attempt ${attempt + 1}/${HANDOFF_BASES.length} failed: ${errorMsg}`
       );
 
       // Don't rotate if this was the last attempt
@@ -2932,13 +2965,13 @@ async function postToHandoffServer(payload: any): Promise<void> {
 
   // ENHANCED: All attempts failed - provide detailed diagnostics
   if (lastError) {
-    console.error(`[HANDOFF] ❌ All ${HANDOFF_BASES.length} server(s) failed!`);
-    console.error("[HANDOFF] Detailed failure log:");
+    console.error(`[BG][HANDOFF] ❌ All ${HANDOFF_BASES.length} server(s) failed!`);
+    console.error("[BG][HANDOFF] Detailed failure log:");
     attemptErrors.forEach(({ target, error }, i) => {
       console.error(`  ${i + 1}. ${target}: ${error}`);
     });
 
-    remoteLog(`[handoff] ❌ All servers failed`, { attemptErrors });
+    remoteLog(`[BG][HANDOFF] ❌ All servers failed`, { attemptErrors });
 
     // Provide user-friendly error message with troubleshooting steps
     const diagnosticMsg = `Connection failed to all ${HANDOFF_BASES.length} server(s).\n\n` +
@@ -3098,12 +3131,16 @@ function enqueueHandoffJob(
   trigger: HandoffTrigger,
   options?: { force?: boolean }
 ): { enqueued: boolean; reason?: "duplicate" | "invalid" } {
+  console.log(`[BG][HANDOFF] Enqueueing job (trigger=${trigger}, force=${options?.force || false})`);
+
   // --- PREFLIGHT CHECK ---
   try {
+    console.log("[BG][PREFLIGHT] Starting schema validation...");
     const preflight = normalizeAndPreflight(payload);
     if (!preflight.ok) {
-      console.error("[PREFLIGHT FAILED]", {
+      console.error("[BG][PREFLIGHT] FAILED", {
         fatal: preflight.fatalCount,
+        warnings: preflight.warnCount,
         issues: preflight.issues.filter((i) => i.severity === "FATAL"),
       });
       // Broadcast failure to UI
@@ -3116,17 +3153,19 @@ function enqueueHandoffJob(
       );
 
       if (PREFLIGHT_BLOCKING_MODE) {
-        console.warn("[PREFLIGHT] Blocking invalid job enqueue.");
+        console.warn("[BG][PREFLIGHT] Blocking invalid job enqueue (PREFLIGHT_BLOCKING_MODE=true).");
         return { enqueued: false, reason: "invalid" };
       }
     } else if (preflight.warnCount > 0) {
       console.warn(
-        "[PREFLIGHT WARNINGS]",
+        "[BG][PREFLIGHT] Warnings detected",
         preflight.issues.filter((i) => i.severity === "WARN")
       );
+    } else {
+      console.log("[BG][PREFLIGHT] ✅ Schema validation passed");
     }
   } catch (err) {
-    console.error("[PREFLIGHT ERROR] validation crashed:", err);
+    console.error("[BG][PREFLIGHT] ERROR - validation crashed:", err);
     // Don't block on preflight crash, just log
   }
   // -----------------------

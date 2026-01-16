@@ -1,0 +1,67 @@
+{
+  "nodeCount": 237,
+  "nodeTypes": {
+    "FRAME": 202,
+    "TEXT": 28,
+    "RECTANGLE": 7
+  },
+  "textNodes": 28,
+  "imageNodes": 7,
+  "zeroSizedNodes": 0,
+  "outOfBoundsNodes": 237,
+  "largestNodes": [
+    {
+      "id": "76:31589",
+      "name": "LINK",
+      "area": 2241000
+    },
+    {
+      "id": "76:31593",
+      "name": "LINK",
+      "area": 2173770
+    },
+    {
+      "id": "76:31594",
+      "name": "att-loader",
+      "area": 2173770
+    },
+    {
+      "id": "76:31739",
+      "name": "att-dialog",
+      "area": 2173770
+    },
+    {
+      "id": "76:31815",
+      "name": "toast-message",
+      "area": 2173770
+    },
+    {
+      "id": "76:31596",
+      "name": "App Content Shrink",
+      "area": 1838635
+    },
+    {
+      "id": "76:31597",
+      "name": "app-landing",
+      "area": 1823115
+    },
+    {
+      "id": "76:31598",
+      "name": "Background",
+      "area": 1823115
+    },
+    {
+      "id": "76:31607",
+      "name": "Main Container",
+      "area": 1312895
+    },
+    {
+      "id": "76:31608",
+      "name": "Main Content",
+      "area": 1312895
+    }
+  ],
+  "warnings": [
+    "Found 237 nodes outside expected viewport bounds"
+  ]
+}

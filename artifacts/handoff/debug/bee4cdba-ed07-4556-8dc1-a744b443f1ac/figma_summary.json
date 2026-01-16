@@ -1,0 +1,67 @@
+{
+  "nodeCount": 479,
+  "nodeTypes": {
+    "FRAME": 337,
+    "TEXT": 130,
+    "RECTANGLE": 12
+  },
+  "textNodes": 130,
+  "imageNodes": 11,
+  "zeroSizedNodes": 0,
+  "outOfBoundsNodes": 479,
+  "largestNodes": [
+    {
+      "id": "6:10833",
+      "name": "TEXT",
+      "area": 5249664
+    },
+    {
+      "id": "6:11021",
+      "name": "span",
+      "area": 5204094
+    },
+    {
+      "id": "6:11030",
+      "name": "Accordion Content",
+      "area": 5204094
+    },
+    {
+      "id": "6:11038",
+      "name": "ResultArea",
+      "area": 5204094
+    },
+    {
+      "id": "6:11085",
+      "name": "Flip Card Back",
+      "area": 5204094
+    },
+    {
+      "id": "6:11142",
+      "name": "span",
+      "area": 5204094
+    },
+    {
+      "id": "6:11151",
+      "name": "Accordion Content",
+      "area": 5204094
+    },
+    {
+      "id": "6:11242",
+      "name": "li",
+      "area": 5204094
+    },
+    {
+      "id": "6:10834",
+      "name": "TEXT",
+      "area": 4565145
+    },
+    {
+      "id": "6:10835",
+      "name": "MAIN",
+      "area": 4565145
+    }
+  ],
+  "warnings": [
+    "Found 479 nodes outside expected viewport bounds"
+  ]
+}

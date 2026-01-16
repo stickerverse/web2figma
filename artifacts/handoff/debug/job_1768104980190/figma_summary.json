@@ -1,0 +1,68 @@
+{
+  "nodeCount": 388,
+  "nodeTypes": {
+    "FRAME": 303,
+    "TEXT": 76,
+    "RECTANGLE": 9
+  },
+  "textNodes": 76,
+  "imageNodes": 0,
+  "zeroSizedNodes": 0,
+  "outOfBoundsNodes": 10,
+  "largestNodes": [
+    {
+      "id": "22:47",
+      "name": "D Flex",
+      "area": 1689892
+    },
+    {
+      "id": "22:13",
+      "name": "NAVIGATION",
+      "area": 1666756
+    },
+    {
+      "id": "22:29",
+      "name": "qbsearch-input",
+      "area": 1666756
+    },
+    {
+      "id": "22:48",
+      "name": "react-partial-anchor",
+      "area": 1666756
+    },
+    {
+      "id": "22:53",
+      "name": "react-partial-anchor",
+      "area": 1666756
+    },
+    {
+      "id": "22:2",
+      "name": "LINK",
+      "area": 1625408
+    },
+    {
+      "id": "22:3",
+      "name": "CARD",
+      "area": 1611428
+    },
+    {
+      "id": "22:7",
+      "name": "LINK",
+      "area": 1611428
+    },
+    {
+      "id": "22:8",
+      "name": "Container",
+      "area": 1611428
+    },
+    {
+      "id": "22:17",
+      "name": "react-partial",
+      "area": 1611428
+    }
+  ],
+  "warnings": [
+    "Found 10 nodes outside expected viewport bounds",
+    "No image nodes detected in import"
+  ]
+}

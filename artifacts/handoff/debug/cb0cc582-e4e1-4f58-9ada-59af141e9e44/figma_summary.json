@@ -1,0 +1,68 @@
+{
+  "nodeCount": 453,
+  "nodeTypes": {
+    "FRAME": 296,
+    "TEXT": 120,
+    "VECTOR": 16,
+    "RECTANGLE": 21
+  },
+  "textNodes": 120,
+  "imageNodes": 2,
+  "zeroSizedNodes": 0,
+  "outOfBoundsNodes": 453,
+  "largestNodes": [
+    {
+      "id": "98:2480",
+      "name": "Import 11:54:34 PM",
+      "area": 16548014
+    },
+    {
+      "id": "98:2487",
+      "name": "html",
+      "area": 16408818
+    },
+    {
+      "id": "98:2488",
+      "name": "body",
+      "area": 16408818
+    },
+    {
+      "id": "98:2489",
+      "name": "Gatsby",
+      "area": 16408818
+    },
+    {
+      "id": "98:2490",
+      "name": "Gatsby Focus Wrapper",
+      "area": 16408818
+    },
+    {
+      "id": "98:2491",
+      "name": "Global Grid PageWrapper",
+      "area": 16408818
+    },
+    {
+      "id": "98:2583",
+      "name": "picture",
+      "area": 16408818
+    },
+    {
+      "id": "98:2624",
+      "name": "picture",
+      "area": 16408818
+    },
+    {
+      "id": "98:2647",
+      "name": "picture",
+      "area": 16408818
+    },
+    {
+      "id": "98:2671",
+      "name": "picture",
+      "area": 16408818
+    }
+  ],
+  "warnings": [
+    "Found 453 nodes outside expected viewport bounds"
+  ]
+}

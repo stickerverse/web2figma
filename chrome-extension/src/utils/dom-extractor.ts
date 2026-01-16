@@ -328,6 +328,7 @@ async function probeImageUrlIntrinsicSize(
   if (cached) return cached;
 
   // data URLs can be huge; still ok but guard with a shorter timeout
+  // data URLs can be huge; still ok but guard with a shorter timeout
   // PERFORMANCE FIX: Reduced from 4000ms to 1000ms to prevent extraction timeouts
   const timeoutMs = url.startsWith("data:") ? 500 : 1000;
 
@@ -448,7 +449,8 @@ export class DOMExtractor {
   private currentCaptureId: string | null = null;
   private nodeId = 0;
   private extractionStartTime = 0;
-  private readonly MAX_EXTRACTION_TIME = 360000; // 360 seconds (6 minutes) for extremely complex pages
+  // CRITICAL FIX: Increased timeout to effectively disable it (24 hours)
+  private readonly MAX_EXTRACTION_TIME = 86400000;
   private lastYieldTime = 0;
   private computedStyleCache = new Map<Element, CSSStyleDeclaration>();
   private schemaInProgress: WebToFigmaSchema | null = null;
@@ -466,7 +468,7 @@ export class DOMExtractor {
 
   // PERFORMANCE CONFIGURATION - Emergency circuit breakers for timeouts
   private performanceConfig = {
-    maxNodesPerCapture: 75000, // Increased cap for YouTube/infinite feeds
+    maxNodesPerCapture: 200000, // Increased cap for YouTube/infinite feeds
     maxChildrenForValidation: 20, // Increased from 10 to allow better structure on complex sites
     maxValidationSamples: 5, // Only validate first 5 children for large containers to save time
     validationTimeoutMs: 100, // Max 100ms per validation
@@ -771,6 +773,9 @@ export class DOMExtractor {
       // Trigger viewport resize to fire resize handlers
       this.triggerResizeEvent();
 
+      // CRITICAL: Auto-scroll to trigger lazy loading (was previously missing)
+      await this.autoScrollPage();
+
       // Wait for animations and dynamic content to settle
       await this.waitForAnimationSettle();
 
@@ -790,51 +795,134 @@ export class DOMExtractor {
   /**
    * Auto-scroll through entire page to trigger lazy content
    */
+  /**
+   * Auto-scroll through entire page to trigger lazy content
+   * CRITICAL FIX: Smart detection of scroll container for sites where body is overflow:hidden
+   */
   private async autoScrollPage(): Promise<void> {
     console.log("📜 [AUTO-SCROLL] Starting auto-scroll...");
 
-    const viewportHeight = window.innerHeight;
-    const scrollStep = Math.floor(viewportHeight * 0.7); // 70% of viewport per step
-    
-    // Initial max height
+    // 1. Determine the scroll target
+    let scrollTarget: Element | Window = window;
     let maxScrollHeight = Math.max(
       document.body.scrollHeight,
       document.documentElement.scrollHeight
     );
-    
+    let viewHeight = window.innerHeight;
+
+    // Check if window/body is actually scrollable
+    const isBodyScrollable = maxScrollHeight > viewHeight + 50;
+
+    if (!isBodyScrollable) {
+      console.log(
+        "📜 [AUTO-SCROLL] Body not scrollable, searching for internal scroll container..."
+      );
+      // Search for the largest scrollable element
+      const candidates = Array.from(
+        document.querySelectorAll(
+          "div, main, section, article, [role='main'], ul, ol"
+        )
+      );
+      let bestCandidate: Element | null = null;
+      let maxArea = 0;
+
+      for (const el of candidates) {
+        // Must be visible
+        const rect = el.getBoundingClientRect();
+        if (rect.width === 0 || rect.height === 0) continue;
+
+        // Must be reasonably large (at least 30% of viewport area)
+        const area = rect.width * rect.height;
+        if (area < window.innerWidth * window.innerHeight * 0.3) continue;
+
+        // Must be scrollable
+        if (el.scrollHeight > el.clientHeight + 100) {
+          const style = window.getComputedStyle(el);
+          if (
+            ["auto", "scroll", "overlay"].includes(style.overflowY) ||
+            ["auto", "scroll", "overlay"].includes(style.overflow)
+          ) {
+            if (area > maxArea) {
+              maxArea = area;
+              bestCandidate = el;
+            }
+          }
+        }
+      }
+
+      if (bestCandidate) {
+        scrollTarget = bestCandidate;
+        maxScrollHeight = bestCandidate.scrollHeight;
+        viewHeight = bestCandidate.clientHeight;
+        console.log(
+          "📜 [AUTO-SCROLL] Found internal scroll container:",
+          bestCandidate
+        );
+      } else {
+        console.log(
+          "📜 [AUTO-SCROLL] No suitable internal container found, defaulting to window"
+        );
+      }
+    }
+
+    const scrollStep = Math.floor(viewHeight * 0.4); // Reduced to 40% for thorough capture
+
     // Dynamic iteration limit based on current height, will be updated if height grows
-    let maxIterations = Math.ceil(maxScrollHeight / scrollStep) + 20; // +20 buffer for infinite scroll
+    let maxIterations =
+      Math.ceil(maxScrollHeight / Math.max(1, scrollStep)) + 20;
 
     let currentScroll = 0;
     let iteration = 0;
 
     // Save original scroll position
-    const originalScrollX = window.pageXOffset;
-    const originalScrollY = window.pageYOffset;
+    const originalScrollX =
+      scrollTarget === window
+        ? window.pageXOffset
+        : (scrollTarget as Element).scrollLeft;
+    const originalScrollY =
+      scrollTarget === window
+        ? window.pageYOffset
+        : (scrollTarget as Element).scrollTop;
 
-    // Use a safety cutoff to prevent infinite loops (e.g. 500 steps)
-    const ABSOLUTE_MAX_ITERATIONS = 500;
+    // Use a safety cutoff to prevent infinite loops (Increased to 1000 steps)
+    const ABSOLUTE_MAX_ITERATIONS = 1000;
 
-    while (currentScroll < maxScrollHeight && iteration < maxIterations && iteration < ABSOLUTE_MAX_ITERATIONS) {
-      window.scrollTo({
-        top: currentScroll,
-        behavior: "instant", // Use instant for speed
-      });
+    while (
+      currentScroll < maxScrollHeight &&
+      iteration < maxIterations &&
+      iteration < ABSOLUTE_MAX_ITERATIONS
+    ) {
+      if (scrollTarget === window) {
+        window.scrollTo({
+          top: currentScroll,
+          behavior: "instant",
+        });
+      } else {
+        (scrollTarget as Element).scrollTop = currentScroll;
+      }
 
-      // Wait for lazy content to load - Increased to 500ms for better reliability
-      await this.wait(500);
+      // Wait for lazy content to load - 800ms ensures thorough capture of lazy-loaded elements
+      await this.wait(800);
 
       // Check if new content was added (infinite scroll detection)
-      const newMaxHeight = Math.max(
-        document.body.scrollHeight,
-        document.documentElement.scrollHeight
-      );
-      
+      let newMaxHeight = 0;
+      if (scrollTarget === window) {
+        newMaxHeight = Math.max(
+          document.body.scrollHeight,
+          document.documentElement.scrollHeight
+        );
+      } else {
+        newMaxHeight = (scrollTarget as Element).scrollHeight;
+      }
+
       if (newMaxHeight > maxScrollHeight) {
-          maxScrollHeight = newMaxHeight;
-          // Extend iterations if page grew
-          maxIterations = Math.ceil(maxScrollHeight / scrollStep) + 20; 
-          console.log(`📜 [AUTO-SCROLL] Page grew to ${maxScrollHeight}px, extending scroll...`);
+        maxScrollHeight = newMaxHeight;
+        // Extend iterations if page grew
+        maxIterations =
+          Math.ceil(maxScrollHeight / Math.max(1, scrollStep)) + 20;
+        console.log(
+          `📜 [AUTO-SCROLL] Page grew to ${maxScrollHeight}px, extending scroll...`
+        );
       }
 
       currentScroll += scrollStep;
@@ -851,12 +939,17 @@ export class DOMExtractor {
       }
     }
 
-    // Scroll back to original position (or top if we were at top)
-    window.scrollTo({
-      top: originalScrollY,
-      left: originalScrollX,
-      behavior: "instant",
-    });
+    // Scroll back to original position
+    if (scrollTarget === window) {
+      window.scrollTo({
+        top: originalScrollY,
+        left: originalScrollX,
+        behavior: "instant",
+      });
+    } else {
+      (scrollTarget as Element).scrollTop = originalScrollY;
+      (scrollTarget as Element).scrollLeft = originalScrollX;
+    }
 
     console.log(
       `📜 [AUTO-SCROLL] Complete: scrolled ${iteration} steps, max height: ${maxScrollHeight}px`
@@ -932,18 +1025,11 @@ export class DOMExtractor {
   // ============================================================================
 
   async extractPageToSchema(): Promise<WebToFigmaSchema> {
-    const extractionPromise = this.extractPageToSchemaInternal();
-
-    // Safety Net: Ensure we never hang indefinitely
-    // Note: MAX_EXTRACTION_TIME is 180s. We add a small buffer here or use it directly.
-    const timeoutPromise = new Promise<WebToFigmaSchema>((resolve) => {
-      setTimeout(() => {
-        resolve(this.returnPartialSchema("TIMEOUT_HARD_LIMIT_EXCEEDED"));
-      }, this.MAX_EXTRACTION_TIME + 2000); // 2s buffer over internal check
-    });
-
     try {
-      return await Promise.race([extractionPromise, timeoutPromise]);
+      // CRITICAL FIX: Removed timeout race condition as requested.
+      // The user wants to avoid "TIMEOUT_HARD_LIMIT_EXCEEDED" partial schemas.
+      // We will now wait indefinitely for the extraction to complete or fail naturally.
+      return await this.extractPageToSchemaInternal();
     } catch (e) {
       // Fallback for any uncaught errors in the extraction stack
       const msg = e instanceof Error ? e.message : String(e);
@@ -1973,7 +2059,7 @@ export class DOMExtractor {
         if (rootNode.htmlTag === "body" || rootNode.htmlTag === "html") {
           console.log("🔄 [SCHEMA] Clearing body/html backgrounds");
           // CRITICAL FIX: Enforce FRAME type for root node to satisfy strict importer validation
-          rootNode.type = "FRAME"; 
+          rootNode.type = "FRAME";
           const beforeFills = Array.isArray((rootNode as any).fills)
             ? (rootNode as any).fills.length
             : 0;
@@ -2093,6 +2179,7 @@ export class DOMExtractor {
       // Phase tracking: Process images
       this.performanceTracker.currentPhase = "processing_images";
       this.performanceTracker.phaseStartTime = Date.now();
+
       const imageResults = await this.processImagesBatch();
       const imageProcessingTime =
         Date.now() - this.performanceTracker.phaseStartTime;
@@ -2424,13 +2511,14 @@ export class DOMExtractor {
     depth: number = 0,
     parentAbsoluteLayout: { x: number; y: number } = { x: 0, y: 0 }
   ): Promise<ElementNode | null> {
-    // TIMEOUT CHECK
-    if (Date.now() - this.extractionStartTime > this.MAX_EXTRACTION_TIME) {
-      // Only log once (throttling could be added if needed, but throwing breaks the stack anyway)
-      const limitSec = Math.round(this.MAX_EXTRACTION_TIME / 1000);
-      console.error(`❌ [TIMEOUT] Auto-terminating extraction at ${limitSec}s`);
-      throw new Error(`DOM extraction timed out (limit: ${limitSec}s)`);
-    }
+    // TIMEOUT CHECK - DISABLED: MAX_EXTRACTION_TIME is set to 24 hours (effectively infinite)
+    // The content-script has its own 20-minute timeout which is the authoritative limit.
+    // Commenting out this check to prevent spurious "timed out" errors on complex pages.
+    // if (Date.now() - this.extractionStartTime > this.MAX_EXTRACTION_TIME) {
+    //   const limitSec = Math.round(this.MAX_EXTRACTION_TIME / 1000);
+    //   console.error(`❌ [TIMEOUT] Auto-terminating extraction at ${limitSec}s`);
+    //   throw new Error(`DOM extraction timed out (limit: ${limitSec}s)`);
+    // }
 
     // NODE CAP CHECK (prevents infinite DOM extraction on dynamic feeds)
     if (
@@ -2521,8 +2609,10 @@ export class DOMExtractor {
     parentAbsoluteLayout: { x: number; y: number } = { x: 0, y: 0 }
   ): Promise<ElementNode | null> {
     // Update current detail for heartbeat
-    const tagDisplay = element.tagName ? element.tagName.toLowerCase() : 'element';
-    const idDisplay = element.id ? `#${element.id}` : '';
+    const tagDisplay = element.tagName
+      ? element.tagName.toLowerCase()
+      : "element";
+    const idDisplay = element.id ? `#${element.id}` : "";
     this.performanceTracker.currentDetail = `${tagDisplay}${idDisplay}`;
 
     // Cooperative yielding: yield to event loop every N nodes
@@ -2539,10 +2629,13 @@ export class DOMExtractor {
         await new Promise((resolve) => setTimeout(resolve, 0));
         this.performanceTracker.lastYieldTime = Date.now();
       }
-      
+
       // Force progress update for granular feedback
       // Scale progress from 35% to 65% based on node count (assuming ~5000 nodes typical max)
-      const percent = Math.min(35 + Math.floor((this.performanceTracker.nodesProcessed / 5000) * 30), 65);
+      const percent = Math.min(
+        35 + Math.floor((this.performanceTracker.nodesProcessed / 5000) * 30),
+        65
+      );
       this.postProgress(
         `Extracting... (${this.performanceTracker.nodesProcessed} nodes)\n${this.performanceTracker.currentPhase}: ${this.performanceTracker.currentDetail}`,
         percent
@@ -2589,39 +2682,9 @@ export class DOMExtractor {
       return null;
     }
 
-    // ENHANCED: Improved visibility detection for positioned elements
-    // Check basic visibility rules but handle edge cases for fixed/sticky elements
-    // CRITICAL FIX: "visibility: hidden" parents can have "visibility: visible" children.
-    // Use deep check instead of shallow skip to prevent missing content.
-    const isHidden =
-      computed.display === "none" || computed.visibility === "hidden";
-    if (isHidden) {
-      // If display is none, it's truly gone.
-      if (computed.display === "none") {
-        this.diagnostics.skippedHidden++;
-        return null;
-      }
-      // If visibility is hidden, stick around ONLY if we have visible descendants
-      // CRITICAL FIX: Increase depth from 3 to 15 to catch deep content in wrappers
-      if (!this.hasVisiblePaintingDescendants(element, 15)) {
-        this.diagnostics.skippedHidden++;
-        return null;
-      }
-      // Otherwise continue! We are a hidden wrapper for visible content.
-    }
-
-    // CRITICAL FIX: Don't skip elements with zero opacity if they're positioned elements
-    // (they may be transition targets or interactive overlays)
-    const isPositioned =
-      computed.position === "fixed" ||
-      computed.position === "sticky" ||
-      computed.position === "absolute";
-    const hasZeroOpacity = computed.opacity === "0";
-
-    if (hasZeroOpacity && !isPositioned) {
-      this.diagnostics.skippedHidden++;
-      return null;
-    }
+    // REMOVED: Duplicate visibility checks (display:none, visibility:hidden, opacity:0)
+    // These are now handled by shouldIgnorePhantomContainer above.
+    // This eliminates redundant logic and the expensive hasVisiblePaintingDescendants call.
 
     // Get bounding rect safely
     const rect = element.getBoundingClientRect();
@@ -2942,7 +3005,7 @@ export class DOMExtractor {
       // Always mark them for rasterization to ensure visual fidelity
       _requiresRasterization:
         this.shouldRasterizeTransform(computed.transform, element) ||
-        element.tagName === 'SVG',
+        element.tagName === "SVG",
       // Extract z-index for layer ordering
       zIndex:
         computed.zIndex && computed.zIndex !== "auto"
@@ -2988,11 +3051,14 @@ export class DOMExtractor {
     };
 
     // Log SVG rasterization for debugging
-    if (element.tagName === 'SVG') {
-      const svgId = element.getAttribute('id') || element.getAttribute('class') || 'unnamed';
+    if (element.tagName === "SVG") {
+      const svgId =
+        element.getAttribute("id") ||
+        element.getAttribute("class") ||
+        "unnamed";
       console.log(
         `  🖼️ [SVG] Marked for rasterization: ${svgId} ` +
-        `(width: ${computed.width}, height: ${computed.height})`
+          `(width: ${computed.width}, height: ${computed.height})`
       );
     }
 
@@ -3188,10 +3254,10 @@ export class DOMExtractor {
     }
 
     // FINAL VALIDATION: Ensure critical properties are present for Figma importer
-    if (!node.type || typeof node.type !== 'string') {
-      node.type = 'FRAME';
+    if (!node.type || typeof node.type !== "string") {
+      node.type = "FRAME";
     }
-    if (!node.id || typeof node.id !== 'string') {
+    if (!node.id || typeof node.id !== "string") {
       node.id = `fallback_id_${Math.random().toString(36).substr(2, 9)}`;
     }
 
@@ -3824,10 +3890,27 @@ export class DOMExtractor {
     const paddingRight = this.parsePixelValue(computed.paddingRight);
     const paddingBottom = this.parsePixelValue(computed.paddingBottom);
 
-    const contentStartX = parentLayout.x + paddingLeft;
-    const contentStartY = parentLayout.y + paddingTop;
-    const contentWidth = parentLayout.width - paddingLeft - paddingRight;
-    const contentHeight = parentLayout.height - paddingTop - paddingBottom;
+    // CRITICAL FIX: Account for borders in content box calculation
+    // getBoundingClientRect includes borders, so we must subtract them to get content box
+    const borderTop = this.parsePixelValue(computed.borderTopWidth);
+    const borderLeft = this.parsePixelValue(computed.borderLeftWidth);
+    const borderRight = this.parsePixelValue(computed.borderRightWidth);
+    const borderBottom = this.parsePixelValue(computed.borderBottomWidth);
+
+    const contentStartX = parentLayout.x + paddingLeft + borderLeft;
+    const contentStartY = parentLayout.y + paddingTop + borderTop;
+    const contentWidth =
+      parentLayout.width -
+      paddingLeft -
+      paddingRight -
+      borderLeft -
+      borderRight;
+    const contentHeight =
+      parentLayout.height -
+      paddingTop -
+      paddingBottom -
+      borderTop -
+      borderBottom;
 
     const positions: Array<{
       x: number;
@@ -4109,16 +4192,22 @@ export class DOMExtractor {
   }> {
     try {
       // Parse data: URI format: data:[<mediatype>][;base64],<data>
-      const dataUriRegex = /^data:([^;]+)?(;base64)?,(.*)$/;
-      const match = dataUri.match(dataUriRegex);
-
-      if (!match) {
+      // More permissive regex to handle complex MIME types like "image/svg+xml;charset=utf-8"
+      const commaIndex = dataUri.indexOf(",");
+      if (commaIndex === -1 || !dataUri.startsWith("data:")) {
         return { success: false, error: "Invalid data: URI format" };
       }
 
-      const mimeType = match[1] || "text/plain";
-      const isBase64 = !!match[2];
-      const data = match[3];
+      const header = dataUri.substring(5, commaIndex); // Everything between "data:" and ","
+      const data = dataUri.substring(commaIndex + 1);
+
+      const isBase64 = header.endsWith(";base64");
+      const mimeType = isBase64
+        ? header.substring(0, header.length - 7) // Remove ";base64"
+        : header;
+
+      // Default to text/plain if no MIME type
+      const finalMimeType = mimeType || "text/plain";
 
       // Enforce size cap to prevent memory issues
       const maxDataUriSize = 2 * 1024 * 1024; // 2MB limit
@@ -4132,8 +4221,11 @@ export class DOMExtractor {
       }
 
       // Validate image MIME type
-      if (!mimeType.startsWith("image/")) {
-        return { success: false, error: `Not an image data URI: ${mimeType}` };
+      if (!finalMimeType.startsWith("image/")) {
+        return {
+          success: false,
+          error: `Not an image data URI: ${finalMimeType}`,
+        };
       }
 
       let base64Data: string;
@@ -4165,7 +4257,7 @@ export class DOMExtractor {
       return {
         success: true,
         base64: base64Data,
-        mimeType,
+        mimeType: finalMimeType,
       };
     } catch (error) {
       return {
@@ -4457,15 +4549,12 @@ export class DOMExtractor {
   private shouldIgnorePhantomContainer(element: Element): boolean {
     const tagName = element.tagName.toLowerCase();
 
-    // CRITICAL GUARD: NEVER skip document root elements - this would zero the entire tree
-    // This guard is the PRIMARY defense against root pruning regressions
+    // CRITICAL GUARD: NEVER skip document root elements
     if (tagName === "html" || tagName === "body") {
-      // ROOT_PRUNING_GUARD: Log if this guard was triggered to detect future regression attempts
       const computed = ExtractionValidation.safeGetComputedStyle(element);
       if (computed && this.doesNotPaint(computed)) {
         console.warn(
-          `🛡️ [ROOT_PRUNING_GUARD] Prevented pruning of <${tagName}> (doesNotPaint=true). ` +
-            `This should never happen - investigate why root has non-painting styles.`
+          `🛡️ [ROOT_PRUNING_GUARD] Prevented pruning of <${tagName}> (doesNotPaint=true).`
         );
       }
       return false;
@@ -4474,101 +4563,44 @@ export class DOMExtractor {
     const id = (element.id || "").toLowerCase();
     const className = this.getClassNameSafe(element).toLowerCase();
 
-    // 1. FAST PATH: Framework-specific hidden utilities (Next.js, Radix, etc.)
+    // 1. Skip our own overlay and other extension-injected elements
+    const name = (element as any).name || "";
+    const nodeName = element.nodeName?.toLowerCase() || "";
+
     if (
-      id === "__next-route-announcer__" ||
-      id === "webpack-dev-server-client-overlay" ||
-      id === "__next-build-watcher" ||
-      id === "__react-devtools-root__" ||
-      className.includes("route-announcer") ||
-      className.includes("visually-hidden") ||
-      className.includes("sr-only") ||
-      className.includes("a11y-hidden")
+      element.id === "web-to-figma-capture-overlay" ||
+      element.classList?.contains?.("web-to-figma-overlay") ||
+      id.includes("plasmo") ||
+      className.includes("plasmo") ||
+      name.toLowerCase().includes("plasmo") ||
+      nodeName.includes("plasmo") ||
+      id.includes("chrome-extension") ||
+      className.includes("chrome-extension") ||
+      tagName === "plasmo-csui" ||
+      (element as any).shadowRoot // Elements with shadow DOMs are often extension containers
     ) {
       return true;
     }
 
-    // CRITICAL FIX: Suppress extension notification window
-    // The user identified "Extraction acknowledged" purple window as noise
-    if (element.textContent?.includes("Extraction acknowledged")) {
-      // Double check it's small/overlay-like to avoid hiding body if it contains this text
-      const textLen = element.textContent.length;
-      if (textLen < 200) {
-        // Only skip if it's a short message/toast
-        return true;
-      }
-    }
-
-    // Get computed style for robust visibility checks
     const computed = ExtractionValidation.safeGetComputedStyle(element);
     if (!computed) return false;
 
-    // 2. UNIVERSAL NON-PAINTING CONDITIONS (no descendants can be visible either)
-    if (this.doesNotPaint(computed)) {
-      return true;
-    }
+    // 2. Skip ONLY universal non-painting: display:none, opacity:0
+    if (computed.display === "none") return true;
+    if (computed.opacity === "0") return true;
 
-    // 3. Get bounds for full-viewport detection
-    const rect = element.getBoundingClientRect();
-    const isFullViewportOverlay = this.isFullViewportOverlay(rect, computed);
-
-    // 4. CRITICAL RULE: Full-viewport + non-painting appearance + no visible paint
-    // These are overlay containers that block everything below
-    if (isFullViewportOverlay) {
-      const hasVisiblePaint = this.hasVisiblePaint(element, computed);
-      // CRITICAL FIX: Increase depth check from 3 to 15 to handle deep framework wrappers (React/Next.js)
-      // Shallow checks cause full-viewport app wrappers to be mistaken for empty overlays
-      const hasVisibleDescendants = this.hasVisiblePaintingDescendants(
-        element,
-        15
-      );
-
-      if (!hasVisiblePaint && !hasVisibleDescendants) {
-        // Full-viewport container that paints nothing and has no visible children
-        return true;
-      }
-    }
-
-    // 5. Empty containers (no children, no text) that don't paint
-    const isLeaf = [
-      "img",
-      "video",
-      "input",
-      "textarea",
-      "select",
-      "hr",
-      "svg",
-      "iframe",
-      "canvas",
-    ].includes(tagName);
-
-    if (
-      !isLeaf &&
-      element.childElementCount === 0 &&
-      !element.textContent?.trim()
-    ) {
-      const hasVisiblePaint = this.hasVisiblePaint(element, computed);
-      if (!hasVisiblePaint) {
-        return true;
-      }
-    }
-
-    // 6. Skip <noscript>
+    // 3. Skip <noscript>
     if (tagName === "noscript") return true;
 
-    // 7. Skip hidden SVGs ONLY if they are truly zero-sized
-    // CRITICAL FIX: aria-hidden="true" just means "screen reader ignore", NOT "invisible"
-    // Many decorative icons (checkmarks, arrows) are aria-hidden but visually essential.
-    if (tagName === "svg" && element.getAttribute("aria-hidden") === "true") {
-      // Only skip if it has absolutely NO dimensions
-      if (
-        (computed.height === "0px" || computed.height === "0") &&
-        (computed.width === "0px" || computed.width === "0")
-      ) {
+    // 4. Skip zero-dimension SVGs (icon definitions)
+    if (tagName === "svg") {
+      const rect = element.getBoundingClientRect();
+      if (rect.width <= 0 || rect.height <= 0) {
         return true;
       }
     }
 
+    // That's it. Capture everything else.
     return false;
   }
 
@@ -4612,103 +4644,15 @@ export class DOMExtractor {
     return false;
   }
 
-  /**
-   * Checks if element bounds match or exceed the viewport (potential overlay).
-   */
-  private isFullViewportOverlay(
-    rect: DOMRect,
-    computed: CSSStyleDeclaration
-  ): boolean {
-    const vw = window.innerWidth;
-    const vh = window.innerHeight;
-
-    // Check if bounds are at least 90% of viewport in both dimensions
-    const coversViewport = rect.width / vw >= 0.9 && rect.height / vh >= 0.9;
-
-    // Also check for fixed/absolute positioning with inset: 0 patterns
-    const isPositioned =
-      computed.position === "fixed" || computed.position === "absolute";
-    const hasInsetZero =
-      (computed.top === "0px" || computed.top === "0") &&
-      (computed.left === "0px" || computed.left === "0");
-
-    return (
-      coversViewport ||
-      (isPositioned && hasInsetZero && rect.width > 0 && rect.height > 0)
-    );
-  }
-
-  /**
-   * Checks if element itself paints any visible pixels (fills, borders, shadows, images).
-   */
-  private hasVisiblePaint(
-    element: Element,
-    computed: CSSStyleDeclaration
-  ): boolean {
-    // Background color (not transparent)
-    const bg = computed.backgroundColor || "";
-    if (bg !== "rgba(0, 0, 0, 0)" && bg !== "transparent" && bg !== "")
-      return true;
-
-    // Background image
-    const bgImage = computed.backgroundImage || "";
-    if (bgImage !== "none" && bgImage !== "") return true;
-
-    // Border
-    if (computed.borderWidth !== "0px" && computed.borderStyle !== "none")
-      return true;
-
-    // Box shadow
-    if (computed.boxShadow !== "none" && computed.boxShadow !== "") return true;
-
-    // Visual leaf elements
-    const tagName = element.tagName.toLowerCase();
-    if (["img", "video", "canvas", "svg", "iframe"].includes(tagName))
-      return true;
-
-    // Direct text content
-    for (const child of Array.from(element.childNodes)) {
-      if (child.nodeType === Node.TEXT_NODE && child.textContent?.trim())
-        return true;
-    }
-
-    return false;
-  }
-
-  /**
-   * Checks if any descendant (up to maxDepth) paints visible pixels.
-   */
-  private hasVisiblePaintingDescendants(
-    element: Element,
-    maxDepth: number
-  ): boolean {
-    if (maxDepth <= 0) return false;
-
-    for (const child of Array.from(element.children)) {
-      const childComputed = ExtractionValidation.safeGetComputedStyle(child);
-      if (!childComputed) continue;
-
-      // CRITICAL FIX: visibility:hidden can be overridden by visibility:visible descendants
-      // We must recurse into visibility:hidden elements, not skip them
-      const isVisibilityHidden = childComputed.visibility === "hidden";
-
-      // Skip only if display:none or truly universal non-painting conditions (NOT visibility:hidden)
-      if (childComputed.display === "none") continue;
-      if (!isVisibilityHidden && this.doesNotPaint(childComputed)) continue;
-
-      // Check if child paints something
-      if (this.hasVisiblePaint(child, childComputed)) return true;
-
-      // Recurse into child (including visibility:hidden elements)
-      if (this.hasVisiblePaintingDescendants(child, maxDepth - 1)) return true;
-    }
-
-    return false;
-  }
+  // REMOVED: isFullViewportOverlay, hasVisiblePaint, hasVisiblePaintingDescendants
+  // These were part of aggressive pruning logic that caused content loss.
+  // Visibility filtering is now minimal (display:none, opacity:0 only) in shouldIgnorePhantomContainer.
 
   private shouldSkipTag(tagUpper: string): boolean {
     // These tags are non-visual or frequently contain large non-rendered payloads (e.g. tracking in <noscript>).
     // Capturing them as text/layout nodes causes massive fidelity issues and import noise.
+    // PICTURE and SOURCE are wrappers for responsive images - they create blank frames and should be skipped.
+    // The actual img inside will be captured directly.
     return (
       tagUpper === "SCRIPT" ||
       tagUpper === "STYLE" ||
@@ -4716,7 +4660,9 @@ export class DOMExtractor {
       tagUpper === "TEMPLATE" ||
       tagUpper === "META" ||
       tagUpper === "LINK" ||
-      tagUpper === "HEAD"
+      tagUpper === "HEAD" ||
+      tagUpper === "PICTURE" ||
+      tagUpper === "SOURCE"
     );
   }
 
@@ -5453,14 +5399,28 @@ export class DOMExtractor {
       "nav",
       "header",
       "footer",
+      "ul",
+      "ol",
+      "form",
+      "table",
+      "tbody",
+      "tr",
+      "td",
+      "blockquote",
+      "figure", // Added standard semantic containers
     ];
 
-    if (!structuralTags.includes(tagName)) {
-      return false;
+    // CRITICAL FIX: Any element with these tags IS a structural container,
+    // regardless of class name. Prevents unwanted background inheritance.
+    if (structuralTags.includes(tagName)) {
+      return true;
     }
 
-    // Check classes/IDs for layout containers
-    const className = element.className?.toLowerCase() || "";
+    // Also check patterns for custom elements or generic wrappers
+    const className =
+      element.className && typeof element.className === "string"
+        ? element.className.toLowerCase()
+        : "";
     const id = element.id?.toLowerCase() || "";
     const containerPatterns = [
       "container",
@@ -5468,6 +5428,8 @@ export class DOMExtractor {
       "layout",
       "grid",
       "flex",
+      "root",
+      "app",
     ];
 
     return containerPatterns.some(
@@ -5497,13 +5459,36 @@ export class DOMExtractor {
     }
 
     // Inherit for elements with text content
-    const hasTextContent =
-      element.textContent && element.textContent.trim().length > 0;
+    // CRITICAL FIX: Only check for DIRECT text nodes to avoid inheriting background
+    // for large containers that happen to have deep text descendants.
+    let hasDirectText = false;
+    for (let i = 0; i < element.childNodes.length; i++) {
+      const node = element.childNodes[i];
+      if (
+        node.nodeType === Node.TEXT_NODE &&
+        node.textContent &&
+        node.textContent.trim().length > 0
+      ) {
+        hasDirectText = true;
+        break;
+      }
+    }
     const hasChildren = element.children.length > 0;
 
-    // If it's a container with only text or simple children, inherit
+    // Check if it's an icon wrapper (contains only SVG/IMG)
+    // This allows small buttons/icons implemented as DIVs to inherit background for visibility
+    const isIconWrapper =
+      element.children.length > 0 &&
+      element.children.length <= 2 &&
+      Array.from(element.children).some(
+        (c) =>
+          c.tagName.toLowerCase() === "svg" || c.tagName.toLowerCase() === "img"
+      );
+
+    // If it's a container with only text or single image/icon, inherit
     return Boolean(
-      hasTextContent && (!hasChildren || element.children.length <= 2)
+      (hasDirectText && (!hasChildren || element.children.length <= 2)) ||
+        isIconWrapper
     );
   }
 
@@ -6557,7 +6542,13 @@ export class DOMExtractor {
         // 1) url(...) layers
         const urls = this.extractCssUrls(layer);
         for (const rawUrl of urls.slice(0, 3)) {
-          if (!ExtractionValidation.isValidUrl(rawUrl)) continue;
+          // CRITICAL FIX: Allow data URIs even if isValidUrl checks strict protocols
+          // Also allow potentially relative URLs if base URL is handled elsewhere
+          // CRITICAL FIX: Allow ALL non-empty URLs. Strict validation causes missing assets.
+          // We rely on the backend proxy to handle resolution failures gracefully.
+          if (!rawUrl || rawUrl.trim().length === 0) {
+            continue;
+          }
 
           // CRITICAL FIX: Check if this is an SVG and handle it appropriately
           const isSVG =
@@ -8063,18 +8054,31 @@ export class DOMExtractor {
 
             // PIXEL-PERFECT FIX: Account for offsetParent's border
             // Absolute positioning is relative to the padding box, not border box
-            const parentComputed = ExtractionValidation.safeGetComputedStyle(offsetParent);
+            const parentComputed =
+              ExtractionValidation.safeGetComputedStyle(offsetParent);
             if (parentComputed) {
-              originX += ExtractionValidation.safeParseFloat(parentComputed.borderLeftWidth, 0);
-              originY += ExtractionValidation.safeParseFloat(parentComputed.borderTopWidth, 0);
+              originX += ExtractionValidation.safeParseFloat(
+                parentComputed.borderLeftWidth,
+                0
+              );
+              originY += ExtractionValidation.safeParseFloat(
+                parentComputed.borderTopWidth,
+                0
+              );
             }
           }
         } else if (hostStyle) {
           // Host is positioned (relative, absolute, fixed, sticky)
           // Pseudo is relative to host's padding box.
           // CRITICAL FIX: Add host's border width to origin because parentRect is the border box
-          originX += ExtractionValidation.safeParseFloat(hostStyle.borderLeftWidth, 0);
-          originY += ExtractionValidation.safeParseFloat(hostStyle.borderTopWidth, 0);
+          originX += ExtractionValidation.safeParseFloat(
+            hostStyle.borderLeftWidth,
+            0
+          );
+          originY += ExtractionValidation.safeParseFloat(
+            hostStyle.borderTopWidth,
+            0
+          );
         }
 
         x = originX;
@@ -8582,17 +8586,29 @@ export class DOMExtractor {
 
     const looksLikePlaceholderSrc = (): boolean => {
       const src = (imageUrl || img.src || "").toLowerCase();
-      // Common transparent/placeholder patterns
+
+      // Only reject TINY data URLs (1x1 transparent pixels, etc.)
+      // Valid base64 images are much longer (typically 1000+ chars)
+      if (src.startsWith("data:")) {
+        // If it's a very short data URL, it's likely a placeholder
+        if (src.length < 200) {
+          return true;
+        }
+        // Otherwise, data URLs with sufficient content are valid images
+        return false;
+      }
+
+      // Common transparent/placeholder patterns in URL names
       if (
-        src.startsWith("data:") ||
         src.includes("placeholder") ||
         src.includes("spacer") ||
         src.includes("1x1") ||
         src.includes("pixel") ||
-        (src.endsWith(".gif") && !src.includes("etsy")) // many lazy loaders use tiny GIFs, but Etsy might use .gif for real images
+        (src.endsWith(".gif") && !src.includes("etsy")) // many lazy loaders use tiny GIFs
       ) {
         return true;
       }
+
       const w = ExtractionValidation.safeParseFloat(
         img.naturalWidth || img.width,
         0
@@ -8601,8 +8617,7 @@ export class DOMExtractor {
         img.naturalHeight || img.height,
         0
       );
-      // If not loaded yet (common on Etsy due to lazy loading), treat as placeholder.
-      // But be more lenient - if we have a valid URL that doesn't look like a placeholder, trust it
+      // If not loaded yet, treat as placeholder only if name suggests it
       if (
         w <= 2 &&
         h <= 2 &&
@@ -8709,7 +8724,7 @@ export class DOMExtractor {
       // Etsy often uses JavaScript to set the src after page load
       if (
         looksLikePlaceholderSrc() ||
-        (img.complete === false && img.naturalWidth <= 2)
+        img.complete === false // REMOVED defensive (img.naturalWidth <= 2) check
       ) {
         // Image is still loading or is a placeholder - wait and try to force load
         try {
@@ -8749,8 +8764,8 @@ export class DOMExtractor {
               // Check if it loaded
               if (
                 img.complete &&
-                img.naturalWidth > 2 &&
-                img.naturalHeight > 2
+                img.naturalWidth > 0 &&
+                img.naturalHeight > 0
               ) {
                 imageUrl = realUrl;
                 console.log(
@@ -8776,14 +8791,14 @@ export class DOMExtractor {
             let retries = 3;
             while (
               retries > 0 &&
-              (img.complete === false || img.naturalWidth <= 2)
+              (img.complete === false || img.naturalWidth <= 0)
             ) {
               await new Promise((resolve) => setTimeout(resolve, 400));
               retries--;
             }
 
             // Check if image loaded successfully
-            if (img.complete && img.naturalWidth > 2 && img.naturalHeight > 2) {
+            if (img.complete && img.naturalWidth > 0 && img.naturalHeight > 0) {
               const loadedUrl = img.currentSrc || img.src;
               if (
                 ExtractionValidation.isValidUrl(loadedUrl) &&
@@ -8949,6 +8964,7 @@ export class DOMExtractor {
           imageHash: key,
           scaleMode: scaleMode,
           visible: true,
+          url: imageUrl,
         },
       ];
       node.imageHash = key;
@@ -9051,6 +9067,7 @@ export class DOMExtractor {
             imageHash: key,
             scaleMode: "FILL",
             visible: true,
+            url: dataUrl,
           },
         ];
         node.imageHash = key;
@@ -9136,6 +9153,7 @@ export class DOMExtractor {
           imageHash: key,
           scaleMode: "FILL",
           visible: true,
+          url: video.poster,
         },
       ];
     } else {
@@ -9330,10 +9348,13 @@ export class DOMExtractor {
             `✅ [DATA_URI] Processed locally: ${url.substring(0, 50)}...`
           );
         } else {
+          // CRITICAL FIX: Don't return early! Still register the asset with the data URI
+          // so the plugin can attempt to process it or use fallback
           console.warn(
-            `⚠️ [DATA_URI] Local processing failed: ${dataUriResult.error}`
+            `⚠️ [DATA_URI] Local processing failed: ${dataUriResult.error} - registering URL anyway`
           );
-          return; // Skip invalid data: URIs
+          absoluteUrl = url; // Keep the data URI as-is
+          dataUriMimeType = "image/png"; // Default fallback
         }
       } else {
         absoluteUrl = new URL(url, window.location.href).href;
@@ -9395,7 +9416,7 @@ export class DOMExtractor {
     // If size is a concern, use a separate blob store with content-addressed references.
     // MEMORY OPTIMIZATION: Re-enabled eager base64 embedding for fidelity.
     // The plugin will use these bytes directly.
-    const EMBED_IMAGE_BASE64 = true; 
+    const EMBED_IMAGE_BASE64 = true;
     const STRICT_MODE = false; // Allow partial capture if some images fail (plugin will try proxy fallback)
 
     if (!EMBED_IMAGE_BASE64) {
@@ -9419,7 +9440,7 @@ export class DOMExtractor {
     const total = imageUrls.length;
     for (let i = 0; i < imageUrls.length; i += BATCH_SIZE) {
       const batch = imageUrls.slice(i, i + BATCH_SIZE);
-      
+
       // Granular progress update
       const percent = 65 + Math.floor((i / total) * 30); // Map 0-100% of images to 65-95% of total
       this.postProgress(`Processing images (${i}/${total})...`, percent);
@@ -10265,7 +10286,11 @@ export class DOMExtractor {
     };
 
     walk(schema.root);
-    console.log(`🚀 [PERFORMANCE] Sanitization complete: ${nodesProcessed} nodes, ${propertiesRemoved} properties removed in ${Date.now() - startTime}ms`);
+    console.log(
+      `🚀 [PERFORMANCE] Sanitization complete: ${nodesProcessed} nodes, ${propertiesRemoved} properties removed in ${
+        Date.now() - startTime
+      }ms`
+    );
   }
 
   /**
@@ -10414,6 +10439,17 @@ export class DOMExtractor {
         const key = this.hashString(url);
         // CRITICAL: Always store URL for plugin fallback, even if base64 conversion failed
         const imageUrl = data.url || data.absoluteUrl || url;
+
+        // P0 FIX: Explicitly ensure URL fallback is ready
+        if (imageUrl && !data.base64) {
+          console.log(
+            `📸 [ASSET FALLBACK] Asset ${key.substring(
+              0,
+              10
+            )}... will use URL: ${imageUrl.substring(0, 50)}...`
+          );
+        }
+
         imagesObj[key] = {
           id: key,
           url: imageUrl, // Always include URL for plugin fallback
@@ -10443,7 +10479,11 @@ export class DOMExtractor {
       schema.assets.images = imagesObj;
 
       // PIXEL-PERFECT FIX: Validate and log asset structure for debugging
-      console.log(`📊 [ASSET VALIDATION] Finalized ${Object.keys(imagesObj).length} image assets`);
+      console.log(
+        `📊 [ASSET VALIDATION] Finalized ${
+          Object.keys(imagesObj).length
+        } image assets`
+      );
 
       if (Object.keys(imagesObj).length > 0) {
         // Log first 3 assets for debugging
@@ -10453,18 +10493,30 @@ export class DOMExtractor {
           console.log(`     - hasData: ${!!asset.data}`);
           console.log(`     - hasBase64: ${!!asset.base64}`);
           console.log(`     - hasUrl: ${!!asset.url}`);
-          console.log(`     - url: ${asset.url ? asset.url.substring(0, 80) + '...' : 'NONE'}`);
+          console.log(
+            `     - url: ${
+              asset.url ? asset.url.substring(0, 80) + "..." : "NONE"
+            }`
+          );
           console.log(`     - dimensions: ${asset.width}x${asset.height}`);
         });
       }
 
       // CRITICAL: Warn if ALL assets have no base64 (URL-only mode)
-      const assetsWithBase64 = Object.values(imagesObj).filter((a: any) => a.data || a.base64).length;
-      const assetsWithUrl = Object.values(imagesObj).filter((a: any) => a.url).length;
+      const assetsWithBase64 = Object.values(imagesObj).filter(
+        (a: any) => a.data || a.base64
+      ).length;
+      const assetsWithUrl = Object.values(imagesObj).filter(
+        (a: any) => a.url
+      ).length;
 
       if (assetsWithBase64 === 0 && assetsWithUrl > 0) {
-        console.warn(`⚠️ [ASSET VALIDATION] ALL ${assetsWithUrl} images are URL-only (no embedded base64)`);
-        console.warn(`   Plugin MUST fetch via proxy. Ensure handoff server is running at http://localhost:4411`);
+        console.warn(
+          `⚠️ [ASSET VALIDATION] ALL ${assetsWithUrl} images are URL-only (no embedded base64)`
+        );
+        console.warn(
+          `   Plugin MUST fetch via proxy. Ensure handoff server is running at http://localhost:4411`
+        );
       }
 
       // Finalize SVGs

@@ -239,10 +239,81 @@ export async function waitForStablePage(
   }
   cleanupCallbacks.push(() => mutationObserver.disconnect());
 
+  // PIXEL-PERFECT FIX: Also observe shadow DOM of custom elements for GitHub turbo-frames
+  const shadowObservers: MutationObserver[] = [];
+  const observeShadowRoots = (root: Element | Document) => {
+    const customElements = root.querySelectorAll('turbo-frame, feed-container, feed-live-container, react-partial, react-app');
+    customElements.forEach(element => {
+      const shadowRoot = (element as any).shadowRoot;
+      if (shadowRoot) {
+        const shadowObserver = new MutationObserver((mutations) => {
+          lastChange = performance.now();
+          if (Math.random() < 0.05) {
+            logger.debug(SCOPE, "Shadow DOM mutation detected", { element: element.tagName });
+          }
+        });
+        shadowObserver.observe(shadowRoot, {
+          childList: true,
+          subtree: true,
+          attributes: true,
+          characterData: true,
+        });
+        shadowObservers.push(shadowObserver);
+      }
+    });
+  };
+
+  // Observe existing shadow roots
+  observeShadowRoots(document);
+
+  // Re-scan for new shadow roots periodically (some may be added dynamically)
+  const shadowScanInterval = window.setInterval(() => {
+    observeShadowRoots(document);
+  }, 1000);
+
+  cleanupCallbacks.push(() => {
+    window.clearInterval(shadowScanInterval);
+    shadowObservers.forEach(obs => obs.disconnect());
+  });
+
   try {
     await new Promise<void>((resolve, reject) => {
       const checkInterval = 100;
-      const MINIMUM_WAIT_MS = 3000; // Wait at least 3 seconds before checking stability
+
+      // PIXEL-PERFECT FIX: Detect GitHub's turbo-frames and wait longer for dynamic content
+      const hasTurboFrames = document.querySelector('turbo-frame') !== null;
+      const hasGitHubCustomElements =
+        document.querySelector('feed-container, feed-live-container, react-partial') !== null;
+      const isGitHub = location.hostname.includes('github.com');
+
+      // GitHub needs more time for turbo-frame hydration
+      let MINIMUM_WAIT_MS = 3000; // Default: 3 seconds
+      if (isGitHub && (hasTurboFrames || hasGitHubCustomElements)) {
+        MINIMUM_WAIT_MS = 6000; // GitHub with turbo-frames: 6 seconds
+        logger.info(SCOPE, 'Detected GitHub turbo-frames, extending minimum wait to 6s');
+      }
+
+      // Monitor turbo-frame loading state
+      const monitorTurboFrames = () => {
+        const frames = Array.from(document.querySelectorAll('turbo-frame'));
+        const loadingFrames = frames.filter(frame => {
+          const busy = frame.getAttribute('busy');
+          const loading = frame.getAttribute('loading');
+          const complete = frame.getAttribute('complete');
+          return busy === 'true' || loading === 'lazy' || complete !== 'true';
+        });
+
+        if (loadingFrames.length > 0) {
+          lastChange = performance.now();
+          logger.debug(SCOPE, 'Turbo-frames still loading', {
+            loadingCount: loadingFrames.length,
+            totalCount: frames.length
+          });
+        }
+
+        return loadingFrames.length === 0;
+      };
+
       let hasWaitedMinimum = false;
 
       // For highly dynamic sites, force proceed after reasonable wait even if not stable
@@ -267,6 +338,14 @@ export async function waitForStablePage(
       const intervalId = window.setInterval(() => {
         const now = performance.now();
         const elapsed = now - start;
+
+        // PIXEL-PERFECT FIX: Check turbo-frame completion before declaring stable
+        if (hasTurboFrames && elapsed >= MINIMUM_WAIT_MS) {
+          if (!monitorTurboFrames()) {
+            // Turbo-frames still loading, don't declare stable yet
+            return;
+          }
+        }
 
         // Mark that we've waited the minimum time
         if (elapsed >= MINIMUM_WAIT_MS) {

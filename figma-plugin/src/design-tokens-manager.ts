@@ -73,10 +73,10 @@ export class DesignTokensManager {
    * Create Figma variable collections from token collections
    */
   private async createVariableCollections(): Promise<void> {
-    for (const [collectionId, tokenCollection] of Object.entries(this.tokensRegistry.collections)) {
+    for (const [collectionId, tokenCollection] of Object.entries(this.tokensRegistry.collections) as [string, TokenCollection][]) {
       try {
         const figmaCollection = figma.variables.createVariableCollection(tokenCollection.name);
-        
+
         // Set collection description if available
         if (tokenCollection.description) {
           // Note: Figma Variables API doesn't currently support collection descriptions
@@ -90,10 +90,10 @@ export class DesignTokensManager {
         }
 
         this.variableCollections.set(collectionId, figmaCollection);
-        
+
         console.log(`📁 Created collection: ${tokenCollection.name} (${tokenCollection.variables.length} variables)`);
       } catch (error) {
-        console.warn(`Failed to create collection ${tokenCollection.name}:`, error);
+        console.warn(`Failed to create collection ${(tokenCollection as TokenCollection).name}:`, error);
       }
     }
   }
@@ -102,7 +102,7 @@ export class DesignTokensManager {
    * Create Figma variables from design tokens
    */
   private async createVariables(): Promise<void> {
-    for (const [tokenId, token] of Object.entries(this.tokensRegistry.variables)) {
+    for (const [tokenId, token] of Object.entries(this.tokensRegistry.variables) as [string, DesignToken][]) {
       if (!this.shouldCreateVariable(token)) {
         this.aliasQueue.push(...this.findAliasesForToken(tokenId));
         continue;
@@ -143,10 +143,10 @@ export class DesignTokensManager {
         }
 
         this.createdVariables.set(tokenId, variable);
-        
+
         console.log(`🔧 Created variable: ${token.name} (${token.type})`);
       } catch (error) {
-        console.warn(`Failed to create variable ${token.name}:`, error);
+        console.warn(`Failed to create variable ${(token as DesignToken).name}:`, error);
       }
     }
   }
@@ -222,7 +222,7 @@ export class DesignTokensManager {
    * Find aliases that reference a specific token
    */
   private findAliasesForToken(tokenId: string): TokenAlias[] {
-    return Object.values(this.tokensRegistry.aliases).filter(alias => 
+    return (Object.values(this.tokensRegistry.aliases) as TokenAlias[]).filter(alias =>
       alias.from === tokenId || alias.to === tokenId
     );
   }

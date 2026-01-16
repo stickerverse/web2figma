@@ -1,0 +1,66 @@
+{
+  "nodeCount": 14,
+  "nodeTypes": {
+    "FRAME": 10,
+    "TEXT": 4
+  },
+  "textNodes": 4,
+  "imageNodes": 0,
+  "zeroSizedNodes": 0,
+  "outOfBoundsNodes": 0,
+  "largestNodes": [
+    {
+      "id": "99:3403",
+      "name": "TEXT",
+      "area": 37038001
+    },
+    {
+      "id": "99:3404",
+      "name": "LINK",
+      "area": 37038001
+    },
+    {
+      "id": "99:3402",
+      "name": "LINK",
+      "area": 28928000
+    },
+    {
+      "id": "99:3405",
+      "name": "Fixed Container",
+      "area": 1569344
+    },
+    {
+      "id": "99:3411",
+      "name": "Fixed Container",
+      "area": 48597
+    },
+    {
+      "id": "99:3406",
+      "name": "Fixed Container",
+      "area": 36472
+    },
+    {
+      "id": "99:3412",
+      "name": "Extracting... (110s,",
+      "area": 9345
+    },
+    {
+      "id": "99:3407",
+      "name": "Extracting... (600 n",
+      "area": 9114
+    },
+    {
+      "id": "99:3410",
+      "name": "⏱️ 119.6s",
+      "area": 6675
+    },
+    {
+      "id": "99:3415",
+      "name": "⏱️ 119.6s",
+      "area": 6675
+    }
+  ],
+  "warnings": [
+    "No image nodes detected in import"
+  ]
+}

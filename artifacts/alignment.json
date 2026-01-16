@@ -1,0 +1,21 @@
+{
+  "original": {
+    "width": 2870,
+    "height": 4032
+  },
+  "figma": {
+    "width": 1840,
+    "height": 1004
+  },
+  "aligned": {
+    "width": 1840,
+    "height": 1004
+  },
+  "crop_region": {
+    "x": 0,
+    "y": 0,
+    "width": 1840,
+    "height": 1004
+  },
+  "method": "crop_to_common_size"
+}

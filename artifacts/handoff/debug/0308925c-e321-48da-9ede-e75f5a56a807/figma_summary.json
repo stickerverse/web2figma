@@ -1,0 +1,69 @@
+{
+  "nodeCount": 2278,
+  "nodeTypes": {
+    "FRAME": 1950,
+    "VECTOR": 51,
+    "TEXT": 234,
+    "GROUP": 37,
+    "RECTANGLE": 6
+  },
+  "textNodes": 234,
+  "imageNodes": 2,
+  "zeroSizedNodes": 0,
+  "outOfBoundsNodes": 2278,
+  "largestNodes": [
+    {
+      "id": "101:3832",
+      "name": "Container",
+      "area": 61633663
+    },
+    {
+      "id": "101:3834",
+      "name": "Container",
+      "area": 61633663
+    },
+    {
+      "id": "101:3033",
+      "name": "Container",
+      "area": 61038887
+    },
+    {
+      "id": "101:3034",
+      "name": "span",
+      "area": 61038887
+    },
+    {
+      "id": "101:3035",
+      "name": "Button Container",
+      "area": 61038887
+    },
+    {
+      "id": "101:3037",
+      "name": "span",
+      "area": 61038887
+    },
+    {
+      "id": "101:3038",
+      "name": "span",
+      "area": 61038887
+    },
+    {
+      "id": "101:3040",
+      "name": "span",
+      "area": 61038887
+    },
+    {
+      "id": "101:3041",
+      "name": "span",
+      "area": 61038887
+    },
+    {
+      "id": "101:3043",
+      "name": "X9f619",
+      "area": 61038887
+    }
+  ],
+  "warnings": [
+    "Found 2278 nodes outside expected viewport bounds"
+  ]
+}

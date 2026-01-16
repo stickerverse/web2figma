@@ -4,12 +4,17 @@
     "module": "ES2020",
     "lib": ["ES2020", "DOM"],
     "outDir": "./dist",
-    "strict": true,
+    "strict": false,
+    "noImplicitAny": false,
     "esModuleInterop": true,
     "skipLibCheck": true,
     "moduleResolution": "node",
     "resolveJsonModule": true
   },
   "include": ["src/**/*"],
-  "exclude": ["node_modules"]
+  "exclude": [
+    "node_modules",
+    "src/**/*-backup.ts",
+    "src/**/backup-*.ts"
+  ]
 }

@@ -1,0 +1,68 @@
+{
+  "nodeCount": 106,
+  "nodeTypes": {
+    "FRAME": 98,
+    "TEXT": 7,
+    "RECTANGLE": 1
+  },
+  "textNodes": 7,
+  "imageNodes": 0,
+  "zeroSizedNodes": 0,
+  "outOfBoundsNodes": 106,
+  "largestNodes": [
+    {
+      "id": "97:110",
+      "name": "Content",
+      "area": 39410825
+    },
+    {
+      "id": "97:111",
+      "name": "TEXT",
+      "area": 39410825
+    },
+    {
+      "id": "97:112",
+      "name": "MAIN",
+      "area": 39410825
+    },
+    {
+      "id": "97:153",
+      "name": "tp-yt-paper-tooltip",
+      "area": 39410825
+    },
+    {
+      "id": "97:174",
+      "name": "tp-yt-paper-tooltip",
+      "area": 39410825
+    },
+    {
+      "id": "97:200",
+      "name": "TEXT",
+      "area": 39410825
+    },
+    {
+      "id": "97:201",
+      "name": "Video Preview",
+      "area": 39410825
+    },
+    {
+      "id": "97:202",
+      "name": "yt-tooltip",
+      "area": 39410825
+    },
+    {
+      "id": "97:203",
+      "name": "ytd-permission-role-bottom-bar-renderer",
+      "area": 39410825
+    },
+    {
+      "id": "97:113",
+      "name": "HEADER",
+      "area": 39313105
+    }
+  ],
+  "warnings": [
+    "Found 106 nodes outside expected viewport bounds",
+    "No image nodes detected in import"
+  ]
+}

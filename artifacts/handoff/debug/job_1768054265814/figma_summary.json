@@ -1,0 +1,67 @@
+{
+  "nodeCount": 11,
+  "nodeTypes": {
+    "FRAME": 6,
+    "TEXT": 5
+  },
+  "textNodes": 5,
+  "imageNodes": 0,
+  "zeroSizedNodes": 0,
+  "outOfBoundsNodes": 11,
+  "largestNodes": [
+    {
+      "id": "11:21294",
+      "name": "Content",
+      "area": 640000
+    },
+    {
+      "id": "11:21295",
+      "name": "Content",
+      "area": 56160
+    },
+    {
+      "id": "11:21300",
+      "name": "Fixed Container",
+      "area": 35344
+    },
+    {
+      "id": "11:21297",
+      "name": "LINK 2",
+      "area": 18240
+    },
+    {
+      "id": "11:21296",
+      "name": "LINK",
+      "area": 13440
+    },
+    {
+      "id": "11:21298",
+      "name": "p",
+      "area": 9120
+    },
+    {
+      "id": "11:21301",
+      "name": "Traversing DOM tree.",
+      "area": 6080
+    },
+    {
+      "id": "11:21304",
+      "name": "⏱️ 2.2s",
+      "area": 4800
+    },
+    {
+      "id": "11:21299",
+      "name": "Learn more",
+      "area": 1558
+    },
+    {
+      "id": "11:21302",
+      "name": "Container",
+      "area": 1280
+    }
+  ],
+  "warnings": [
+    "Found 11 nodes outside expected viewport bounds",
+    "No image nodes detected in import"
+  ]
+}

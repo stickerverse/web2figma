@@ -117,9 +117,7 @@ console.log("If you see this, content-script.js is executing!");
         }
 
         // Use a lightweight message just to wake up the SW
-        safeRuntimeSendMessage({ type: "PING" })?.catch(() => {
-          // Ignore errors from ping, it's best-effort
-        });
+        safeRuntimeSendMessage({ type: "PING" });
       }, 10000); // 10 seconds - more frequent to prevent SW from timing out
     }
 
@@ -275,7 +273,7 @@ console.log("If you see this, content-script.js is executing!");
   let watchdogTimer: any = null;
   let cancelCurrentExtraction: (() => void) | null = null;
   let captureStartTime: number | null = null; // Track capture start time for diagnostics
-  const WATCHDOG_TIMEOUT = 180000; // 180 seconds without progress = stall (increased to match DOM extractor)
+  const WATCHDOG_TIMEOUT = 1200000; // 20 minutes without progress = stall (increased for long processing)
   let isScriptInjected = false; // Track if injection script has been loaded this session
   let lastDomStabilityReport: any | null = null; // Attach to schema metadata for diagnostics
 
@@ -1256,12 +1254,45 @@ console.log("If you see this, content-script.js is executing!");
     (window as any).__webToFigmaMessageListenerRegistered = true;
 
     window.addEventListener("message", (event) => {
-      // Only accept messages from ourselves
-      if (event.source !== window) return;
+      // Logic for internal extraction messages (must be from the same window/origin)
+      const isInternal = event.source === window;
+
+      // Handle automation triggers (can come from Puppeteer/external via postMessage)
+      if (event.data.type === "START_CAPTURE_TEST") {
+        document.body.setAttribute("data-debug-postmessage", "received");
+        console.log("🧪 [TEST] Received capture trigger via postMessage");
+        console.log("🧪 [TEST] Viewports:", event.data.viewports);
+
+        // Trigger via background, forwarding viewports parameter
+        chrome.runtime.sendMessage({
+          type: "TRIGGER_CAPTURE_FOR_TAB",
+          viewports: event.data.viewports,
+          allowNavigation: false,
+        });
+        return;
+      }
+
+      // Ping handler to verify bridge connection
+      if (event.data.type === "PING_PROXY") {
+        console.log("🏓 [PROXY] Ping received, sending pong");
+        window.postMessage({ type: "PONG_PROXY", timestamp: Date.now() }, "*");
+        return;
+      }
+
+      // Remaining handlers require isInternal check for security/stability
+      if (!isInternal) return;
 
       // Reset watchdog on any valid message from injected script
       if (event.data.type && event.data.type.startsWith("EXTRACTION_")) {
         resetWatchdog();
+      }
+
+      if (event.data.type === "EXTRACTION_PROGRESS") {
+        const { message, percent } = event.data;
+        // Update local overlay
+        overlay.update(message, "Extracting", percent);
+        // Forward to background for popup
+        safeRuntimeSendMessage(event.data);
       }
 
       if (event.data.type === "EXTRACTION_COMPLETE") {
@@ -1393,7 +1424,10 @@ console.log("If you see this, content-script.js is executing!");
               {
                 type: "CAPTURE_VISIBLE_TAB_PROXY_RESPONSE",
                 requestId,
-                response: response || { ok: false, error: "No response from background" },
+                response: response || {
+                  ok: false,
+                  error: "No response from background",
+                },
               },
               "*"
             );
@@ -1435,8 +1469,10 @@ console.log("If you see this, content-script.js is executing!");
               {
                 type: "CAPTURE_CDP_CLIP_PROXY_RESPONSE",
                 requestId,
-                response:
-                  response || { ok: false, error: "No response from background" },
+                response: response || {
+                  ok: false,
+                  error: "No response from background",
+                },
               },
               "*"
             );
@@ -1444,30 +1480,6 @@ console.log("If you see this, content-script.js is executing!");
         );
 
         return;
-      }
-
-      if (event.data.type === "START_CAPTURE_TEST") {
-        document.body.setAttribute("data-debug-postmessage", "received");
-        console.log("🧪 [TEST] Received capture trigger via postMessage");
-        // Simulate the runtime message
-        const mockMessage = {
-          type: "start-capture",
-          allowNavigation: false,
-          viewports: event.data.viewports,
-        };
-
-        // Trigger via background
-        chrome.runtime.sendMessage({ type: "TRIGGER_CAPTURE_FOR_TAB" });
-      }
-
-      // CRITICAL: Removed duplicate FETCH_IMAGE_PROXY handler.
-      // The correct handler exists above and uses FETCH_IMAGE_PROXY_RESPONSE.
-      // This duplicate used wrong response type FETCH_IMAGE_RESULT.
-
-      // Ping handler to verify bridge connection
-      if (event.data.type === "PING_PROXY") {
-        console.log("🏓 [PROXY] Ping received, sending pong");
-        window.postMessage({ type: "PONG_PROXY", timestamp: Date.now() }, "*");
       }
     });
   } else {
@@ -1555,47 +1567,26 @@ console.log("If you see this, content-script.js is executing!");
         viewports: viewports.length,
       });
 
-      console.log("📜 Performing scroll pre-pass to trigger lazy loading...");
-      overlay.update("📜 Scrolling to load content...", "Pre-loading", 15);
-
-      // extensive scroll to ensure everything loads
-      await scroller.scrollPage(100, (percent) => {
-        if (session.isCancelled) return;
-        const scrollPercent = Math.round(percent);
-        overlay.update(
-          `📜 Scrolling to load content...`,
-          "Pre-loading",
-          Math.max(15, Math.min(20, 15 + scrollPercent * 0.05)),
-          `${scrollPercent}% complete`
-        );
-        sendCaptureProgress("Scrolling page", percent);
-      });
-      session.assertActive();
-
-      console.log("✅ Scroll pre-pass complete");
-
-      overlay.update(
-        "⏳ Waiting for content to settle...",
-        "DOM Stability Check",
-        20
-      );
-      // CRITICAL FIX: Increased timeout and quiet period for complex pages (e.g., Etsy with dynamic content)
-      // Using smarter mutation filtering to ignore ads/trackers/animations
-      lastDomStabilityReport = await waitForDomStability(2000, 25000);
-
-      // Deterministic settle checkpoint: allow layout/paint to flush once before capture.
-      await new Promise<void>((r) =>
-        requestAnimationFrame(() => requestAnimationFrame(() => r()))
-      );
-
       await injectScript();
       await wait(500);
 
       for (let i = 0; i < viewports.length; i++) {
         session.assertActive();
         const viewport = viewports[i];
+        const logMarker = (viewport.name || "Unknown").toUpperCase();
+        const stageMarker = logMarker.includes("DESKTOP")
+          ? "DESKTOP"
+          : logMarker.includes("TABLET")
+          ? "TABLET"
+          : logMarker.includes("MOBILE")
+          ? "MOBILE"
+          : logMarker;
+
+        console.log(`\n🚀 [CAPTURE_${stageMarker}_START]`);
+        const viewportStartTime = Date.now();
+
         console.log(
-          `\n📐 [VIEWPORT ${i + 1}/${viewports.length}] ${viewport.name}`
+          `📐 [VIEWPORT ${i + 1}/${viewports.length}] ${viewport.name}`
         );
         console.log(`   📏 Dimensions: ${viewport.width}x${viewport.height}px`);
         console.log(`   🔄 Starting capture sequence...`);
@@ -1608,26 +1599,18 @@ console.log("If you see this, content-script.js is executing!");
 
         safeRuntimeSendMessage({
           type: "CAPTURE_PROGRESS",
-          status: `Resizing to ${viewport.name} (${viewport.width}x${viewport.height})...`,
+          status: `Starting ${viewport.name} capture (${i + 1}/${
+            viewports.length
+          })...`,
           current: i + 1,
           total: viewports.length,
           viewport: viewport.name,
         });
-        sendCaptureProgress(
-          `Capturing ${viewport.name}`,
-          Math.min(25 + i * 5, 35),
-          {
-            viewport: viewport.name,
-            index: i + 1,
-            total: viewports.length,
-          }
-        );
 
-        await wait(300);
-
+        // Perform capture (this now includes resize + stabilization + scroll + screenshot + extraction)
         const captureResult = await handleCapture(
           viewport,
-          true,
+          false, // DO NOT skip scroll - each viewport needs its own scroll pass to completion
           allowNavigation
         );
 
@@ -1641,6 +1624,11 @@ console.log("If you see this, content-script.js is executing!");
             previewWithOverlay: captureResult.previewWithOverlay,
           });
 
+          const duration = Date.now() - viewportStartTime;
+          console.log(
+            `✅ [CAPTURE_${stageMarker}_END] Duration: ${duration}ms`
+          );
+
           safeRuntimeSendMessage({
             type: "CAPTURE_PROGRESS",
             status: `${viewport.name} captured ✓`,
@@ -1649,10 +1637,12 @@ console.log("If you see this, content-script.js is executing!");
             viewport: viewport.name,
             completed: true,
           });
+        } else {
+          throw new Error(`Failed to capture viewport: ${viewport.name}`);
         }
 
         if (i < viewports.length - 1) {
-          await wait(500);
+          await wait(1000); // Wait between viewports
         }
       }
 
@@ -1823,7 +1813,17 @@ console.log("If you see this, content-script.js is executing!");
           height: viewportConfig.height,
           deviceScaleFactor: viewportConfig.deviceScaleFactor,
         });
-        await wait(250);
+
+        // REFRESH STABILITY AFTER RESIZE (Requirement 2 & 3)
+        console.log("⏳ Waiting for layout to stabilize after resize...");
+        overlay.update("⏳ Stabilizing layout...", "Reflow Check", 20);
+        lastDomStabilityReport = await waitForDomStability(2000, 15000);
+
+        // Wait for reflows to finalize
+        await new Promise<void>((r) =>
+          requestAnimationFrame(() => requestAnimationFrame(() => r()))
+        );
+        await wait(500);
       } else if (viewport?.preserveNatural) {
         console.log(
           "📐 Capturing at natural page dimensions:",
@@ -2037,17 +2037,17 @@ console.log("If you see this, content-script.js is executing!");
   ): Promise<any> {
     console.log("📸 Starting Direct DOM extraction...");
 
-    overlay.update("🔍 Extracting DOM structure...", "DOM Traversal", 25);
+    overlay.update("🔍 Extracting DOM structure...", "DOM Traversal", 15);
     safeRuntimeSendMessage(
       {
         type: "EXTRACTION_PROGRESS",
         phase: "Extracting DOM",
         message: "Extracting DOM structure...",
-        percent: 25,
+        percent: 15,
       },
       () => void chrome.runtime.lastError
     );
-    sendCaptureProgress("Extracting DOM structure", 25);
+    sendCaptureProgress("Extracting DOM structure", 15);
 
     return new Promise(async (resolve, reject) => {
       // Set up timeout ID reference for cleanup
@@ -2148,7 +2148,7 @@ console.log("If you see this, content-script.js is executing!");
           overlay.update(
             "✅ DOM extraction complete",
             "DOM Extraction",
-            50,
+            70,
             `${elementCount} elements, ${imageCount} images`
           );
           safeRuntimeSendMessage(
@@ -2156,10 +2156,10 @@ console.log("If you see this, content-script.js is executing!");
               type: "EXTRACTION_PROGRESS",
               phase: "Extracting",
               message: "DOM extraction complete",
-              percent: 50,
+              percent: 70,
               stats: {
-                elements: elementCount,
-                images: imageCount,
+                elementsProcessed: elementCount,
+                imagesExtracted: imageCount,
               },
             },
             () => void chrome.runtime.lastError
@@ -2167,13 +2167,13 @@ console.log("If you see this, content-script.js is executing!");
 
           // NEW: Run AI analysis on screenshot and merge results
           if (screenshot) {
-            overlay.update("🤖 Running AI analysis...", "AI Processing", 60);
+            overlay.update("🤖 Running AI analysis...", "AI Processing", 75);
             safeRuntimeSendMessage(
               {
                 type: "EXTRACTION_PROGRESS",
                 phase: "AI Analysis",
                 message: "Running AI analysis...",
-                percent: 60,
+                percent: 75,
               },
               () => void chrome.runtime.lastError
             );
@@ -2187,15 +2187,15 @@ console.log("If you see this, content-script.js is executing!");
                 overlay.update(
                   "ℹ️ AI analysis skipped",
                   "AI Processing",
-                  70,
+                  85,
                   "Server not running"
                 );
                 safeRuntimeSendMessage(
                   {
                     type: "EXTRACTION_PROGRESS",
-                    phase: "AI Analysis",
-                    message: "AI analysis skipped (handoff server not running)",
-                    percent: 70,
+                    phase: "Finalizing",
+                    message: "AI analysis skipped (server not running)",
+                    percent: 85,
                   },
                   () => void chrome.runtime.lastError
                 );
@@ -2457,13 +2457,13 @@ console.log("If you see this, content-script.js is executing!");
                   // Continue without enhancement - schema is still valid
                 }
 
-                overlay.update("✅ AI analysis complete", "AI Processing", 70);
+                overlay.update("✅ AI analysis complete", "AI Processing", 90);
                 safeRuntimeSendMessage(
                   {
                     type: "EXTRACTION_PROGRESS",
-                    phase: "AI Analysis",
+                    phase: "Finalizing",
                     message: "AI analysis complete",
-                    percent: 70,
+                    percent: 90,
                   },
                   () => void chrome.runtime.lastError
                 );
@@ -2506,18 +2506,13 @@ console.log("If you see this, content-script.js is executing!");
               }
 
               // Update overlay to show AI was skipped with specific reason
-              overlay.update(
-                `⚠️ ${userMessage}`,
-                "AI Processing",
-                70,
-                "Skipped"
-              );
+              overlay.update(`⚠️ ${userMessage}`, "Finalizing", 85, "Skipped");
               safeRuntimeSendMessage(
                 {
                   type: "EXTRACTION_PROGRESS",
-                  phase: "AI Analysis",
+                  phase: "Finalizing",
                   message: userMessage,
-                  percent: 70,
+                  percent: 85,
                   error: errorMessage, // Include full error for debugging
                 },
                 () => void chrome.runtime.lastError
@@ -2527,6 +2522,17 @@ console.log("If you see this, content-script.js is executing!");
               console.log("✅ [AI] Continuing capture without AI results...");
             }
           }
+
+          // Send final completion progress
+          safeRuntimeSendMessage(
+            {
+              type: "EXTRACTION_PROGRESS",
+              phase: "complete",
+              message: "Extraction complete",
+              percent: 100,
+            },
+            () => void chrome.runtime.lastError
+          );
 
           resolve({
             data: schema,
@@ -2598,7 +2604,9 @@ console.log("If you see this, content-script.js is executing!");
       // CRITICAL FIX: Set timeout to fail cleanly
       timeoutIdRef.id = setTimeout(async () => {
         window.removeEventListener("message", messageListener);
-        console.warn("⚠️ [TIMEOUT] DOM extraction timed out after 210 seconds");
+        console.warn(
+          "⚠️ [TIMEOUT] DOM extraction timed out after 1200 seconds (20 min)"
+        );
 
         // STEP 1: First verify the injected script is actually loaded and responding
         let scriptIsAlive = false;
@@ -2680,7 +2688,7 @@ console.log("If you see this, content-script.js is executing!");
         });
 
         reject(new Error(errorMessage));
-      }, 210000); // 210 second timeout (allows for 180s extractor limit + communication)
+      }, 1200000); // 1200 second timeout (20 mins) to allow for long auto-scrolls
 
       window.addEventListener("message", messageListener);
 
@@ -3147,14 +3155,15 @@ console.log("If you see this, content-script.js is executing!");
       const timing = context?.timing;
       const pageState = context?.pageState;
       const stack = details?.stack || context?.stack;
-      
+
       // Parse diagnostic report if available
       let diagReport: any = null;
       if (captureData.diagnosticReport) {
         try {
-          diagReport = typeof captureData.diagnosticReport === 'string' 
-            ? JSON.parse(captureData.diagnosticReport) 
-            : captureData.diagnosticReport;
+          diagReport =
+            typeof captureData.diagnosticReport === "string"
+              ? JSON.parse(captureData.diagnosticReport)
+              : captureData.diagnosticReport;
         } catch (e) {
           console.warn("Failed to parse diagnostic report:", e);
         }
@@ -3227,11 +3236,16 @@ ${
     ? `
 DIAGNOSTIC EVENTS (${diagReport.events.length} total):
 ${diagReport.events
-  .filter((e: any) => e.severity !== 'info')
+  .filter((e: any) => e.severity !== "info")
   .slice(0, 10)
-  .map((e: any) => `[${e.severity.toUpperCase()}] ${e.code} @ ${e.file || 'unknown'}:${e.line || '?'}
+  .map(
+    (e: any) => `[${e.severity.toUpperCase()}] ${e.code} @ ${
+      e.file || "unknown"
+    }:${e.line || "?"}
   Message: ${e.message}
-  Fix: ${e.suggestedFix || 'No fix available'}`).join("\\n\\n")}
+  Fix: ${e.suggestedFix || "No fix available"}`
+  )
+  .join("\\n\\n")}
 `
     : ""
 }
@@ -3269,38 +3283,75 @@ ${diagReport.events
         }
         
         ${
-          diagReport?.events?.filter((e: any) => e.severity !== 'info').length > 0
+          diagReport?.events?.filter((e: any) => e.severity !== "info").length >
+          0
             ? `
           <div style="background: #e3f2fd; border: 1px solid #2196f3; border-radius: 6px; padding: 10px; margin-bottom: 10px;">
             <div style="font-weight: bold; color: #1565c0; font-size: 12px; margin-bottom: 8px;">
-              🔧 Diagnostic Issues (${diagReport.events.filter((e: any) => e.severity !== 'info').length} found):
+              🔧 Diagnostic Issues (${
+                diagReport.events.filter((e: any) => e.severity !== "info")
+                  .length
+              } found):
             </div>
             <div style="max-height: 200px; overflow-y: auto;">
               ${diagReport.events
-                .filter((e: any) => e.severity !== 'info')
+                .filter((e: any) => e.severity !== "info")
                 .slice(0, 5)
-                .map((e: any) => `
-                  <div style="background: ${e.severity === 'fatal' ? '#ffebee' : e.severity === 'error' ? '#fff8e1' : '#e8f5e9'}; 
+                .map(
+                  (e: any) => `
+                  <div style="background: ${
+                    e.severity === "fatal"
+                      ? "#ffebee"
+                      : e.severity === "error"
+                      ? "#fff8e1"
+                      : "#e8f5e9"
+                  }; 
                               border-radius: 4px; padding: 8px; margin-bottom: 6px; font-size: 11px;">
                     <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
-                      <strong style="color: ${e.severity === 'fatal' ? '#c62828' : e.severity === 'error' ? '#f57c00' : '#388e3c'};">
-                        ${e.severity === 'fatal' ? '💀' : e.severity === 'error' ? '❌' : '⚠️'} ${e.code}
+                      <strong style="color: ${
+                        e.severity === "fatal"
+                          ? "#c62828"
+                          : e.severity === "error"
+                          ? "#f57c00"
+                          : "#388e3c"
+                      };">
+                        ${
+                          e.severity === "fatal"
+                            ? "💀"
+                            : e.severity === "error"
+                            ? "❌"
+                            : "⚠️"
+                        } ${e.code}
                       </strong>
                       <span style="color: #666; font-family: monospace; font-size: 10px;">
-                        ${e.file || 'unknown'}:${e.line || '?'}
+                        ${e.file || "unknown"}:${e.line || "?"}
                       </span>
                     </div>
-                    <div style="color: #333; margin-bottom: 4px;">${(e.message || '').substring(0, 100)}</div>
+                    <div style="color: #333; margin-bottom: 4px;">${(
+                      e.message || ""
+                    ).substring(0, 100)}</div>
                     <div style="color: #1565c0; font-style: italic;">
-                      🔧 ${(e.suggestedFix || 'No fix available').substring(0, 150)}...
+                      🔧 ${(e.suggestedFix || "No fix available").substring(
+                        0,
+                        150
+                      )}...
                     </div>
                   </div>
-                `).join('')}
-              ${diagReport.events.filter((e: any) => e.severity !== 'info').length > 5 
-                ? `<div style="color: #666; font-size: 11px; text-align: center;">
-                    ... and ${diagReport.events.filter((e: any) => e.severity !== 'info').length - 5} more issues (see console for full report)
-                   </div>` 
-                : ''}
+                `
+                )
+                .join("")}
+              ${
+                diagReport.events.filter((e: any) => e.severity !== "info")
+                  .length > 5
+                  ? `<div style="color: #666; font-size: 11px; text-align: center;">
+                    ... and ${
+                      diagReport.events.filter(
+                        (e: any) => e.severity !== "info"
+                      ).length - 5
+                    } more issues (see console for full report)
+                   </div>`
+                  : ""
+              }
             </div>
           </div>
         `
@@ -3536,24 +3587,67 @@ ${diagReport.events
     downloadJsonBtn.addEventListener("click", async () => {
       downloadJsonBtn.textContent = "⏳ Preparing...";
 
+      // Helper for local download fallback
+      const downloadLocally = (data: any) => {
+        try {
+          console.log("💾 Falling back to local download...");
+          const jsonStr = JSON.stringify(data, null, 2);
+          const blob = new Blob([jsonStr], { type: "application/json" });
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement("a");
+          a.href = url;
+          a.download = `page-capture-${Date.now()}.json`;
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          URL.revokeObjectURL(url);
+
+          downloadJsonBtn.innerHTML = "✅ Downloaded (Local)";
+          setTimeout(() => dialog.remove(), 2000);
+        } catch (e) {
+          const err = e instanceof Error ? e.message : String(e);
+          console.error("Local download failed:", e);
+          downloadJsonBtn.innerHTML = "❌ Local Download Failed";
+          alert("Critial: Could not download data locally. " + err);
+        }
+      };
+
       try {
         // Yield to UI
         await new Promise((resolve) => setTimeout(resolve, 10));
 
-        // Always delegate download to background script
-        // Background script has better support for blob URLs and downloads
         console.log("📦 Requesting background download...");
-        
-        // If not chunked, send the data along with the request
+
         const message: any = {
           type: "TRIGGER_DOWNLOAD",
         };
-        
+
+        // If chunked, we rely on background cache. If not, we try to send data.
         if (!captureData.chunked) {
           message.captureData = captureData;
         }
-        
+
         chrome.runtime.sendMessage(message, (response) => {
+          // CHECK 1: Runtime/IPC errors (e.g. message too large)
+          if (chrome.runtime.lastError) {
+            console.warn(
+              "⚠️ Background download IPC failed:",
+              chrome.runtime.lastError.message
+            );
+            // If we have data locally, download it. If chunked, we might be stuck unless we re-assemble?
+            // Usually 'chunked' means we sent it successfully before.
+            // If !chunked, we definitely have it here.
+            if (!captureData.chunked) {
+              downloadLocally(captureData);
+            } else {
+              alert(
+                "Background connection lost and data is chunked. Cannot retrieve from background."
+              );
+            }
+            return;
+          }
+
+          // CHECK 2: Background script returned explicit error
           if (response?.ok) {
             const suffix =
               response?.compressed || (response?.filename || "").endsWith(".gz")
@@ -3562,18 +3656,34 @@ ${diagReport.events
             downloadJsonBtn.innerHTML = `✅ Download started!${suffix}`;
             setTimeout(() => dialog.remove(), 2000);
           } else {
-            downloadJsonBtn.innerHTML = "❌ Download failed";
-            console.error("Background download failed:", response?.error);
-            alert(
-              "Failed to trigger download: " +
-                (response?.error || "Unknown error")
+            console.warn(
+              "⚠️ Background download returned error:",
+              response?.error
             );
+            // Fallback to local
+            if (!captureData.chunked) {
+              downloadLocally(captureData);
+            } else {
+              downloadJsonBtn.innerHTML = "❌ Download failed";
+              alert(
+                "Background download failed: " +
+                  (response?.error || "Unknown error")
+              );
+            }
           }
         });
       } catch (error) {
-        downloadJsonBtn.innerHTML = "❌ Download failed";
-        console.error("Download failed:", error);
-        alert("Failed to trigger download: " + (error instanceof Error ? error.message : "Unknown error"));
+        console.error("Download exception:", error);
+        // Fallback to local
+        if (!captureData.chunked) {
+          downloadLocally(captureData);
+        } else {
+          downloadJsonBtn.innerHTML = "❌ Download failed";
+          alert(
+            "Failed to trigger download: " +
+              (error instanceof Error ? error.message : "Unknown error")
+          );
+        }
       }
     });
 

@@ -1,0 +1,68 @@
+{
+  "nodeCount": 392,
+  "nodeTypes": {
+    "FRAME": 306,
+    "TEXT": 77,
+    "RECTANGLE": 9
+  },
+  "textNodes": 77,
+  "imageNodes": 0,
+  "zeroSizedNodes": 0,
+  "outOfBoundsNodes": 392,
+  "largestNodes": [
+    {
+      "id": "36:397",
+      "name": "LINK",
+      "area": 1640320
+    },
+    {
+      "id": "36:398",
+      "name": "CARD",
+      "area": 1626340
+    },
+    {
+      "id": "36:402",
+      "name": "LINK",
+      "area": 1626340
+    },
+    {
+      "id": "36:403",
+      "name": "Container",
+      "area": 1626340
+    },
+    {
+      "id": "36:412",
+      "name": "react-partial",
+      "area": 1626340
+    },
+    {
+      "id": "36:437",
+      "name": "Color Fg Default",
+      "area": 1626340
+    },
+    {
+      "id": "36:438",
+      "name": "dialog-helper",
+      "area": 1626340
+    },
+    {
+      "id": "36:440",
+      "name": "dialog-helper",
+      "area": 1626340
+    },
+    {
+      "id": "36:445",
+      "name": "react-partial",
+      "area": 1626340
+    },
+    {
+      "id": "36:450",
+      "name": "react-partial",
+      "area": 1626340
+    }
+  ],
+  "warnings": [
+    "Found 392 nodes outside expected viewport bounds",
+    "No image nodes detected in import"
+  ]
+}

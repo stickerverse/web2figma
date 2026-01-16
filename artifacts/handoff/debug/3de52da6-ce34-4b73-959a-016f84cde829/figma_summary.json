@@ -1,0 +1,70 @@
+{
+  "nodeCount": 1223,
+  "nodeTypes": {
+    "FRAME": 1044,
+    "TEXT": 142,
+    "VECTOR": 17,
+    "RECTANGLE": 7,
+    "GROUP": 13
+  },
+  "textNodes": 142,
+  "imageNodes": 0,
+  "zeroSizedNodes": 0,
+  "outOfBoundsNodes": 1223,
+  "largestNodes": [
+    {
+      "id": "73:4",
+      "name": "Import 4:09:36 PM",
+      "area": 27648000
+    },
+    {
+      "id": "73:5",
+      "name": "html",
+      "area": 3754896
+    },
+    {
+      "id": "73:6",
+      "name": "body",
+      "area": 3754896
+    },
+    {
+      "id": "73:7",
+      "name": "ytd-app",
+      "area": 3754896
+    },
+    {
+      "id": "73:11",
+      "name": "Microformat",
+      "area": 3754896
+    },
+    {
+      "id": "73:12",
+      "name": "Full Bleed Container",
+      "area": 3754896
+    },
+    {
+      "id": "73:13",
+      "name": "Player Full Bleed Container",
+      "area": 3754896
+    },
+    {
+      "id": "73:14",
+      "name": "Player Container Background",
+      "area": 3754896
+    },
+    {
+      "id": "73:15",
+      "name": "ytd-thumbnail",
+      "area": 3754896
+    },
+    {
+      "id": "73:16",
+      "name": "a",
+      "area": 3754896
+    }
+  ],
+  "warnings": [
+    "Found 1223 nodes outside expected viewport bounds",
+    "No image nodes detected in import"
+  ]
+}

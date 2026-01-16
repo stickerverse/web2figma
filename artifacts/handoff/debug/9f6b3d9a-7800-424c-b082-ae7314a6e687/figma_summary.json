@@ -1,0 +1,68 @@
+{
+  "nodeCount": 561,
+  "nodeTypes": {
+    "FRAME": 373,
+    "TEXT": 149,
+    "VECTOR": 16,
+    "RECTANGLE": 23
+  },
+  "textNodes": 149,
+  "imageNodes": 2,
+  "zeroSizedNodes": 0,
+  "outOfBoundsNodes": 17,
+  "largestNodes": [
+    {
+      "id": "5:393",
+      "name": "Import 2:15:20 PM",
+      "area": 15968173
+    },
+    {
+      "id": "5:400",
+      "name": "html",
+      "area": 15830724
+    },
+    {
+      "id": "5:402",
+      "name": "Plasmo Shadow Container",
+      "area": 15830724
+    },
+    {
+      "id": "5:403",
+      "name": "body",
+      "area": 15830724
+    },
+    {
+      "id": "5:404",
+      "name": "Gatsby",
+      "area": 15830724
+    },
+    {
+      "id": "5:405",
+      "name": "Gatsby Focus Wrapper",
+      "area": 15830724
+    },
+    {
+      "id": "5:406",
+      "name": "Global Grid PageWrapper",
+      "area": 15830724
+    },
+    {
+      "id": "5:508",
+      "name": "picture",
+      "area": 15830724
+    },
+    {
+      "id": "5:552",
+      "name": "picture",
+      "area": 15830724
+    },
+    {
+      "id": "5:577",
+      "name": "picture",
+      "area": 15830724
+    }
+  ],
+  "warnings": [
+    "Found 17 nodes outside expected viewport bounds"
+  ]
+}

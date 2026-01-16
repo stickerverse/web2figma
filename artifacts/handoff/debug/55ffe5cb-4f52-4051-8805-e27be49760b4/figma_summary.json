@@ -1,0 +1,67 @@
+{
+  "nodeCount": 27,
+  "nodeTypes": {
+    "FRAME": 16,
+    "TEXT": 11
+  },
+  "textNodes": 11,
+  "imageNodes": 0,
+  "zeroSizedNodes": 0,
+  "outOfBoundsNodes": 27,
+  "largestNodes": [
+    {
+      "id": "97:80",
+      "name": "LINK",
+      "area": 25954720
+    },
+    {
+      "id": "97:81",
+      "name": "TEXT",
+      "area": 24218855
+    },
+    {
+      "id": "97:82",
+      "name": "LINK",
+      "area": 24218855
+    },
+    {
+      "id": "97:88",
+      "name": "LINK 2",
+      "area": 156325
+    },
+    {
+      "id": "97:89",
+      "name": "LINK",
+      "area": 58660
+    },
+    {
+      "id": "97:101",
+      "name": "LINK Component",
+      "area": 54810
+    },
+    {
+      "id": "97:83",
+      "name": "LINK",
+      "area": 36472
+    },
+    {
+      "id": "97:90",
+      "name": "✅",
+      "area": 26816
+    },
+    {
+      "id": "97:93",
+      "name": "Button Container: Send to Figma Plugin",
+      "area": 26816
+    },
+    {
+      "id": "97:91",
+      "name": "Page Captured!",
+      "area": 13408
+    }
+  ],
+  "warnings": [
+    "Found 27 nodes outside expected viewport bounds",
+    "No image nodes detected in import"
+  ]
+}

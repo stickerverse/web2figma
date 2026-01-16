@@ -389,16 +389,16 @@ function init() {
     console.error("[POPUP] ❌ capture-multiple button not found!");
   } else {
     captureMultipleBtn.addEventListener("click", () => {
-      // Capture a standard responsive set (mobile/tablet/desktop)
+      // Capture a standard responsive set (Desktop, then Tablet, then Mobile)
       startCapture("send", [
-        { name: "Mobile 375", width: 375, height: 667, deviceScaleFactor: 2 },
-        { name: "Tablet 768", width: 768, height: 1024, deviceScaleFactor: 2 },
         {
           name: "Desktop 1440",
           width: 1440,
           height: 900,
           deviceScaleFactor: 1,
         },
+        { name: "Tablet 768", width: 768, height: 1024, deviceScaleFactor: 2 },
+        { name: "Mobile 375", width: 375, height: 667, deviceScaleFactor: 2 },
       ]);
     });
   }

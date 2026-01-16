@@ -1,0 +1,69 @@
+{
+  "nodeCount": 346,
+  "nodeTypes": {
+    "FRAME": 144,
+    "TEXT": 61,
+    "GROUP": 21,
+    "VECTOR": 119,
+    "RECTANGLE": 1
+  },
+  "textNodes": 61,
+  "imageNodes": 1,
+  "zeroSizedNodes": 0,
+  "outOfBoundsNodes": 346,
+  "largestNodes": [
+    {
+      "id": "98:695",
+      "name": "Import 11:33:20 PM",
+      "area": 3256068.75
+    },
+    {
+      "id": "98:696",
+      "name": "html",
+      "area": 3228250
+    },
+    {
+      "id": "98:697",
+      "name": "body",
+      "area": 3228250
+    },
+    {
+      "id": "98:698",
+      "name": "section",
+      "area": 3228250
+    },
+    {
+      "id": "98:699",
+      "name": "section",
+      "area": 3228250
+    },
+    {
+      "id": "98:709",
+      "name": "section",
+      "area": 3228250
+    },
+    {
+      "id": "98:710",
+      "name": "section",
+      "area": 3228250
+    },
+    {
+      "id": "98:843",
+      "name": "section",
+      "area": 3228250
+    },
+    {
+      "id": "98:1029",
+      "name": "Onetrust Consent Sdk",
+      "area": 3228250
+    },
+    {
+      "id": "98:838",
+      "name": "section",
+      "area": 2317360
+    }
+  ],
+  "warnings": [
+    "Found 346 nodes outside expected viewport bounds"
+  ]
+}

@@ -1,0 +1,78 @@
+{
+  "jobs": [
+    {
+      "id": "a268e90d-8e9d-49b7-a4cd-dc5878b1ac9c",
+      "queuedAt": 1768043865148,
+      "deliveredAt": 1768058277473,
+      "completedAt": null,
+      "hasPayload": false,
+      "payloadSize": 0,
+      "hasFigmaScreenshot": false,
+      "status": "processing"
+    },
+    {
+      "id": "5d427502-fe7b-4828-9902-a6ceb7e8795d",
+      "queuedAt": 1768056378666,
+      "deliveredAt": null,
+      "completedAt": null,
+      "hasPayload": false,
+      "payloadSize": 0,
+      "hasFigmaScreenshot": false,
+      "status": "queued"
+    },
+    {
+      "id": "366abfc9-d1bf-41bc-ab5d-5972f65e50c4",
+      "queuedAt": 1768056525773,
+      "deliveredAt": null,
+      "completedAt": null,
+      "hasPayload": false,
+      "payloadSize": 0,
+      "hasFigmaScreenshot": false,
+      "status": "queued"
+    },
+    {
+      "id": "89f9cad3-32a6-4deb-92c0-0c8517eefeea",
+      "queuedAt": 1768057309782,
+      "deliveredAt": null,
+      "completedAt": null,
+      "hasPayload": false,
+      "payloadSize": 0,
+      "hasFigmaScreenshot": false,
+      "status": "queued"
+    },
+    {
+      "id": "900f688d-5c27-4256-8166-9301a58a79f7",
+      "queuedAt": 1768057680387,
+      "deliveredAt": null,
+      "completedAt": null,
+      "hasPayload": true,
+      "payloadSize": 160501,
+      "hasFigmaScreenshot": false,
+      "status": "queued"
+    },
+    {
+      "id": "4cb377b3-e3c5-4c6d-8532-7966f3195bf0",
+      "queuedAt": 1768058012979,
+      "deliveredAt": null,
+      "completedAt": null,
+      "hasPayload": true,
+      "payloadSize": 99621,
+      "hasFigmaScreenshot": false,
+      "status": "queued"
+    }
+  ],
+  "telemetry": {
+    "lastExtensionPingAt": null,
+    "lastExtensionTransferAt": 1768058012979,
+    "lastPluginPollAt": 1768058277473,
+    "lastPluginDeliveryAt": 1768058277473,
+    "lastQueuedJobId": "4cb377b3-e3c5-4c6d-8532-7966f3195bf0",
+    "lastDeliveredJobId": "a268e90d-8e9d-49b7-a4cd-dc5878b1ac9c",
+    "queueLength": 5
+  },
+  "lastDeliveredJob": {
+    "id": "a268e90d-8e9d-49b7-a4cd-dc5878b1ac9c",
+    "deliveredAt": 1768058277473,
+    "hasPayload": false
+  }
+}

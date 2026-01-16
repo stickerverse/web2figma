@@ -1,0 +1,69 @@
+{
+  "nodeCount": 2926,
+  "nodeTypes": {
+    "FRAME": 2504,
+    "VECTOR": 45,
+    "GROUP": 39,
+    "TEXT": 254,
+    "RECTANGLE": 84
+  },
+  "textNodes": 254,
+  "imageNodes": 1,
+  "zeroSizedNodes": 0,
+  "outOfBoundsNodes": 2926,
+  "largestNodes": [
+    {
+      "id": "36:2384",
+      "name": "i",
+      "area": 16249142
+    },
+    {
+      "id": "36:2385",
+      "name": "X1ey2m1c",
+      "area": 16249142
+    },
+    {
+      "id": "36:2386",
+      "name": "X1lliihq",
+      "area": 16249142
+    },
+    {
+      "id": "36:2387",
+      "name": "X1lliihq",
+      "area": 16249142
+    },
+    {
+      "id": "36:2388",
+      "name": "X1lliihq",
+      "area": 16249142
+    },
+    {
+      "id": "36:2389",
+      "name": "Open reel in Reels Viewer",
+      "area": 16249142
+    },
+    {
+      "id": "36:2390",
+      "name": "X6s0dn4",
+      "area": 16249142
+    },
+    {
+      "id": "36:2392",
+      "name": "i",
+      "area": 16249142
+    },
+    {
+      "id": "36:2393",
+      "name": "Container",
+      "area": 16249142
+    },
+    {
+      "id": "36:2394",
+      "name": "Video player",
+      "area": 16249142
+    }
+  ],
+  "warnings": [
+    "Found 2926 nodes outside expected viewport bounds"
+  ]
+}

@@ -1,0 +1,70 @@
+{
+  "nodeCount": 1424,
+  "nodeTypes": {
+    "FRAME": 1228,
+    "RECTANGLE": 13,
+    "TEXT": 157,
+    "GROUP": 18,
+    "VECTOR": 8
+  },
+  "textNodes": 157,
+  "imageNodes": 0,
+  "zeroSizedNodes": 0,
+  "outOfBoundsNodes": 1424,
+  "largestNodes": [
+    {
+      "id": "5:962",
+      "name": "Import 2:28:26 PM",
+      "area": 8650368
+    },
+    {
+      "id": "5:963",
+      "name": "html",
+      "area": 3782304
+    },
+    {
+      "id": "5:965",
+      "name": "Plasmo Shadow Container",
+      "area": 3782304
+    },
+    {
+      "id": "5:966",
+      "name": "body",
+      "area": 3782304
+    },
+    {
+      "id": "5:967",
+      "name": "ytd-app",
+      "area": 3782304
+    },
+    {
+      "id": "5:971",
+      "name": "Microformat",
+      "area": 3782304
+    },
+    {
+      "id": "5:972",
+      "name": "Full Bleed Container",
+      "area": 3782304
+    },
+    {
+      "id": "5:973",
+      "name": "Player Full Bleed Container",
+      "area": 3782304
+    },
+    {
+      "id": "5:974",
+      "name": "Player Container Background",
+      "area": 3782304
+    },
+    {
+      "id": "5:975",
+      "name": "ytd-thumbnail",
+      "area": 3782304
+    }
+  ],
+  "warnings": [
+    "Found 1424 nodes outside expected viewport bounds",
+    "No image nodes detected in import"
+  ]
+}

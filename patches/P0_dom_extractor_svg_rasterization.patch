@@ -1,0 +1,29 @@
+--- a/chrome-extension/src/utils/dom-extractor.ts
++++ b/chrome-extension/src/utils/dom-extractor.ts
+@@ -2914,10 +2914,23 @@
+       },
+       // Parse transform matrix for pixel-perfect positioning
+       transform: this.parseTransformMatrix(computed.transform),
+-      // STRICT TRANSFORM POLICY: Mark nodes requiring rasterization fallback
+-      _requiresRasterization: this.shouldRasterizeTransform(
+-        computed.transform,
+-        element
+-      ),
++      // RASTERIZATION POLICY: Mark transforms and SVG elements for rasterization
++      // PIXEL-PERFECT FIX: SVG elements cannot be reliably vectorized via schema
++      // Always mark them for rasterization to ensure visual fidelity
++      _requiresRasterization: 
++        this.shouldRasterizeTransform(computed.transform, element) || 
++        element.tagName === 'SVG',
+       // Extract z-index for layer ordering
+       zIndex:
++
++    // Log SVG rasterization for debugging
++    if (element.tagName === 'SVG') {
++      const svgId = element.getAttribute('id') || element.getAttribute('class') || 'unnamed';
++      console.log(
++        `  🖼️ [SVG] Marked for rasterization: ${svgId} ` +
++        `(width: ${computed.width}, height: ${computed.height})`
++      );
++    }
++

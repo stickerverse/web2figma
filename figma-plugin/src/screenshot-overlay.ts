@@ -120,7 +120,14 @@ export class ScreenshotOverlay {
    */
   private static async dataUrlToBytes(dataUrl: string): Promise<Uint8Array> {
     const base64 = dataUrl.split(',')[1];
-    const binaryString = atob(base64);
+    
+    // Use Figma's native base64 decoder which is available in the main thread
+    if (typeof figma !== 'undefined' && typeof figma.base64Decode === 'function') {
+      return figma.base64Decode(base64);
+    }
+    
+    // Fallback manual decoder for other environments
+    const binaryString = this.atobFallback(base64);
     const bytes = new Uint8Array(binaryString.length);
     
     for (let i = 0; i < binaryString.length; i++) {
@@ -128,6 +135,37 @@ export class ScreenshotOverlay {
     }
     
     return bytes;
+  }
+
+  private static atobFallback(base64: string): string {
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
+    const lookup = new Uint8Array(256);
+    for (let i = 0; i < chars.length; i++) lookup[chars.charCodeAt(i)] = i;
+
+    const len = base64.length;
+    let bufferLength = len * 0.75;
+    if (base64[len - 1] === '=') {
+      bufferLength--;
+      if (base64[len - 2] === '=') bufferLength--;
+    }
+
+    const bytes = new Uint8Array(bufferLength);
+    for (let i = 0, p = 0; i < len; i += 4) {
+      const encoded1 = lookup[base64.charCodeAt(i)];
+      const encoded2 = lookup[base64.charCodeAt(i + 1)];
+      const encoded3 = lookup[base64.charCodeAt(i + 2)];
+      const encoded4 = lookup[base64.charCodeAt(i + 3)];
+
+      bytes[p++] = (encoded1 << 2) | (encoded2 >> 4);
+      bytes[p++] = ((encoded2 & 15) << 4) | (encoded3 >> 2);
+      bytes[p++] = ((encoded3 & 3) << 6) | (encoded4 & 63);
+    }
+
+    let result = '';
+    for (let i = 0; i < bytes.length; i++) {
+      result += String.fromCharCode(bytes[i]);
+    }
+    return result;
   }
   
   /**

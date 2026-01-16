@@ -1,0 +1,66 @@
+{
+  "nodeCount": 36,
+  "nodeTypes": {
+    "FRAME": 22,
+    "TEXT": 14
+  },
+  "textNodes": 14,
+  "imageNodes": 0,
+  "zeroSizedNodes": 0,
+  "outOfBoundsNodes": 0,
+  "largestNodes": [
+    {
+      "id": "97:687",
+      "name": "TEXT",
+      "area": 32331960
+    },
+    {
+      "id": "97:688",
+      "name": "LINK",
+      "area": 32331960
+    },
+    {
+      "id": "97:686",
+      "name": "LINK",
+      "area": 28416000
+    },
+    {
+      "id": "97:689",
+      "name": "Fixed Container",
+      "area": 1541568
+    },
+    {
+      "id": "97:701",
+      "name": "Capture Completion Dialog",
+      "area": 233230
+    },
+    {
+      "id": "97:702",
+      "name": "Button Container: Copy Report",
+      "area": 123500
+    },
+    {
+      "id": "97:705",
+      "name": "Button Container: Copy Report",
+      "area": 63000
+    },
+    {
+      "id": "97:695",
+      "name": "Fixed Container",
+      "area": 58338
+    },
+    {
+      "id": "97:690",
+      "name": "Fixed Container",
+      "area": 36472
+    },
+    {
+      "id": "97:703",
+      "name": "❌",
+      "area": 32000
+    }
+  ],
+  "warnings": [
+    "No image nodes detected in import"
+  ]
+}

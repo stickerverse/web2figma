@@ -1,0 +1,67 @@
+{
+  "nodeCount": 347,
+  "nodeTypes": {
+    "FRAME": 144,
+    "TEXT": 62,
+    "GROUP": 21,
+    "VECTOR": 119,
+    "RECTANGLE": 1
+  },
+  "textNodes": 62,
+  "imageNodes": 1,
+  "zeroSizedNodes": 0,
+  "outOfBoundsNodes": 0,
+  "largestNodes": [
+    {
+      "id": "97:724",
+      "name": "Import 10:40:11 PM",
+      "area": 3196867.5
+    },
+    {
+      "id": "97:725",
+      "name": "html",
+      "area": 3169050
+    },
+    {
+      "id": "97:726",
+      "name": "body",
+      "area": 3169050
+    },
+    {
+      "id": "97:727",
+      "name": "section",
+      "area": 3169050
+    },
+    {
+      "id": "97:728",
+      "name": "section",
+      "area": 3169050
+    },
+    {
+      "id": "97:738",
+      "name": "section",
+      "area": 3169050
+    },
+    {
+      "id": "97:739",
+      "name": "section",
+      "area": 3169050
+    },
+    {
+      "id": "97:872",
+      "name": "section",
+      "area": 3169050
+    },
+    {
+      "id": "97:1058",
+      "name": "Onetrust Consent Sdk",
+      "area": 3169050
+    },
+    {
+      "id": "97:867",
+      "name": "section",
+      "area": 2274864
+    }
+  ],
+  "warnings": []
+}

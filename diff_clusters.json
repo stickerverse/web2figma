@@ -1,0 +1,123 @@
+[
+  {
+    "id": "cluster_1",
+    "x": 67,
+    "y": 147,
+    "w": 624,
+    "h": 624,
+    "area": 389376,
+    "severityScore": 0.9,
+    "label": "Missing Image (Main)",
+    "type": "missing_image"
+  },
+  {
+    "id": "cluster_2",
+    "x": 67,
+    "y": 780,
+    "w": 109,
+    "h": 109,
+    "area": 11881,
+    "severityScore": 0.8,
+    "label": "Missing Thumbnail 1",
+    "type": "missing_image"
+  },
+  {
+    "id": "cluster_3",
+    "x": 186,
+    "y": 780,
+    "w": 109,
+    "h": 109,
+    "area": 11881,
+    "severityScore": 0.8,
+    "label": "Missing Thumbnail 2",
+    "type": "missing_image"
+  },
+  {
+    "id": "cluster_4",
+    "x": 305,
+    "y": 780,
+    "w": 109,
+    "h": 109,
+    "area": 11881,
+    "severityScore": 0.8,
+    "label": "Missing Thumbnail 3",
+    "type": "missing_image"
+  },
+  {
+    "id": "cluster_5",
+    "x": 424,
+    "y": 780,
+    "w": 109,
+    "h": 109,
+    "area": 11881,
+    "severityScore": 0.8,
+    "label": "Missing Thumbnail 4",
+    "type": "missing_image"
+  },
+  {
+    "id": "cluster_6",
+    "x": 67,
+    "y": 27,
+    "w": 40,
+    "h": 40,
+    "area": 1600,
+    "severityScore": 0.9,
+    "label": "Missing Logo (Header)",
+    "type": "missing_svg"
+  },
+  {
+    "id": "cluster_7",
+    "x": 485,
+    "y": 1060,
+    "w": 40,
+    "h": 40,
+    "area": 1600,
+    "severityScore": 0.9,
+    "label": "Missing Logo (Footer)",
+    "type": "missing_svg"
+  },
+  {
+    "id": "cluster_8",
+    "x": 213,
+    "y": 1260,
+    "w": 250,
+    "h": 250,
+    "area": 62500,
+    "severityScore": 0.7,
+    "label": "Missing Rec Image 1",
+    "type": "missing_image"
+  },
+  {
+    "id": "cluster_9",
+    "x": 476,
+    "y": 1260,
+    "w": 250,
+    "h": 250,
+    "area": 62500,
+    "severityScore": 0.7,
+    "label": "Missing Rec Image 2",
+    "type": "missing_image"
+  },
+  {
+    "id": "cluster_10",
+    "x": 739,
+    "y": 1260,
+    "w": 250,
+    "h": 250,
+    "area": 62500,
+    "severityScore": 0.7,
+    "label": "Missing Rec Image 3",
+    "type": "missing_image"
+  },
+  {
+    "id": "cluster_11",
+    "x": 1200,
+    "y": 0,
+    "w": 400,
+    "h": 1080,
+    "area": 432000,
+    "severityScore": 0.6,
+    "label": "Unexpected Cart Sidebar",
+    "type": "layout_mismatch"
+  }
+]
